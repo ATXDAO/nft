@@ -1,0 +1,15 @@
+{
+  "attributes": [
+    {
+      "trait_type": "Breed",
+      "value": "Bulldog"
+    },
+    {
+      "trait_type": "Clothes",
+      "value": "Austin FC Kit"
+    }
+  ],
+  "description": "Don't underestimate me, I can move for a french bulldog! I <3 Los Verdes!",
+  "image": "https://gateway.pinata.cloud/ipfs/QmSUr1Gt2NTwBGLYkbMjQysmy4p3vkGdoWi8YV7vWjqWCq",
+  "name": "ATX Louie"
+}
