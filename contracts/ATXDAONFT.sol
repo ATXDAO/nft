@@ -41,7 +41,7 @@ contract ATXDAONFT is ERC721URIStorage, Ownable {
             "Minting is only available for non-holders"
         );
         require(
-            _mintCount.current() <= _mintQuantity,
+            _mintCount.current() < _mintQuantity,
             "No more NFTs remaining!"
         );
         require(msg.value >= _mintPrice, "Not enough ether sent to mint!");
@@ -87,7 +87,7 @@ contract ATXDAONFT is ERC721URIStorage, Ownable {
     }
 
     function sweepEth() public onlyOwner {
-        uint256 _balance = balanceOf(address(this));
+        uint256 _balance = address(this).balance;
         payable(owner()).transfer(_balance);
     }
 }
