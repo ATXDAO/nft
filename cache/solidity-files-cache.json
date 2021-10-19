@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/Users/malcolmnavarro/code/atxdao/atxdao-nft/contracts/ATXDAONFT.sol": {
-      "lastModificationDate": 1634669057617,
-      "contentHash": "2f2068992a6507c94c209292e7a32d5c",
+      "lastModificationDate": 1634671004623,
+      "contentHash": "50a35e8db419ac7a6f76232de8b3ef7b",
       "sourceName": "contracts/ATXDAONFT.sol",
       "solcConfig": {
         "version": "0.8.0",
