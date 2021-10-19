@@ -1,15 +1,19 @@
-### How To Mint NFT
-
-In `/scripts/mint-nft.js`, do the following:
-
-Update `mintNFT` function call param to use correct NFT metadata JSON from IPS (end of file)
+### Deploy Contract
 
 ```zsh
-node scripts/mint-nft.js
+npx hardhat run --network ropsten scripts/deploy.js
 ```
 
 ### Verify Contract
 
+Ropsten
+
+```zsh
+npx hardhat verify --network ropsten DEPLOYED_CONTRACT_ADDRESS
 ```
-npx hardhat verify --network mainnet DEPLOYED_CONTRACT_ADDRESS "Constructor argument 1"
+
+Mainnet:
+
+```
+npx hardhat verify --network mainnet DEPLOYED_CONTRACT_ADDRESS
 ```
