@@ -85,4 +85,9 @@ contract ATXDAONFT is ERC721URIStorage, Ownable {
     function endMint() public onlyOwner {
         isMintable = false;
     }
+
+    function sweepEth() public onlyOwner {
+        uint256 _balance = balanceOf(address(this));
+        payable(owner()).transfer(_balance);
+    }
 }
