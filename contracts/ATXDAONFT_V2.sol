@@ -22,7 +22,6 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
 import {MerkleProof} from "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 
-
 contract ATXDAONFT_V2 is
     Initializable,
     ERC721Upgradeable,
@@ -38,7 +37,6 @@ contract ATXDAONFT_V2 is
     bool public isMintable = false;
     uint256 public _mintPrice = 512000000000000000; // 0.512 ether
     uint256 public _mintQuantity = 25;
-
 
     CountersUpgradeable.Counter private _mintCount;
     CountersUpgradeable.Counter private _tokenIds;
@@ -58,7 +56,7 @@ contract ATXDAONFT_V2 is
         __UUPSUpgradeable_init();
     }
 
-        function setMerkleRoot(bytes32 root) onlyOwner public {
+    function setMerkleRoot(bytes32 root) public onlyOwner {
         merkleRoot = root;
     }
 
