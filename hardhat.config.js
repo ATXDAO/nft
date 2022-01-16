@@ -17,23 +17,23 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
 
 const { API_URL, PRIVATE_KEY, ETHERSCAN_API_KEY } = process.env;
 module.exports = {
-  solidity: "0.8.0",
+  solidity: "0.8.9",
   // defaultNetwork: "ropsten",
-  networks: {
-    hardhat: {},
-    ropsten: {
-      url: API_URL,
-      accounts: [`0x${PRIVATE_KEY}`],
-    },
-    mainnet: {
-      url: API_URL,
-      accounts: [`0x${PRIVATE_KEY}`],
-    },
-  },
+  // networks: {
+  //   hardhat: {},
+  //   ropsten: {
+  //     url: API_URL,
+  //     accounts: [`0x${PRIVATE_KEY}`],
+  //   },
+  //   mainnet: {
+  //     url: API_URL,
+  //     accounts: [`0x${PRIVATE_KEY}`],
+  //   },
+  // },
 
-  etherscan: {
-    // Your API key for Etherscan
-    // Obtain one at https://etherscan.io/
-    apiKey: ETHERSCAN_API_KEY,
-  },
+  // etherscan: {
+  //   // Your API key for Etherscan
+  //   // Obtain one at https://etherscan.io/
+  //   apiKey: ETHERSCAN_API_KEY,
+  // },
 };
