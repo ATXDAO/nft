@@ -7,6 +7,6 @@ contract ATXDAONFT_V2 is DSTest {
     function setUp() public {}
 
     function testExample() public pure {
-        assert(false);
+        assert(true);
     }
 }
