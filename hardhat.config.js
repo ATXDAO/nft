@@ -18,6 +18,10 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
 const { API_URL, PRIVATE_KEY, ETHERSCAN_API_KEY } = process.env;
 module.exports = {
   solidity: "0.8.9",
+  mappings: {
+    "ds-test": "ds-test/src",
+  },
+
   // defaultNetwork: "ropsten",
   // networks: {
   //   hardhat: {},

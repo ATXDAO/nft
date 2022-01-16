@@ -21,6 +21,7 @@
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "2.0.4",
     "@nomiclabs/hardhat-etherscan": "3.0.0",
+    "ds-test": "https://github.com/dapphub/ds-test",
     "ethers": "5.5.3",
     "prettier": "^2.5.1",
     "prettier-plugin-solidity": "^1.0.0-beta.19",

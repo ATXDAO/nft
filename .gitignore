@@ -2,3 +2,4 @@ artifacts/
 node_modules/
 .env
 cache/
+yarn-error.log
