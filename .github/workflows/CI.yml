@@ -1,0 +1,30 @@
+name: CI
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
+jobs:
+  run-ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - uses: actions/setup-node@v2
+      - uses: c-hive/gha-yarn-cache@v1
+      - name: Install Deps
+        run: yarn install
+      - name: Install Foundry
+        uses: onbjerg/foundry-toolchain@v1
+        with:
+          version: nightly
+      # checks
+      - name: Run lint check
+        run: yarn lint
+      - name: Hardhat compile
+        run: hh compile
+      # tests
+      - name: Run tests
+        run: forge test
