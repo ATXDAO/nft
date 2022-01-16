@@ -21,6 +21,7 @@ import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol";
 import {MerkleProof} from "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
+import {Strings} from "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 
 contract ATXDAONFT_V2 is
     Initializable,
@@ -33,6 +34,7 @@ contract ATXDAONFT_V2 is
 {
     using CountersUpgradeable for CountersUpgradeable.Counter;
     using MerkleProof for bytes32[];
+    using Strings for uint256;
 
     bool public isMintable;
     uint256 public _mintPrice; // 0.512 ether
@@ -42,7 +44,8 @@ contract ATXDAONFT_V2 is
     CountersUpgradeable.Counter private _tokenIds;
 
     bytes32 merkleRoot;
-    string private _tokenURI;
+    string private baseURI;
+    string public baseExtension;
 
     function initialize(string memory _name, string memory _symbol)
         public
@@ -58,6 +61,7 @@ contract ATXDAONFT_V2 is
         isMintable = false;
         _mintPrice = 630000000000000000; // 0.63 ether
         _mintQuantity = 25;
+        baseExtension = ".json";
     }
 
     function setMerkleRoot(bytes32 root) public onlyOwner {
@@ -88,7 +92,12 @@ contract ATXDAONFT_V2 is
         _tokenIds.increment();
         uint256 newTokenId = _tokenIds.current();
         _safeMint(msg.sender, newTokenId);
-        _setTokenURI(newTokenId, _tokenURI);
+        _setTokenURI(
+            newTokenId,
+            string(
+                abi.encodePacked(baseURI, newTokenId.toString(), baseExtension)
+            )
+        );
 
         _mintCount.increment();
     }
@@ -114,7 +123,7 @@ contract ATXDAONFT_V2 is
         isMintable = true;
         _mintPrice = mintPrice;
         _mintQuantity = mintQuantity;
-        _tokenURI = tokenURI_;
+        baseURI = tokenURI_;
         _mintCount.reset();
     }
 
