@@ -117,13 +117,13 @@ contract ATXDAONFT_V2 is
 
     function startMint(
         uint256 mintPrice,
-        uint256 mintQuantity,
-        string memory tokenURI_
+        string memory tokenURI_,
+        bytes32 _root
     ) public onlyOwner {
         isMintable = true;
         _mintPrice = mintPrice;
-        _mintQuantity = mintQuantity;
         baseURI = tokenURI_;
+        merkleRoot = _root;
         _mintCount.reset();
     }
 
