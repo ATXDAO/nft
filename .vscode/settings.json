@@ -6,5 +6,6 @@
   "solidity.formatter": "prettier",
   "solidity.solhintRules": {
     "tabWidth": 4
-  }
+  },
+  "solidity.linter": "solhint",
 }
