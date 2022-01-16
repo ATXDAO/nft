@@ -35,9 +35,9 @@ contract ATXDAONFT_V2 is
     using CountersUpgradeable for CountersUpgradeable.Counter;
     using MerkleProof for bytes32[];
 
-    bool public isMintable = false;
-    uint256 public _mintPrice = 512000000000000000; // 0.512 ether
-    uint256 public _mintQuantity = 25;
+    bool public isMintable;
+    uint256 public _mintPrice; // 0.512 ether
+    uint256 public _mintQuantity;
 
 
     CountersUpgradeable.Counter private _mintCount;
@@ -56,18 +56,14 @@ contract ATXDAONFT_V2 is
         __Ownable_init();
         __ERC721Burnable_init();
         __UUPSUpgradeable_init();
+
+        isMintable = false;
+        _mintPrice = 630000000000000000; // 0.63 ether
+        _mintQuantity = 25;
     }
 
         function setMerkleRoot(bytes32 root) onlyOwner public {
         merkleRoot = root;
-    }
-
-    function pause() public onlyOwner {
-        _pause();
-    }
-
-    function unpause() public onlyOwner {
-        _unpause();
     }
 
     function mint(bytes32[] memory proof) external payable {
@@ -97,6 +93,40 @@ contract ATXDAONFT_V2 is
         _setTokenURI(newTokenId, _tokenURI);
 
         _mintCount.increment();
+    }
+
+    function mintSpecial(address[] memory recipients, string memory tokenURI_)
+        external
+        onlyOwner
+    {
+        for (uint64 i = 0; i < recipients.length; i++) {
+            _tokenIds.increment();
+            uint256 newTokenId = _tokenIds.current();
+
+            _safeMint(recipients[i], newTokenId);
+            _setTokenURI(newTokenId, tokenURI_);
+        }
+    }
+
+    function startMint(
+        uint256 mintPrice,
+        uint256 mintQuantity,
+        string memory tokenURI_
+    ) public onlyOwner {
+        isMintable = true;
+        _mintPrice = mintPrice;
+        _mintQuantity = mintQuantity;
+        _tokenURI = tokenURI_;
+        _mintCount.reset();
+    }
+
+    function endMint() public onlyOwner {
+        isMintable = false;
+    }
+
+    function sweepEth() public onlyOwner {
+        uint256 _balance = address(this).balance;
+        payable(owner()).transfer(_balance);
     }
 
     function _beforeTokenTransfer(
