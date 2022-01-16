@@ -24,7 +24,7 @@ jobs:
       - name: Run lint check
         run: yarn lint
       - name: Hardhat compile
-        run: hh compile
+        run: npx hardhat compile
       # tests
       - name: Run tests
         run: forge test
