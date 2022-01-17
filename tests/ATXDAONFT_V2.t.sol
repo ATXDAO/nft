@@ -99,6 +99,16 @@ contract ATXDAONFTV2Test is DSTest {
         nft.mint{value: 1}(proofA);
     }
 
+    function testMintTransfers() public {
+        nft.startMint(1, "ipfs://uri/", merkleRootABC);
+        vm.deal(addrA, 2);
+        vm.startPrank(addrA);
+        nft.mint{value: 1}(proofA);
+        nft.transferFrom(addrA, addrB, 1);
+        vm.expectRevert("Minting is only available for non-holders");
+        nft.mint{value: 1}(proofA);
+    }
+
     function testMintRequireEth() public {
         nft.startMint(2, "uri", merkleRootABC);
         vm.deal(addrA, 1);
