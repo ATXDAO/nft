@@ -122,7 +122,7 @@ contract ATXDAONFT_V2 is
         isMintable = true;
         _mintPrice = mintPrice;
         baseURI = tokenURI_;
-        merkleRoot = _root;
+        setMerkleRoot(_root);
         _mintCount.reset();
     }
 

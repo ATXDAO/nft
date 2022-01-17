@@ -20,6 +20,7 @@ contract ATXDAONFTV2Test is DSTest {
     address unauthorized = address(0x0000000000000000000000000000000000000005);
 
     bytes32[] proofA = new bytes32[](2);
+    bytes32[] proofB = new bytes32[](2);
 
     bytes32 merkeRootABC =
         0x344510bd0c324c3912b13373e89df42d1b50450e9764a454b2aa6e2968a4578a;
@@ -34,13 +35,26 @@ contract ATXDAONFTV2Test is DSTest {
         proofA[
             1
         ] = 0x5b70e80538acdabd6137353b0f9d8d149f4dba91e8be2e7946e409bfdbe685b9;
+        proofB[
+            0
+        ] = 0x1468288056310c82aa4c01a7e12a10f8111a0560e72b700555479031b86c357d;
+        proofB[
+            1
+        ] = 0x5b70e80538acdabd6137353b0f9d8d149f4dba91e8be2e7946e409bfdbe685b9;
     }
 
     function testMintBasic() public {
-        nft.startMint(1, "uri", merkeRootABC);
+        nft.startMint(1, "ipfs://uri/", merkeRootABC);
         vm.deal(addrA, 1);
         vm.prank(addrA);
         nft.mint{value: 1}(proofA);
+        assertEq(nft.balanceOf(addrA), 1);
+        assertEq(nft.tokenURI(1), "ipfs://uri/1.json");
+        vm.deal(addrB, 1);
+        vm.prank(addrB);
+        nft.mint{value: 1}(proofB);
+        assertEq(nft.balanceOf(addrB), 1);
+        assertEq(nft.tokenURI(2), "ipfs://uri/2.json");
     }
 
     function testMintRequireWhitelistRandom(address randomAddress) public {

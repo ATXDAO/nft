@@ -19,7 +19,7 @@ task(
     console.log(tree.toString());
     console.log(`root ${root}`);
     if (taskArgs.claim) {
-      const leaf = keccak256Address(taskArgs.claim);
+      const leaf = keccak256(getAddress(taskArgs.claim));
       const proof = tree.getHexProof(leaf);
 
       if (!tree.verify(proof, leaf, root)) {
