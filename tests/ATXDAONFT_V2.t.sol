@@ -18,7 +18,7 @@ contract ATXDAONFTV2Test is DSTest {
     bytes32[] proofA = new bytes32[](2);
 
     bytes32 merkeRootABC =
-        0x16791c28db4bb211d8c63fead28bdf282d7b29e5424daf0add991a8ab0d68204;
+        0x344510bd0c324c3912b13373e89df42d1b50450e9764a454b2aa6e2968a4578a;
 
     function setUp() public {
         nft = new ATXDAONFT_V2();
@@ -26,16 +26,17 @@ contract ATXDAONFTV2Test is DSTest {
 
         proofA[
             0
-        ] = 0x43678e3b0d0c037990b99215ce550c9478e07cf540f8f843c7b1c9112979496f;
+        ] = 0xd52688a8f926c816ca1e079067caba944f158e764817b83fc43594370ca9cf62;
         proofA[
             1
-        ] = 0xaa5e58f5c8a07d242c1d1009325e6815281d4aede763b9fb03413c5b2f402b2e;
+        ] = 0x5b70e80538acdabd6137353b0f9d8d149f4dba91e8be2e7946e409bfdbe685b9;
     }
 
     function testMint() public {
         nft.startMint(1, "uri", merkeRootABC);
         vm.deal(addrA, 1);
         vm.prank(addrA);
+        emit log_bytes32((keccak256(abi.encodePacked(addrA))));
         nft.mint{value: 1}(proofA);
     }
 

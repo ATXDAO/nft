@@ -1,14 +1,7 @@
 const { task } = require("hardhat/config");
-const keccak256 = require("keccak256");
 const { MerkleTree } = require("merkletreejs");
-
-const ethers = require("ethers");
-
-function keccak256Address(addr) {
-  return ethers.utils.keccak256(
-    ethers.utils.solidityKeccak256(["address"], [addr])
-  );
-}
+const keccak256 = require("keccak256");
+const { getAddress } = require("ethers/lib/utils");
 
 task(
   "merkle-tree",
@@ -17,9 +10,10 @@ task(
   .addVariadicPositionalParam("addresses")
   .addOptionalParam("claim", "generate a proof for a claimant")
   .setAction(async (taskArgs) => {
-    const leafNodes = taskArgs.addresses.map((addr) => keccak256Address(addr));
+    const leafNodes = taskArgs.addresses.map((addr) => getAddress(addr));
     const tree = new MerkleTree(leafNodes, keccak256, {
-      sort: true,
+      hashLeaves: true,
+      sortPairs: true,
     });
     const root = tree.getHexRoot();
     console.log(tree.toString());
