@@ -3,8 +3,11 @@
 ### Test Contract
 
 1. install deps via `yarn install`
-1. install [forge](https://github.com/gakonst/foundry) via [forgeup](https://github.com/transmissions11/forgeup)
-1. `forge test`
+1. install [forge](https://github.com/gakonst/foundry)
+   - install [rust](https://www.rust-lang.org/tools/install) via `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`
+   - install `foundryup` via `curl https://raw.githubusercontent.com/gakonst/foundry/master/foundryup/install | bash`
+   - `foundryup`
+1. `forge test` in project directory
 
 ### Generate merkle tree
 
