@@ -86,7 +86,6 @@ contract ATXDAONFT_V2 is
             "No more NFTs remaining!"
         );
         require(msg.value >= _mintPrice, "Not enough ether sent to mint!");
-        require(msg.sender == tx.origin, "No contracts!");
 
         // Mint
         _tokenIds.increment();

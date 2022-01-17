@@ -11,9 +11,13 @@ contract ATXDAONFTV2Test is DSTest {
     Vm vm = Vm(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D);
 
     ATXDAONFT_V2 nft;
+
+    // whitelisted addresses
     address addrA = address(0x0000000000000000000000000000000000000001);
     address addrB = address(0x0000000000000000000000000000000000000002);
     address addrC = address(0x0000000000000000000000000000000000000003);
+
+    address unauthorized = address(0x0000000000000000000000000000000000000005);
 
     bytes32[] proofA = new bytes32[](2);
 
@@ -32,11 +36,57 @@ contract ATXDAONFTV2Test is DSTest {
         ] = 0x5b70e80538acdabd6137353b0f9d8d149f4dba91e8be2e7946e409bfdbe685b9;
     }
 
-    function testMint() public {
+    function testMintBasic() public {
         nft.startMint(1, "uri", merkeRootABC);
         vm.deal(addrA, 1);
         vm.prank(addrA);
-        emit log_bytes32((keccak256(abi.encodePacked(addrA))));
+        nft.mint{value: 1}(proofA);
+    }
+
+    function testMintRequireWhitelistRandom(address randomAddress) public {
+        if (randomAddress == addrA) {
+            return;
+        }
+        // random address sends proof A
+        nft.startMint(1, "uri", merkeRootABC);
+        vm.deal(randomAddress, 1);
+        vm.expectRevert("Not on the list!");
+        vm.prank(randomAddress);
+        nft.mint{value: 1}(proofA);
+    }
+
+    function testMintRequireWhitelistInvalidProof() public {
+        // random address sends proof A
+        nft.startMint(2, "uri", merkeRootABC);
+        vm.deal(addrB, 1);
+        vm.expectRevert("Not on the list!");
+        vm.prank(addrB);
+        nft.mint{value: 1}(proofA);
+    }
+
+    function testMintRequireMintable() public {
+        nft.startMint(2, "uri", merkeRootABC);
+        nft.endMint();
+        vm.deal(addrA, 1);
+        vm.expectRevert("ATX DAO NFT is not mintable at the moment!");
+        vm.prank(addrA);
+        nft.mint{value: 1}(proofA);
+    }
+
+    function testMintRequireNotHolder() public {
+        nft.startMint(1, "uri", merkeRootABC);
+        vm.deal(addrA, 2);
+        vm.startPrank(addrA);
+        nft.mint{value: 1}(proofA);
+        vm.expectRevert("Minting is only available for non-holders");
+        nft.mint{value: 1}(proofA);
+    }
+
+    function testMintRequireEth() public {
+        nft.startMint(2, "uri", merkeRootABC);
+        vm.deal(addrA, 1);
+        vm.expectRevert("Not enough ether sent to mint!");
+        vm.prank(addrA);
         nft.mint{value: 1}(proofA);
     }
 
