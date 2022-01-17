@@ -27,4 +27,4 @@ jobs:
         run: npx hardhat compile
       # tests
       - name: Run tests
-        run: forge test
+        run: forge test -vv

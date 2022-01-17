@@ -132,4 +132,19 @@ contract ATXDAONFTV2Test is DSTest {
         nft.mintSpecial(recps, uri);
         nft.ownerOf(2);
     }
+
+    function testSweepEth() public {
+        nft.startMint(1, "ipfs://uri/", merkeRootABC);
+        vm.deal(addrA, 1);
+        vm.prank(addrA);
+        nft.mint{value: 1}(proofA);
+        vm.deal(addrB, 10);
+        vm.prank(addrB);
+        nft.mint{value: 10}(proofB);
+
+        nft.transferOwnership(addrC);
+        vm.prank(addrC);
+        nft.sweepEth();
+        assertEq(11, addrC.balance);
+    }
 }
