@@ -4,6 +4,7 @@
 require("dotenv").config();
 require("@nomiclabs/hardhat-ethers");
 require("@nomiclabs/hardhat-etherscan");
+require("./scripts/merkle-tree");
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
@@ -17,23 +18,35 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
 
 const { API_URL, PRIVATE_KEY, ETHERSCAN_API_KEY } = process.env;
 module.exports = {
-  solidity: "0.8.0",
-  // defaultNetwork: "ropsten",
-  networks: {
-    hardhat: {},
-    ropsten: {
-      url: API_URL,
-      accounts: [`0x${PRIVATE_KEY}`],
+  solidity: {
+    version: "0.8.9",
+    settings: {
+      optimizer: {
+        enabled: true,
+        runs: 200,
+      },
     },
-    mainnet: {
-      url: API_URL,
-      accounts: [`0x${PRIVATE_KEY}`],
-    },
+  },
+  paths: {
+    sources: "contracts/",
   },
 
-  etherscan: {
-    // Your API key for Etherscan
-    // Obtain one at https://etherscan.io/
-    apiKey: ETHERSCAN_API_KEY,
-  },
+  // defaultNetwork: "ropsten",
+  // networks: {
+  //   hardhat: {},
+  //   ropsten: {
+  //     url: API_URL,
+  //     accounts: [`0x${PRIVATE_KEY}`],
+  //   },
+  //   mainnet: {
+  //     url: API_URL,
+  //     accounts: [`0x${PRIVATE_KEY}`],
+  //   },
+  // },
+
+  // etherscan: {
+  //   // Your API key for Etherscan
+  //   // Obtain one at https://etherscan.io/
+  //   apiKey: ETHERSCAN_API_KEY,
+  // },
 };

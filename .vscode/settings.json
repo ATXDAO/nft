@@ -1,0 +1,11 @@
+{
+  "[solidity]": {
+    "editor.tabSize": 4,
+  },
+  "editor.formatOnSave": true,
+  "solidity.formatter": "prettier",
+  "solidity.solhintRules": {
+    "tabWidth": 4
+  },
+  "solidity.linter": "solhint",
+}

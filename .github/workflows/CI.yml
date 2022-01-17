@@ -16,12 +16,15 @@ jobs:
       - uses: c-hive/gha-yarn-cache@v1
       - name: Install Deps
         run: yarn install
-
       - name: Install Foundry
         uses: onbjerg/foundry-toolchain@v1
         with:
           version: nightly
+      # checks
       - name: Run lint check
         run: yarn lint
+      - name: Hardhat compile
+        run: npx hardhat compile
+      # tests
       - name: Run tests
-        run: forge test
+        run: forge test -vv
