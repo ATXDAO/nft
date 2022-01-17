@@ -39,6 +39,14 @@ contract ATXDAONFT_V2 is ERC721URIStorage, Ownable {
         merkleRoot = root;
     }
 
+    function isContract(address addr) internal view returns (bool) {
+        uint256 size;
+        assembly {
+            size := extcodesize(addr)
+        }
+        return size > 0;
+    }
+
     // Normal mint
     function mint(bytes32[] memory proof) external payable {
         require(
@@ -54,7 +62,7 @@ contract ATXDAONFT_V2 is ERC721URIStorage, Ownable {
             "Minting is only available for non-holders"
         );
         require(msg.value >= _mintPrice, "Not enough ether sent to mint!");
-        require(msg.sender == tx.origin, "No contracts!");
+        require(!isContract(msg.sender), "No contracts!");
 
         // Mint
         _tokenIds.increment();
@@ -86,7 +94,7 @@ contract ATXDAONFT_V2 is ERC721URIStorage, Ownable {
                     newTokenId,
                     string(
                         abi.encodePacked(
-                            baseURI,
+                            tokenURI,
                             newTokenId.toString(),
                             baseExtension
                         )

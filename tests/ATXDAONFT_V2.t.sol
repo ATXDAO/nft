@@ -24,7 +24,6 @@ contract ATXDAONFTV2Test is DSTest {
 
     function setUp() public {
         nft = new ATXDAONFT_V2();
-        nft.initialize("ATX DAO", "ATX");
         nft.setMerkleRoot(merkeRootABC);
 
         proofA[
@@ -108,13 +107,13 @@ contract ATXDAONFTV2Test is DSTest {
         nft.mint{value: 1}(proofA);
     }
 
-    function testMintSpecial() public {
+    function testMintSpecialStatic() public {
         // mint first 2
         string memory uri = "foo";
         address[] memory recps = new address[](2);
         recps[0] = addrA;
         recps[1] = addrB;
-        nft.mintSpecial(recps, uri);
+        nft.mintSpecial(recps, uri, false);
         assertEq(nft.ownerOf(1), addrA);
         assertEq(nft.ownerOf(2), addrB);
         assertEq(nft.tokenURI(1), uri);
@@ -123,9 +122,28 @@ contract ATXDAONFTV2Test is DSTest {
         string memory uri2 = "bar";
         address[] memory recps2 = new address[](1);
         recps2[0] = addrC;
-        nft.mintSpecial(recps2, uri2);
+        nft.mintSpecial(recps2, uri2, false);
         assertEq(nft.ownerOf(3), addrC);
         assertEq(nft.tokenURI(3), uri2);
+    }
+
+    function testMintSpecialDynamic() public {
+        // mint first 2
+        address[] memory recps = new address[](2);
+        recps[0] = addrA;
+        recps[1] = addrB;
+        nft.mintSpecial(recps, "foo/", true);
+        assertEq(nft.ownerOf(1), addrA);
+        assertEq(nft.ownerOf(2), addrB);
+        assertEq(nft.tokenURI(1), "foo/1.json");
+        assertEq(nft.tokenURI(2), "foo/2.json");
+        // mint a 3rd
+        string memory uri2 = "bar/";
+        address[] memory recps2 = new address[](1);
+        recps2[0] = addrC;
+        nft.mintSpecial(recps2, uri2, true);
+        assertEq(nft.ownerOf(3), addrC);
+        assertEq(nft.tokenURI(3), "bar/3.json");
     }
 
     // mintSpecial only sets
@@ -133,7 +151,7 @@ contract ATXDAONFTV2Test is DSTest {
         string memory uri = "baz";
         address[] memory recps = new address[](1);
         recps[0] = addrA;
-        nft.mintSpecial(recps, uri);
+        nft.mintSpecial(recps, uri, false);
         nft.ownerOf(2);
     }
 
