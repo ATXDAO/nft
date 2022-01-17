@@ -3,7 +3,6 @@ pragma solidity ^0.8.9;
 
 import "ds-test/test.sol";
 import "contracts/ATXDAONFT_V2.sol";
-import "hardhat/console.sol";
 import "tests/utils/vm.sol";
 
 contract ATXDAONFTV2Test is DSTest {
@@ -26,6 +25,7 @@ contract ATXDAONFTV2Test is DSTest {
     function setUp() public {
         nft = new ATXDAONFT_V2();
         nft.initialize("ATX DAO", "ATX");
+        nft.setMerkleRoot(merkeRootABC);
 
         proofA[
             0
@@ -77,6 +77,12 @@ contract ATXDAONFTV2Test is DSTest {
     }
 
     function testMintRequireMintable() public {
+        // before mint starts
+        vm.deal(addrA, 1);
+        vm.expectRevert("ATX DAO NFT is not mintable at the moment!");
+        vm.prank(addrA);
+        nft.mint{value: 1}(proofA);
+        // after mint ends
         nft.startMint(2, "uri", merkeRootABC);
         nft.endMint();
         vm.deal(addrA, 1);
@@ -140,6 +146,7 @@ contract ATXDAONFTV2Test is DSTest {
         vm.prank(addrB);
         nft.mint{value: 10}(proofB);
 
+        assertEq(0, addrC.balance);
         nft.transferOwnership(addrC);
         vm.prank(addrC);
         nft.sweepEth();
