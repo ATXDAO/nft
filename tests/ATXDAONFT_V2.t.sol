@@ -17,8 +17,6 @@ contract ATXDAONFTV2Test is DSTest {
     address addrB = address(0x0000000000000000000000000000000000000002);
     address addrC = address(0x0000000000000000000000000000000000000003);
 
-    address unauthorized = address(0x0000000000000000000000000000000000000005);
-
     bytes32[] proofA = new bytes32[](2);
     bytes32[] proofB = new bytes32[](2);
 
