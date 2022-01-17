@@ -16,8 +16,8 @@ task(
       sortPairs: true,
     });
     const root = tree.getHexRoot();
+    console.log(root);
     console.log(tree.toString());
-    console.log(`root ${root}`);
     if (taskArgs.claim) {
       const leaf = keccak256(getAddress(taskArgs.claim));
       const proof = tree.getHexProof(leaf);
@@ -26,8 +26,10 @@ task(
         console.error("\ninvalid claimant for merkle proof!");
         process.exit(1);
       }
+      console.log("proof:");
       console.log(proof);
     }
+    console.log(`root: ${root}`);
   });
 
 module.exports = {};
