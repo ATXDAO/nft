@@ -19,12 +19,12 @@ contract ATXDAONFTV2Test is DSTest {
     bytes32[] proofA = new bytes32[](2);
     bytes32[] proofB = new bytes32[](2);
 
-    bytes32 merkeRootABC =
+    bytes32 merkleRootABC =
         0x344510bd0c324c3912b13373e89df42d1b50450e9764a454b2aa6e2968a4578a;
 
     function setUp() public {
         nft = new ATXDAONFT_V2();
-        nft.setMerkleRoot(merkeRootABC);
+        nft.setMerkleRoot(merkleRootABC);
 
         proofA[
             0
@@ -41,7 +41,7 @@ contract ATXDAONFTV2Test is DSTest {
     }
 
     function testMintBasic() public {
-        nft.startMint(1, "ipfs://uri/", merkeRootABC);
+        nft.startMint(1, "ipfs://uri/", merkleRootABC);
         vm.deal(addrA, 1);
         vm.prank(addrA);
         nft.mint{value: 1}(proofA);
@@ -59,7 +59,7 @@ contract ATXDAONFTV2Test is DSTest {
             return;
         }
         // random address sends proof A
-        nft.startMint(1, "uri", merkeRootABC);
+        nft.startMint(1, "uri", merkleRootABC);
         vm.deal(randomAddress, 1);
         vm.expectRevert("Not on the list!");
         vm.prank(randomAddress);
@@ -68,7 +68,7 @@ contract ATXDAONFTV2Test is DSTest {
 
     function testMintRequireWhitelistInvalidProof() public {
         // random address sends proof A
-        nft.startMint(2, "uri", merkeRootABC);
+        nft.startMint(2, "uri", merkleRootABC);
         vm.deal(addrB, 1);
         vm.expectRevert("Not on the list!");
         vm.prank(addrB);
@@ -82,7 +82,7 @@ contract ATXDAONFTV2Test is DSTest {
         vm.prank(addrA);
         nft.mint{value: 1}(proofA);
         // after mint ends
-        nft.startMint(2, "uri", merkeRootABC);
+        nft.startMint(2, "uri", merkleRootABC);
         nft.endMint();
         vm.deal(addrA, 1);
         vm.expectRevert("ATX DAO NFT is not mintable at the moment!");
@@ -91,7 +91,7 @@ contract ATXDAONFTV2Test is DSTest {
     }
 
     function testMintRequireNotHolder() public {
-        nft.startMint(1, "uri", merkeRootABC);
+        nft.startMint(1, "uri", merkleRootABC);
         vm.deal(addrA, 2);
         vm.startPrank(addrA);
         nft.mint{value: 1}(proofA);
@@ -100,7 +100,7 @@ contract ATXDAONFTV2Test is DSTest {
     }
 
     function testMintRequireEth() public {
-        nft.startMint(2, "uri", merkeRootABC);
+        nft.startMint(2, "uri", merkleRootABC);
         vm.deal(addrA, 1);
         vm.expectRevert("Not enough ether sent to mint!");
         vm.prank(addrA);
@@ -138,10 +138,9 @@ contract ATXDAONFTV2Test is DSTest {
         assertEq(nft.tokenURI(1), "foo/1.json");
         assertEq(nft.tokenURI(2), "foo/2.json");
         // mint a 3rd
-        string memory uri2 = "bar/";
         address[] memory recps2 = new address[](1);
         recps2[0] = addrC;
-        nft.mintSpecial(recps2, uri2, true);
+        nft.mintSpecial(recps2, "bar/", true);
         assertEq(nft.ownerOf(3), addrC);
         assertEq(nft.tokenURI(3), "bar/3.json");
     }
@@ -156,7 +155,7 @@ contract ATXDAONFTV2Test is DSTest {
     }
 
     function testSweepEth() public {
-        nft.startMint(1, "ipfs://uri/", merkeRootABC);
+        nft.startMint(1, "ipfs://uri/", merkleRootABC);
         vm.deal(addrA, 1);
         vm.prank(addrA);
         nft.mint{value: 1}(proofA);
@@ -169,5 +168,23 @@ contract ATXDAONFTV2Test is DSTest {
         vm.prank(addrC);
         nft.sweepEth();
         assertEq(11, addrC.balance);
+    }
+
+    function testOnlyOwner() public {
+        vm.expectRevert("Ownable: caller is not the owner");
+        vm.prank(addrA);
+        nft.startMint(1, "foo", merkleRootABC);
+
+        vm.expectRevert("Ownable: caller is not the owner");
+        vm.prank(addrA);
+        nft.sweepEth();
+
+        vm.expectRevert("Ownable: caller is not the owner");
+        vm.prank(addrA);
+        nft.mintSpecial(new address[](0), "foo", false);
+
+        vm.expectRevert("Ownable: caller is not the owner");
+        vm.prank(addrA);
+        nft.setMerkleRoot(merkleRootABC);
     }
 }
