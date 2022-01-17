@@ -9,7 +9,7 @@
 ### Generate merkle tree
 
 You can generate a merkle root + proof with the `merkle-tree` task. Here's an
-example passing is 0x1, 0x2, and 0x3 as whitelisted addresses. It gneerates the
+example passing is 0x1, 0x2, and 0x3 as whitelisted addresses. It generates the
 merkle root for the set of addresses and the proof for 0x3
 
 ```zsh
