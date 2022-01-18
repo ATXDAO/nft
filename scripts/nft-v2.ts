@@ -102,7 +102,6 @@ task<SpecialMintArgs>('v2-special-mint', 'run a special mint')
         gasPrice || (await ethers.provider.getGasPrice())
       );
 
-      console.log('contract address', contractAddress);
       const nftv2 = (await ethers.getContractAt(
         'ATXDAONFT_V2',
         contractAddress
