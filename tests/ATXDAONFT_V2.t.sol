@@ -19,6 +19,9 @@ contract ATXDAONFTV2Test is DSTest {
     bytes32[] proofA = new bytes32[](2);
     bytes32[] proofB = new bytes32[](2);
 
+    // > hh merkle-tree 0x0000000000000000000000000000000000000001 \
+    //                  0x0000000000000000000000000000000000000002 \
+    //                  0x0000000000000000000000000000000000000003 --all-proofs
     bytes32 merkleRootABC =
         0x344510bd0c324c3912b13373e89df42d1b50450e9764a454b2aa6e2968a4578a;
 
