@@ -26,10 +26,10 @@ jobs:
         with:
           version: nightly
       # checks
-      - name: Run lint check
-        run: yarn lint
       - name: Hardhat compile
         run: npx hardhat compile
+      - name: Run lint check
+        run: yarn lint
       # tests
       - name: Run tests
         run: forge test -vv
