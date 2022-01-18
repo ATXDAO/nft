@@ -1,7 +1,7 @@
-import { task } from 'hardhat/config';
-import { MerkleTree } from 'merkletreejs';
-import keccak256 from 'keccak256';
 import { getAddress } from 'ethers/lib/utils';
+import { task } from 'hardhat/config';
+import keccak256 from 'keccak256';
+import { MerkleTree } from 'merkletreejs';
 
 task(
   'merkle-tree',
