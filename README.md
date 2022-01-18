@@ -1,6 +1,30 @@
 # ATX DAO NFT
 
-### Test Contract
+## Metadata
+
+### IPFS Metadata
+
+- Genesis
+  - metadata: `ipfs://QmRYkLgszoKpV15AUDcZJ82yL741pJRFSUogtNiUUF45S2`
+  - image (all): `ipfs://QmUVHmfefWQ8eCcoTNnF8uLNh2vsQz4xcjVh4XSn56cLW1`
+- Zilker (id 26-176)
+  - metadata
+    - root: `ipfs://QmQRFD3dSfNRDa7vvHwafwg4F6FUjA2NBjxBrGuPSrpKrV/`
+    - ex (id 26): `ipfs://QmQRFD3dSfNRDa7vvHwafwg4F6FUjA2NBjxBrGuPSrpKrV/26.json`
+  - image (id 26): `ipfs://QmeJVHwX4fv6hiRWgM5YkyAstYWGgMkXxjxRxbBv8XTcPh/26.png`
+
+### Deployed Contracts
+
+#### v1 contract
+
+[contracts/ATXDAONFT.sol](contracts/ATXDAONFT.sol) is deployed on mainnet to
+[0xf61be28561137259375cbe88f28d4f163b09c94c](https://etherscan.io/address/0xf61be28561137259375cbe88f28d4f163b09c94c)
+
+#### v2 contract
+
+[contracts/ATXDAONFT_V2.sol](contracts/ATXDAONFT_V2.sol) is pending deployment to mainnet
+
+## Test Contract
 
 1. `cp .env.example .env` and set those environment variables
 1. install deps via `yarn install`
@@ -10,6 +34,12 @@
    - install `foundryup`: `curl https://raw.githubusercontent.com/gakonst/foundry/master/foundryup/install | bash`
    - run `foundryup`
 1. `forge test` in project directory
+
+## Hardhat tasks
+
+### Setup
+
+compile contracts via `npx hardhat compile` to get gain access to tasks
 
 ### Verify Contract
 
@@ -25,33 +55,7 @@ Mainnet:
 npx hardhat verify --network mainnet DEPLOYED_CONTRACT_ADDRESS
 ```
 
-### Deployed Contracts
-
-#### v1 contract
-
-[contracts/ATXDAONFT.sol](contracts/ATXDAONFT.sol) is deployed on mainnet to
-[0xf61be28561137259375cbe88f28d4f163b09c94c](https://etherscan.io/address/0xf61be28561137259375cbe88f28d4f163b09c94c)
-
-#### v2 contract
-
-[contracts/ATXDAONFT_V2.sol](contracts/ATXDAONFT_V2.sol) is pending deployment to mainnet
-
-### IPFS Metadata
-
-- Genesis
-  - metadata: `ipfs://QmRYkLgszoKpV15AUDcZJ82yL741pJRFSUogtNiUUF45S2`
-  - image: `ipfs://QmUVHmfefWQ8eCcoTNnF8uLNh2vsQz4xcjVh4XSn56cLW1`
-- Zilker (id 26-176)
-  - metadata: `ipfs://QmQRFD3dSfNRDa7vvHwafwg4F6FUjA2NBjxBrGuPSrpKrV/26.json`
-  - image: `ipfs://QmeJVHwX4fv6hiRWgM5YkyAstYWGgMkXxjxRxbBv8XTcPh/26.png`
-
-### Hardhat tasks
-
-#### Setup
-
-compile contracts via `npx hardhat compile` to get gain access to tasks
-
-#### Deploy Contract
+### Deploy Contract
 
 using `hh` from [hardhat-shorthand](https://hardhat.org/guides/shorthand.html).
 install via `npm i -g hardhat-shorthand`
@@ -84,7 +88,7 @@ deploy tx:  0x8148515e0013a6cb9c01863a09e61f5fc1ac79ffb08528342ee04771de0f7e00
   address:  0xe1e1561881aBa2cbb4D29Fa4e846C71CbD8073E4
 ```
 
-#### Speical Mint
+### Speical Mint
 
 ```zsh
 # non-dynamic special mint for genesis members
@@ -226,7 +230,7 @@ recipients:  0xf83b3A823653E8351b173Fa2Ae083Af37EAbCC01
   tx hash:   0xdb4d8108e35783fb3b0912c5a77612d6d371d418f40e67afa1c55041ac504fdb
 ```
 
-#### List v2 NFTs
+### List v2 NFTs
 
 ```zsh
 ❯ hh v2-list-nfts --network local 0x610178dA211FEF7D417bC0e6FeD39F05609AD788
@@ -246,7 +250,7 @@ recipients:  0xf83b3A823653E8351b173Fa2Ae083Af37EAbCC01
 ]
 ```
 
-#### Generate merkle tree
+### Generate merkle tree
 
 You can generate a merkle root + proof with the `merkle-tree` task. Here's an
 example passing is 0x1, 0x2, and 0x3 as whitelisted addresses. It generates the
@@ -343,7 +347,7 @@ proof:
 ]
 ```
 
-#### Genesis Owners
+### Genesis Owners
 
 ```sh
 ❯ hh get-nft-owners --network mainnet

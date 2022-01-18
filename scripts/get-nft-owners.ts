@@ -5,7 +5,11 @@ import { task } from 'hardhat/config';
 const { mainnet: address } = contracts.v0;
 
 task('get-nft-owners', 'gets a list of nft owners, ordered by token id')
-  .addOptionalPositionalParam('contract', 'contract address', address)
+  .addOptionalPositionalParam(
+    'contract',
+    'contract address (default to v1 mainnet contract)',
+    address
+  )
   .setAction(async (taskArgs) => {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const hre = require('hardhat');
