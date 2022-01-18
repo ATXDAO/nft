@@ -9,7 +9,7 @@
     "lint:js": "prettier --check scripts/*.js",
     "lint:sol": "prettier --check 'contracts/**/*.sol' 'tests/**/*.sol'",
     "lint:ts": "tsc && eslint *.ts scripts",
-    "prettier": "prettier --write 'contracts/**/*.sol' 'tests/**/*.sol' scripts"
+    "prettier": "prettier --write 'contracts/**/*.sol' 'tests/**/*.sol' scripts util hardhat.config.ts"
   },
   "devDependencies": {
     "@alch/alchemy-web3": "1.1.9",
