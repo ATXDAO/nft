@@ -145,6 +145,26 @@ recipients:  0x723960d9a5C6ab71853059861D1C6146770a6Dc1
   tx hash:   0x891b65120fae6fa0048e1544fa660d54babc0b410fc2c5bd282294809b0d6a95
 ```
 
+#### List v2 NFTs
+
+```zsh
+❯ hh v2-list-nfts --network local 0x610178dA211FEF7D417bC0e6FeD39F05609AD788
+   network:  local
+  contract:  0x610178dA211FEF7D417bC0e6FeD39F05609AD788
+
+[
+    {
+        "owner": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+        "uri": "ipfs://testing1.json"
+    },
+    {
+        "owner": "0xD9A0b5DeB62600C19922E912bF236e64919EE65F",
+        "uri": "ipfs://testing2.json"
+    },
+    ...
+]
+```
+
 #### Generate merkle tree
 
 You can generate a merkle root + proof with the `merkle-tree` task. Here's an
@@ -170,26 +190,6 @@ proof:
   '0xf95c14e6953c95195639e8266ab1a6850864d59a829da9f9b13602ee522f672b'
 ]
 root: 0x344510bd0c324c3912b13373e89df42d1b50450e9764a454b2aa6e2968a4578a
-```
-
-#### List v2 NFTs
-
-```zsh
-❯ hh v2-list-nfts --network local 0x610178dA211FEF7D417bC0e6FeD39F05609AD788
-   network:  local
-  contract:  0x610178dA211FEF7D417bC0e6FeD39F05609AD788
-
-[
-    {
-        "owner": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
-        "uri": "ipfs://testing1.json"
-    },
-    {
-        "owner": "0xD9A0b5DeB62600C19922E912bF236e64919EE65F",
-        "uri": "ipfs://testing2.json"
-    },
-    ...
-]
 ```
 
 #### Genesis Owners

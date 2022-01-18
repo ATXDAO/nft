@@ -92,6 +92,12 @@ task<SpecialMintArgs>('v2-special-mint', 'run a special mint')
         );
       }
 
+      if (dynamic && !tokenUri.endsWith('/')) {
+        throw new Error(
+          `dynamic mint token-uri should be end with a "/", got: ${tokenUri}`
+        );
+      }
+
       const txGasPrice = ethers.BigNumber.from(
         gasPrice || (await ethers.provider.getGasPrice())
       );
