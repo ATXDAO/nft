@@ -24,6 +24,7 @@ task('get-nft-owners', 'gets a list of nft owners, ordered by token id')
         break;
       }
     }
-    console.log(`${owners.length} found!`);
-    console.log(owners);
+
+    console.error(`${owners.length} found!`);
+    console.log(JSON.stringify(owners, null, 4));
   });
