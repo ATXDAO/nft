@@ -1,12 +1,12 @@
-const { ethers, upgrades } = require("hardhat");
+const { ethers, upgrades } = require('hardhat');
 
 async function main() {
-  const ATX = await ethers.getContractFactory("ATXDAONFT_V2");
-  console.log("deploying proxy, V2 implementation, and proxy admin");
-  const V2Proxy = await upgrades.deployProxy(ATX, ["ATX DAO", "ATX"], {
-    initializer: "initialize",
+  const ATX = await ethers.getContractFactory('ATXDAONFT_V2');
+  console.log('deploying proxy, V2 implementation, and proxy admin');
+  const V2Proxy = await upgrades.deployProxy(ATX, ['ATX DAO', 'ATX'], {
+    initializer: 'initialize',
   });
-  console.log("V2Proxy deployed to:", V2Proxy.address);
+  console.log('V2Proxy deployed to:', V2Proxy.address);
 }
 
 main()
