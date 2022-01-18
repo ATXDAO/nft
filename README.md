@@ -55,3 +55,9 @@ Mainnet:
 ```zsh
 npx hardhat verify --network mainnet DEPLOYED_CONTRACT_ADDRESS
 ```
+
+IPFS URI:
+
+```zsh
+ipfs://QmQRFD3dSfNRDa7vvHwafwg4F6FUjA2NBjxBrGuPSrpKrV/
+```
