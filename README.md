@@ -2,17 +2,46 @@
 
 ### Test Contract
 
+1. `cp .env.example .env` and set those environment variables
 1. install deps via `yarn install`
 1. install [forge](https://github.com/gakonst/foundry)
-   - install [rust](https://www.rust-lang.org/tools/install) via `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`
-   - install `foundryup` via `curl https://raw.githubusercontent.com/gakonst/foundry/master/foundryup/install | bash`
-   - `foundryup`
+   - install [rust](https://www.rust-lang.org/tools/install) via
+     `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`
+   - install `foundryup`: `curl https://raw.githubusercontent.com/gakonst/foundry/master/foundryup/install | bash`
+   - run `foundryup`
 1. `forge test` in project directory
 
 ### Deploy Contract
 
+using `hh` from [hardhat-shorthand](https://hardhat.org/guides/shorthand.html).
+install via `npm i -g hardhat-shorthand`
+
 ```zsh
-npx hardhat run --network ropsten scripts/deploy.js
+❯ hh deploy ATXDAONFT_V2
+deploying:  ATXDAONFT_V2
+  network:  hardhat
+ deployer:  0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
+ gasPrice:  1.875 gwei
+
+deploy tx:  0x56be42f548a58259f5bed52f7a0f297771ff69386bd9d3c6b8b388ef4dc55214
+  address:  0x5FbDB2315678afecb367f032d93F642f64180aa3
+```
+
+```zsh
+# use custom gas price
+❯ hh gas-price --network ropsten
+current gas price on ropsten is:
+    17986498384 wei
+    17.986498384 gwei
+
+❯ hh deploy ATXDAONFT_V2 --network ropsten --gas-price 24986498384
+deploying:  ATXDAONFT_V2
+  network:  ropsten
+ deployer:  0x51040CE6FC9b9C5Da69B044109f637dc997e92DE
+ gasPrice:  24.986498384 gwei
+
+deploy tx:  0x8148515e0013a6cb9c01863a09e61f5fc1ac79ffb08528342ee04771de0f7e00
+  address:  0xe1e1561881aBa2cbb4D29Fa4e846C71CbD8073E4
 ```
 
 ### Verify Contract
@@ -33,7 +62,8 @@ npx hardhat verify --network mainnet DEPLOYED_CONTRACT_ADDRESS
 
 #### v1 contract
 
-[contracts/ATXDAONFT.sol](contracts/ATXDAONFT.sol) is deployed on mainnet to [0xf61be28561137259375cbe88f28d4f163b09c94c](https://etherscan.io/address/0xf61be28561137259375cbe88f28d4f163b09c94c)
+[contracts/ATXDAONFT.sol](contracts/ATXDAONFT.sol) is deployed on mainnet to
+[0xf61be28561137259375cbe88f28d4f163b09c94c](https://etherscan.io/address/0xf61be28561137259375cbe88f28d4f163b09c94c)
 
 #### v2 contract
 
@@ -88,30 +118,30 @@ root: 0x344510bd0c324c3912b13373e89df42d1b50450e9764a454b2aa6e2968a4578a
 
 25 found!
 [
-  '0x723960d9a5C6ab71853059861D1C6146770a6Dc1',
-  '0x407Cf0e5Dd3C2c4bCE5a32B92109c2c6f7f1ce23',
-  '0x6d7ddD863eB2Dad990bC05BDd3357E32850509E9',
-  '0x9AfD4F7aD03A03d306B41a4604Ea2928cFf78fd1',
-  '0x17AB342e3Bd3c080b4f48fe20165D5E94185EE2d',
-  '0xf83b3A823653E8351b173Fa2Ae083Af37EAbCC01',
-  '0xd8dA6D5d36B4477D6FC7dD4076432F2da1dBBAf8',
-  '0xaB70496f3dbb814710B21bd843b3c2122398c1bB',
-  '0xc928E72d304B77eA5727b242E4ba14eF57e3cD41',
-  '0x5A17717abE73FEb3d4C4AAfD39B3CA5313cFB653',
-  '0x982Efa073Aeebb95a0Cb7D025f002D9B56F66Bdb',
-  '0x9Ca72f031f789f51bD35Cc34583c7B7A7D0871A3',
-  '0xf4aF0941e0406F42839e7Bb1d565946bC2929336',
-  '0x0e61990A3Ce86605d6ddD05D3e2219a032937e21',
-  '0x30391A42bc626437dCeF38beca2d1E45ba8671dC',
-  '0x51603C7059f369aB04B16AddFB7BB6c4e34b8523',
-  '0x0c90D90f0d38c21ecB15d5Bd32B030977eeB2e31',
-  '0x3F834b044A986E2dddBa273Ad835eF61C64C0151',
-  '0x165bA5f0160DC28F27F140DF205B87b07A9646E3',
-  '0x1A288d8152Ca5092eB06fE5c3d146d5Ce3b5790A',
-  '0x3a66A63b68A6aA7F93b35d6a787570E94A09C60c',
-  '0xcAC47a6670bE9d52ABF76E897c8C77C17F67A173',
-  '0x21E7de94b1ed77463bCb488519fc98680ddE2251',
-  '0xae72F470Da5446005c756B08D3e916f7EA8E9B72',
-  '0x781198E9517C414b6d5BD84b99c82FE864da9998'
+    "0x723960d9a5C6ab71853059861D1C6146770a6Dc1",
+    "0x407Cf0e5Dd3C2c4bCE5a32B92109c2c6f7f1ce23",
+    "0x6d7ddD863eB2Dad990bC05BDd3357E32850509E9",
+    "0x9AfD4F7aD03A03d306B41a4604Ea2928cFf78fd1",
+    "0x17AB342e3Bd3c080b4f48fe20165D5E94185EE2d",
+    "0xf83b3A823653E8351b173Fa2Ae083Af37EAbCC01",
+    "0xd8dA6D5d36B4477D6FC7dD4076432F2da1dBBAf8",
+    "0xaB70496f3dbb814710B21bd843b3c2122398c1bB",
+    "0xc928E72d304B77eA5727b242E4ba14eF57e3cD41",
+    "0x5A17717abE73FEb3d4C4AAfD39B3CA5313cFB653",
+    "0x982Efa073Aeebb95a0Cb7D025f002D9B56F66Bdb",
+    "0x9Ca72f031f789f51bD35Cc34583c7B7A7D0871A3",
+    "0xf4aF0941e0406F42839e7Bb1d565946bC2929336",
+    "0x0e61990A3Ce86605d6ddD05D3e2219a032937e21",
+    "0x30391A42bc626437dCeF38beca2d1E45ba8671dC",
+    "0x51603C7059f369aB04B16AddFB7BB6c4e34b8523",
+    "0x0c90D90f0d38c21ecB15d5Bd32B030977eeB2e31",
+    "0x3F834b044A986E2dddBa273Ad835eF61C64C0151",
+    "0x165bA5f0160DC28F27F140DF205B87b07A9646E3",
+    "0x1A288d8152Ca5092eB06fE5c3d146d5Ce3b5790A",
+    "0x3a66A63b68A6aA7F93b35d6a787570E94A09C60c",
+    "0xcAC47a6670bE9d52ABF76E897c8C77C17F67A173",
+    "0x21E7de94b1ed77463bCb488519fc98680ddE2251",
+    "0xae72F470Da5446005c756B08D3e916f7EA8E9B72",
+    "0x781198E9517C414b6d5BD84b99c82FE864da9998"
 ]
 ```
