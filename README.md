@@ -56,8 +56,11 @@ Mainnet:
 npx hardhat verify --network mainnet DEPLOYED_CONTRACT_ADDRESS
 ```
 
-IPFS URI:
+### IPFS Metadata
 
-```zsh
-ipfs://QmQRFD3dSfNRDa7vvHwafwg4F6FUjA2NBjxBrGuPSrpKrV/
-```
+- Genesis
+  - metadata: `ipfs://QmRYkLgszoKpV15AUDcZJ82yL741pJRFSUogtNiUUF45S2`
+  - image: `ipfs://QmUVHmfefWQ8eCcoTNnF8uLNh2vsQz4xcjVh4XSn56cLW1`
+- Zilker (id 26-176)
+  - metadata: `ipfs://QmQRFD3dSfNRDa7vvHwafwg4F6FUjA2NBjxBrGuPSrpKrV/26.json`
+  - image: `ipfs://QmeJVHwX4fv6hiRWgM5YkyAstYWGgMkXxjxRxbBv8XTcPh/26.png`
