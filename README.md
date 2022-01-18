@@ -12,7 +12,17 @@
 ### Deploy Contract
 
 ```zsh
-npx hardhat run --network ropsten scripts/deploy.js
+# v2
+❯ hh deploy ATXDAONFT_V2 --network ropsten
+deploy tx: {
+  ...
+}
+
+# v1
+❯ hh deploy ATXDAONFT --network ropsten
+deploy tx: {
+  ...
+}
 ```
 
 ### Verify Contract
