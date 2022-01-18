@@ -24,10 +24,15 @@
 
 [contracts/ATXDAONFT_V2.sol](contracts/ATXDAONFT_V2.sol) is pending deployment to mainnet
 
-## Test Contract
+## Setup
 
 1. `cp .env.example .env` and set those environment variables
 1. install deps via `yarn install`
+1. `npm i -g hardhat-shorthand` to install `hh`
+1. compile contracts for hardhat tasks `hh compile`
+
+## Testing
+
 1. install [forge](https://github.com/gakonst/foundry)
    - install [rust](https://www.rust-lang.org/tools/install) via
      `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`
@@ -35,11 +40,27 @@
    - run `foundryup`
 1. `forge test` in project directory
 
+```zsh
+❯ forge test
+compiling...
+success.
+Running 13 tests for ATXDAONFTV2Test.json:ATXDAONFTV2Test
+[PASS] testFailMintSpecial() (gas: 123731)
+[PASS] testMintBasic() (gas: 309238)
+[PASS] testMintRequireEth() (gas: 48988)
+[PASS] testMintRequireMintable() (gas: 63393)
+[PASS] testMintRequireNotHolder() (gas: 197875)
+[PASS] testMintRequireWhitelistInvalidProof() (gas: 46408)
+[PASS] testMintRequireWhitelistRandom(address) (runs: 256, μ: 46959, ~: 46958)
+[PASS] testMintSpecialDynamic() (gas: 341272)
+[PASS] testMintSpecialStatic() (gas: 333388)
+[PASS] testMintTransfers() (gas: 231086)
+[PASS] testOnlyOwner() (gas: 18788)
+[PASS] testResetHasMinted() (gas: 331864)
+[PASS] testSweepEth() (gas: 333857)
+```
+
 ## Hardhat tasks
-
-### Setup
-
-compile contracts via `npx hardhat compile` to get gain access to tasks
 
 ### Verify Contract
 
@@ -56,9 +77,6 @@ npx hardhat verify --network mainnet DEPLOYED_CONTRACT_ADDRESS
 ```
 
 ### Deploy Contract
-
-using `hh` from [hardhat-shorthand](https://hardhat.org/guides/shorthand.html).
-install via `npm i -g hardhat-shorthand`
 
 ```zsh
 ❯ hh deploy ATXDAONFT_V2
