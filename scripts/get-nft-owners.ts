@@ -1,4 +1,3 @@
-import ATXDAONFT_ABI from '../artifacts/contracts/ATXDAONFT.sol/ATXDAONFT.json';
 import { ATXDAONFT } from '../typechain-types/ATXDAONFT';
 import { contracts } from '../util/constants';
 import { task } from 'hardhat/config';
@@ -10,13 +9,10 @@ task('get-nft-owners', 'gets a list of nft owners, ordered by token id')
   .setAction(async (taskArgs) => {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const hre = require('hardhat');
-    const { getContractAtFromArtifact } = hre.ethers;
-
+    const { getContractAt } = hre.ethers;
     const { contract } = taskArgs;
-    const nft = (await getContractAtFromArtifact(
-      ATXDAONFT_ABI,
-      contract
-    )) as ATXDAONFT;
+
+    const nft = (await getContractAt('ATXDAONFT', contract)) as ATXDAONFT;
     let id = 1;
     const owners: string[] = [];
     while (true) {
