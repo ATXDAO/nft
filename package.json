@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "deploy": "node scripts/deploy.js",
-    "lint": "npm run lint:sol && npm run lint:js && npm run lint:ts",
-    "lint:js": "prettier --check scripts/*.js",
+    "lint": "npm run lint:sol && npm run lint:ts",
     "lint:sol": "prettier --check 'contracts/**/*.sol' 'tests/**/*.sol'",
     "lint:ts": "tsc && eslint *.ts scripts",
     "prettier": "prettier --write 'contracts/**/*.sol' 'tests/**/*.sol' scripts util hardhat.config.ts"
