@@ -12,6 +12,7 @@ if (fs.existsSync('typechain-types')) {
   require('./scripts/deploy');
   require('./scripts/get-nft-owners');
   require('./scripts/merkle-tree');
+  require('./scripts/nft-v2');
 }
 
 const { MAINNET_RPC_URL, ROPSTEN_RPC_URL, PRIVATE_KEY, ETHERSCAN_API_KEY } =
