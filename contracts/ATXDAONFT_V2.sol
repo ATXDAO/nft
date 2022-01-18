@@ -60,7 +60,7 @@ contract ATXDAONFT_V2 is ERC721URIStorage, Ownable {
             "ATX DAO NFT is not mintable at the moment!"
         );
         require(
-            balanceOf(msg.sender) == 0 && !hasMinted[msg.sender],
+            !hasMinted[msg.sender],
             "Minting is only available for non-holders"
         );
         require(msg.value >= _mintPrice, "Not enough ether sent to mint!");
