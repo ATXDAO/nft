@@ -5,25 +5,43 @@
 1. `cp .env.example .env` and set those environment variables
 1. install deps via `yarn install`
 1. install [forge](https://github.com/gakonst/foundry)
-   - install [rust](https://www.rust-lang.org/tools/install) via `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`
-   - install `foundryup` via `curl https://raw.githubusercontent.com/gakonst/foundry/master/foundryup/install | bash`
-   - `foundryup`
+   - install [rust](https://www.rust-lang.org/tools/install) via
+     `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`
+   - install `foundryup`: `curl https://raw.githubusercontent.com/gakonst/foundry/master/foundryup/install | bash`
+   - run `foundryup`
 1. `forge test` in project directory
 
 ### Deploy Contract
 
-```zsh
-# v2
-❯ hh deploy ATXDAONFT_V2 --network ropsten
-deploy tx: {
-  ...
-}
+using `hh` from [hardhat-shorthand](https://hardhat.org/guides/shorthand.html).
+install via `npm i -g hardhat-shorthand`
 
-# v1
-❯ hh deploy ATXDAONFT --network ropsten
-deploy tx: {
-  ...
-}
+```zsh
+❯ hh deploy ATXDAONFT_V2
+deploying:  ATXDAONFT_V2
+  network:  hardhat
+ deployer:  0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
+ gasPrice:  1.875 gwei
+
+deploy tx:  0x56be42f548a58259f5bed52f7a0f297771ff69386bd9d3c6b8b388ef4dc55214
+  address:  0x5FbDB2315678afecb367f032d93F642f64180aa3
+```
+
+```zsh
+# use custom gas price
+❯ hh gas-price --network ropsten
+current gas price on ropsten is:
+    17986498384 wei
+    17.986498384 gwei
+
+❯ hh deploy ATXDAONFT_V2 --network ropsten --gas-price 24986498384
+deploying:  ATXDAONFT_V2
+  network:  ropsten
+ deployer:  0x51040CE6FC9b9C5Da69B044109f637dc997e92DE
+ gasPrice:  24.986498384 gwei
+
+deploy tx:  0x8148515e0013a6cb9c01863a09e61f5fc1ac79ffb08528342ee04771de0f7e00
+  address:  0xe1e1561881aBa2cbb4D29Fa4e846C71CbD8073E4
 ```
 
 ### Verify Contract
@@ -44,7 +62,8 @@ npx hardhat verify --network mainnet DEPLOYED_CONTRACT_ADDRESS
 
 #### v1 contract
 
-[contracts/ATXDAONFT.sol](contracts/ATXDAONFT.sol) is deployed on mainnet to [0xf61be28561137259375cbe88f28d4f163b09c94c](https://etherscan.io/address/0xf61be28561137259375cbe88f28d4f163b09c94c)
+[contracts/ATXDAONFT.sol](contracts/ATXDAONFT.sol) is deployed on mainnet to
+[0xf61be28561137259375cbe88f28d4f163b09c94c](https://etherscan.io/address/0xf61be28561137259375cbe88f28d4f163b09c94c)
 
 #### v2 contract
 
