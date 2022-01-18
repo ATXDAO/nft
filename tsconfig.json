@@ -10,10 +10,12 @@
     "resolveJsonModule": true,
     "lib": [
       "ES2020"
-    ]
+    ],
+    "rootDir": "."
   },
   "include": [
-    "./scripts/*",
+    "./scripts/**/*.ts",
+    "./util/**/*.ts",
   ],
   "files": [
     "./hardhat.config.ts"

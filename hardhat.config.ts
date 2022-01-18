@@ -1,12 +1,17 @@
-import './scripts/merkle-tree';
 import '@nomiclabs/hardhat-ethers';
 import '@nomiclabs/hardhat-etherscan';
 import '@nomiclabs/hardhat-waffle';
 import '@typechain/hardhat';
 import dotenv from 'dotenv';
+import fs from 'fs';
 import { HardhatUserConfig } from 'hardhat/config';
 
 dotenv.config();
+
+if (fs.existsSync('typechain-types')) {
+  require('./scripts/get-nft-owners');
+  require('./scripts/merkle-tree');
+}
 
 const { MAINNET_RPC_URL, ROPSTEN_RPC_URL, PRIVATE_KEY, ETHERSCAN_API_KEY } =
   process.env;

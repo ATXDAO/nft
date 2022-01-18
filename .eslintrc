@@ -18,7 +18,8 @@
     "prettier"
   ],
   "ignorePatterns": [
-    "*.js"
+    "*.js",
+    "typechain-types"
   ],
   "parserOptions": {
     "ecmaVersion": 12,
