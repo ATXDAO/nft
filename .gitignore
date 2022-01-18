@@ -3,4 +3,5 @@ node_modules/
 .env
 cache/
 out/
+dist/
 yarn-error.log
