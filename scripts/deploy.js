@@ -1,11 +1,11 @@
-const hre = require("hardhat");
+const hre = require('hardhat');
 
 async function deploy() {
-  const MyNFT = await hre.ethers.getContractFactory("ATXDAONFT");
+  const MyNFT = await hre.ethers.getContractFactory('ATXDAONFT');
 
   // Start deployment, returning a promise that resolves to a contract object
   const myNFT = await MyNFT.deploy();
-  console.log("ATX DAO Contract deployed to address:", myNFT.address);
+  console.log('ATX DAO Contract deployed to address:', myNFT.address);
 }
 
 deploy()
