@@ -33,6 +33,8 @@ contract ATXDAONFT_V2 is ERC721URIStorage, Ownable {
     string private baseURI;
     string public baseExtension = ".json";
 
+    mapping(address => bool) public hasMinted;
+
     constructor() ERC721("ATX DAO", "ATX") {}
 
     function setMerkleRoot(bytes32 root) public onlyOwner {
@@ -58,7 +60,7 @@ contract ATXDAONFT_V2 is ERC721URIStorage, Ownable {
             "ATX DAO NFT is not mintable at the moment!"
         );
         require(
-            balanceOf(msg.sender) == 0,
+            balanceOf(msg.sender) == 0 && !hasMinted[msg.sender],
             "Minting is only available for non-holders"
         );
         require(msg.value >= _mintPrice, "Not enough ether sent to mint!");
@@ -67,6 +69,7 @@ contract ATXDAONFT_V2 is ERC721URIStorage, Ownable {
         // Mint
         _tokenIds.increment();
         uint256 newTokenId = _tokenIds.current();
+        hasMinted[msg.sender] = true;
         _safeMint(msg.sender, newTokenId);
         _setTokenURI(
             newTokenId,
@@ -78,6 +81,12 @@ contract ATXDAONFT_V2 is ERC721URIStorage, Ownable {
         _mintCount.increment();
     }
 
+    function resetHasMinted(address[] memory recipients) external onlyOwner {
+        for (uint64 i = 0; i < recipients.length; i++) {
+            hasMinted[recipients[i]] = false;
+        }
+    }
+
     // Dev mint
     function mintSpecial(
         address[] memory recipients,
@@ -87,6 +96,7 @@ contract ATXDAONFT_V2 is ERC721URIStorage, Ownable {
         for (uint64 i = 0; i < recipients.length; i++) {
             _tokenIds.increment();
             uint256 newTokenId = _tokenIds.current();
+            hasMinted[recipients[i]] = true;
 
             _safeMint(recipients[i], newTokenId);
             _dynamic
