@@ -121,6 +121,8 @@ contract ATXDAONFTV2Test is DSTest {
         nft.resetHasMinted(resetList);
         vm.prank(addrA);
         nft.mint{value: 1}(proofA);
+        assertEq(nft.balanceOf(addrA), 1);
+        assertEq(nft.balanceOf(addrB), 1);
     }
 
     function testMintRequireEth() public {
