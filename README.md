@@ -64,16 +64,17 @@ Running 13 tests for ATXDAONFTV2Test.json:ATXDAONFTV2Test
 
 ### Verify Contract
 
-Ropsten
-
 ```zsh
-npx hardhat verify --network ropsten DEPLOYED_CONTRACT_ADDRESS
-```
+❯ hh verify --contract contracts/ATXDAONFT_V2.sol:ATXDAONFT_V2 --network ropsten 0xe1e1561881aba2cbb4d29fa4e846c71cbd8073e4
+Nothing to compile
+No need to generate any newer typings.
+Compiling 1 file with 0.8.9
+Successfully submitted source code for contract
+contracts/ATXDAONFT_V2.sol:ATXDAONFT_V2 at 0xe1e1561881aba2cbb4d29fa4e846c71cbd8073e4
+for verification on the block explorer. Waiting for verification result...
 
-Mainnet:
-
-```zsh
-npx hardhat verify --network mainnet DEPLOYED_CONTRACT_ADDRESS
+Successfully verified contract ATXDAONFT_V2 on Etherscan.
+https://ropsten.etherscan.io/address/0xe1e1561881aba2cbb4d29fa4e846c71cbd8073e4#code
 ```
 
 ### Deploy Contract
