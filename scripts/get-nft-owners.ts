@@ -1,22 +1,22 @@
 import { ATXDAONFT } from '../typechain-types/ATXDAONFT';
-import { contracts } from '../util/constants';
+import { getContractAddress, ContractName } from '../util/contract-meta';
 import { task } from 'hardhat/config';
 
-const { mainnet: address } = contracts.v0;
+interface GetNftOwnersArgs {
+  contract: ContractName;
+}
 
 task('get-nft-owners', 'gets a list of nft owners, ordered by token id')
-  .addOptionalPositionalParam(
+  .addParam<ContractName>(
     'contract',
-    'contract address (default to v1 mainnet contract)',
-    address
+    'contract name (e.g. ATXDAONFT or ATXDAONFT_V2)'
   )
-  .setAction(async (taskArgs) => {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const hre = require('hardhat');
-    const { getContractAt } = hre.ethers;
-    const { contract } = taskArgs;
-
-    const nft = (await getContractAt('ATXDAONFT', contract)) as ATXDAONFT;
+  .setAction(async ({ contract }: GetNftOwnersArgs, { ethers, network }) => {
+    const contractAddress = getContractAddress(contract, network.name);
+    const nft = (await ethers.getContractAt(
+      contract,
+      contractAddress
+    )) as ATXDAONFT;
     let id = 1;
     const owners: string[] = [];
     while (true) {

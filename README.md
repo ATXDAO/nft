@@ -40,7 +40,9 @@
 1. `yarn test` in project directory
 
 ```zsh
-❯ forge test
+❯ yarn test
+yarn run v1.22.17
+$ forge clean && forge test -vv && forge clean
 compiling...
 success.
 Running 13 tests for ATXDAONFTV2Test.json:ATXDAONFTV2Test
@@ -337,8 +339,7 @@ proof:
 ### Genesis Owners
 
 ```sh
-❯ hh get-nft-owners --network mainnet
-
+❯ hh get-nft-owners --network mainnet --contract ATXDAONFT
 25 found!
 [
     "0x723960d9a5C6ab71853059861D1C6146770a6Dc1",
