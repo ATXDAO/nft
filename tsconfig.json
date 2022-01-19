@@ -14,10 +14,12 @@
     "rootDir": "."
   },
   "include": [
+    "./deploy/**/*.ts",
     "./scripts/**/*.ts",
     "./util/**/*.ts",
+    "./types/**/*.ts",
   ],
   "files": [
-    "./hardhat.config.ts"
+    "./hardhat.config.ts",
   ]
 }

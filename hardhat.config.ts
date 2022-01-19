@@ -2,16 +2,14 @@ import '@nomiclabs/hardhat-ethers';
 import '@nomiclabs/hardhat-etherscan';
 import '@nomiclabs/hardhat-waffle';
 import '@typechain/hardhat';
-import 'hardhat-deploy';
-import 'hardhat-deploy-ethers';
 import dotenv from 'dotenv';
 import fs from 'fs';
+import 'hardhat-deploy';
 import { HardhatUserConfig } from 'hardhat/config';
 
 dotenv.config();
 
 if (fs.existsSync('typechain-types')) {
-//  require('./scripts/deploy');
   require('./scripts/get-nft-owners');
   require('./scripts/merkle-tree');
   require('./scripts/nft-v2');
