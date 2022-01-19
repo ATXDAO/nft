@@ -15,14 +15,13 @@
 
 ### Deployed Contracts
 
-#### v1 contract
+#### [v1 contract](contracts/ATXDAONFT.sol)
 
-[contracts/ATXDAONFT.sol](contracts/ATXDAONFT.sol) is deployed on mainnet to
-[0xf61be28561137259375cbe88f28d4f163b09c94c](https://etherscan.io/address/0xf61be28561137259375cbe88f28d4f163b09c94c)
+- mainnet [0xf61be28561137259375cbe88f28d4f163b09c94c](https://etherscan.io/address/0xf61be28561137259375cbe88f28d4f163b09c94c)
 
-#### v2 contract
+#### [v2 contract](contracts/ATXDAONFT_V2.sol)
 
-[contracts/ATXDAONFT_V2.sol](contracts/ATXDAONFT_V2.sol) is pending deployment to mainnet
+- ropsten: [0xc38D8Da0c1cA6314474a3442103F543551f0F177](https://ropsten.etherscan.io/address/0xc38D8Da0c1cA6314474a3442103F543551f0F177#readContract)
 
 ## Setup
 
