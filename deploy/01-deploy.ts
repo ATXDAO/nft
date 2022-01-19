@@ -1,4 +1,5 @@
 import { FixedDeployFunction } from '../types';
+import { dynamicGetGasPrice } from '../util/gasnow';
 
 const contractName = 'ATXDAONFT_V2';
 
@@ -7,6 +8,11 @@ const deployFunc: FixedDeployFunction = async ({
   ethers,
   deployments,
 }) => {
+  if (network.name === 'mainnet') {
+    ethers.providers.BaseProvider.prototype.getGasPrice =
+      dynamicGetGasPrice('fast');
+  }
+
   const signer = await ethers.provider.getSigner();
   const from = await signer.getAddress();
   const deployGasPrice = await ethers.provider.getGasPrice();
