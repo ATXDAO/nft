@@ -22,17 +22,18 @@ task('get-nft-owners', 'gets a list of nft owners, ordered by token id')
         contract,
         contractAddress
       )) as ATXDAONFT;
-      const owners: string[] = [];
+      const nftData: { owner: string; uri: string }[] = [];
       for (let id = start || 1; id <= end || 99999999; id += 1) {
         try {
           const owner = await nft.ownerOf(id);
-          owners.push(owner);
+          const uri = await nft.tokenURI(id);
+          nftData.push({ owner, uri });
         } catch {
           break;
         }
       }
 
-      console.error(`${owners.length} found!`);
-      console.log(JSON.stringify(owners, null, 4));
+      console.error(`${nftData.length} found!`);
+      console.log(JSON.stringify(nftData, null, 4));
     }
   );
