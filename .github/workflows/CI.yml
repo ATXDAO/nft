@@ -25,14 +25,14 @@ jobs:
         uses: onbjerg/foundry-toolchain@v1
         with:
           version: nightly
+      # solidity tests
+      - name: Run tests
+        run: forge test -vv && forge clean
       # checks
       - name: Hardhat compile
         run: npx hardhat compile --show-stack-traces
       - name: Run lint check
         run: yarn lint
-      # tests
-      - name: Run tests
-        run: forge test -vv
       # test deployment
       - name: Deploy contracts
         run: npx hardhat deploy --show-stack-traces
