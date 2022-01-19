@@ -16,14 +16,17 @@ task('get-nft-owners', 'gets a list of nft owners, ordered by token id')
   .addOptionalParam<number>('start', 'token id to start')
   .addOptionalParam<number>('end', 'token id to end (inclusive)')
   .setAction(
-    async ({ contract, start, end }: GetNftOwnersArgs, { ethers, network }) => {
+    async (
+      { contract, start = 3, end = 999999 }: GetNftOwnersArgs,
+      { ethers, network }
+    ) => {
       const contractAddress = getContractAddress(contract, network.name);
       const nft = (await ethers.getContractAt(
         contract,
         contractAddress
       )) as ATXDAONFT;
       const nftData: { owner: string; uri: string }[] = [];
-      for (let id = start || 1; id <= end || 99999999; id += 1) {
+      for (let id = start; id <= end; id += 1) {
         try {
           const owner = await nft.ownerOf(id);
           const uri = await nft.tokenURI(id);

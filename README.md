@@ -281,16 +281,45 @@ proof:
   gasPrice:  1.524160374 gwei
 ```
 
+### Start Mint
+
+```zsh
+❯ hh start-mint --network localhost --root 0x09bdac7838fdbc3d080baf0a069c66554ad41d9d468c3127e5ca1d19e4c38399 --token-uri ipfs://QmQRFD3dSfNRDa7vvHwafwg4F6FUjA2NBjxBrGuPSrpKrV/ --mint-price 0.63
+   running:  ATXDAONFT_V2.startMint()
+     price:  0.63 eth
+             630000000000000000 wei
+  tokenUri:  ipfs://QmQRFD3dSfNRDa7vvHwafwg4F6FUjA2NBjxBrGuPSrpKrV/
+      root:  0x09bdac7838fdbc3d080baf0a069c66554ad41d9d468c3127e5ca1d19e4c38399
+  contract:  0x5FbDB2315678afecb367f032d93F642f64180aa3
+   network:  localhost
+    signer:  0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
+  gasPrice:  1.458767035 gwei
+```
+
+### Mint
+
+```zsh
+❯ hh mint --network localhost 0x44e659e60b21cc961f64ad47f20523c1d329d4bbda245ef3940a76dc89d0911b
+   running:  ATXDAONFT_V2.mint()
+  contract:  0x5FbDB2315678afecb367f032d93F642f64180aa3
+   network:  localhost
+    signer:  0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
+  gasPrice:  1.401813368 gwei
+
+
+  tx hash:   0x65403c6733bf70d1c40b07783ad2f6c1062a00ad11696521083846c50bd38ba4
+```
+
 ### Genesis Owners
 
 ```sh
 # works for ATXDAONFT or ATXDAONFT_V2
-❯ hh get-nft-owners --network localhost --contract ATXDAONFT_V2 --start 3 --end 3
+❯ hh get-nft-owners --network ropsten --contract ATXDAONFT_V2 --start 3 --end 3
 1 found!
 [
     {
         "owner": "0x6d7ddD863eB2Dad990bC05BDd3357E32850509E9",
-        "uri": "ipfs://QmZXEgrU7oXEHSJsgdiTJK13a8K9YsaZ5PsRR54BAXrGWU/genesis.json"
+        "uri": "ipfs://QmRYkLgszoKpV15AUDcZJ82yL741pJRFSUogtNiUUF45S2"
     }
 ]
 ```
