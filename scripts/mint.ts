@@ -4,10 +4,6 @@ import { dynamicGetGasPrice } from '../util/gas-now';
 import { MerkleOutput } from './merkle-tree';
 import { task } from 'hardhat/config';
 
-const tree: MerkleOutput =
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  require('../metadata/zilker/zilker-merkle-tree.json');
-
 interface MintArgs {
   contractAddress?: string;
   gasPrice?: string;
@@ -30,6 +26,10 @@ task<MintArgs>('mint', 'mint an nft')
         ethers.providers.BaseProvider.prototype.getGasPrice =
           dynamicGetGasPrice('fast');
       }
+
+      const tree: MerkleOutput =
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        require('../metadata/zilker/zilker-merkle-tree.json');
 
       // prob need to adds spoofiny
       const signer = await ethers.provider.getSigner();
