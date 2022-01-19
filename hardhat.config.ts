@@ -4,12 +4,12 @@ import '@nomiclabs/hardhat-waffle';
 import '@typechain/hardhat';
 import dotenv from 'dotenv';
 import fs from 'fs';
+import 'hardhat-deploy';
 import { HardhatUserConfig } from 'hardhat/config';
 
 dotenv.config();
 
 if (fs.existsSync('typechain-types')) {
-  require('./scripts/deploy');
   require('./scripts/get-nft-owners');
   require('./scripts/merkle-tree');
   require('./scripts/nft-v2');
@@ -17,6 +17,8 @@ if (fs.existsSync('typechain-types')) {
 
 const { MAINNET_RPC_URL, ROPSTEN_RPC_URL, PRIVATE_KEY, ETHERSCAN_API_KEY } =
   process.env;
+const privateKeys = PRIVATE_KEY ? [`0x${PRIVATE_KEY}`] : undefined;
+
 const config: HardhatUserConfig = {
   solidity: {
     version: '0.8.9',
@@ -29,6 +31,7 @@ const config: HardhatUserConfig = {
   },
   paths: {
     sources: 'contracts/',
+    tests: 'contracts/tests',
   },
   networks: {
     hardhat: {},
@@ -39,11 +42,11 @@ const config: HardhatUserConfig = {
     },
     ropsten: {
       url: ROPSTEN_RPC_URL,
-      accounts: [`0x${PRIVATE_KEY}`],
+      accounts: privateKeys,
     },
     mainnet: {
       url: MAINNET_RPC_URL,
-      accounts: [`0x${PRIVATE_KEY}`],
+      accounts: privateKeys,
     },
   },
 
