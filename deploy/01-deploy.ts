@@ -1,5 +1,5 @@
 import { FixedDeployFunction } from '../types';
-import { dynamicGetGasPrice } from '../util/gasnow';
+import { dynamicGetGasPrice } from '../util/gas-now';
 
 const contractName = 'ATXDAONFT_V2';
 

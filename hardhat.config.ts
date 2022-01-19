@@ -10,6 +10,7 @@ import { HardhatUserConfig } from 'hardhat/config';
 dotenv.config();
 
 if (fs.existsSync('typechain-types')) {
+  require('./scripts/gas-price');
   require('./scripts/get-nft-owners');
   require('./scripts/merkle-tree');
   require('./scripts/nft-v2');

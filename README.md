@@ -37,7 +37,7 @@
      `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`
    - install `foundryup`: `curl https://raw.githubusercontent.com/gakonst/foundry/master/foundryup/install | bash`
    - run `foundryup`
-1. `forge test` in project directory
+1. `yarn test` in project directory
 
 ```zsh
 ❯ forge test
@@ -91,10 +91,19 @@ deploy tx:  0x56be42f548a58259f5bed52f7a0f297771ff69386bd9d3c6b8b388ef4dc55214
 
 ```zsh
 # use custom gas price
-❯ hh gas-price --network ropsten
-current gas price on ropsten is:
-    17986498384 wei
-    17.986498384 gwei
+❯ hh gas-price --network mainnet
+gas price on mainnet
+
+ current  61692625904 wei
+          61.692625904 gwei
+    slow  61000000000 wei
+          61.0 gwei
+standard  61000000000 wei
+          61.0 gwei
+    fast  61000000000 wei
+          61.0 gwei
+   rapid  65982650839 wei
+          65.982650839 gwei
 
 ❯ hh deploy ATXDAONFT_V2 --network ropsten --gas-price 24986498384
 deploying:  ATXDAONFT_V2

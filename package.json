@@ -8,7 +8,8 @@
     "lint": "npm run lint:sol && npm run lint:ts",
     "lint:sol": "prettier --check 'contracts/**/*.sol' 'tests/**/*.sol'",
     "lint:ts": "tsc && eslint *.ts scripts",
-    "prettier": "prettier --write 'contracts/**/*.sol' 'tests/**/*.sol' scripts util hardhat.config.ts"
+    "prettier": "prettier --write 'contracts/**/*.sol' 'tests/**/*.sol' scripts util hardhat.config.ts",
+    "test": "forge clean && forge test -vv && forge clean"
   },
   "devDependencies": {
     "@alch/alchemy-web3": "1.1.9",
