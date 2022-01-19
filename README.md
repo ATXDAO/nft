@@ -37,7 +37,7 @@
      `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`
    - install `foundryup`: `curl https://raw.githubusercontent.com/gakonst/foundry/master/foundryup/install | bash`
    - run `foundryup`
-1. `forge test` in project directory
+1. `yarn test` in project directory
 
 ```zsh
 ❯ forge test
