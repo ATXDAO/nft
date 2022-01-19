@@ -27,7 +27,7 @@ jobs:
           version: nightly
       # checks
       - name: Hardhat compile
-        run: npx hardhat compile
+        run: npx hardhat compile --show-stack-traces
       - name: Run lint check
         run: yarn lint
       # tests
@@ -35,4 +35,4 @@ jobs:
         run: forge test -vv
       # test deployment
       - name: Deploy contracts
-        run: npx hardhat deploy
+        run: npx hardhat deploy --show-stack-traces
