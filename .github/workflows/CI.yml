@@ -33,3 +33,6 @@ jobs:
       # tests
       - name: Run tests
         run: forge test -vv
+      # test deployment
+      - name: Deploy contracts
+        run: npx hardhat deploy
