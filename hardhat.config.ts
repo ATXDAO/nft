@@ -10,10 +10,13 @@ import { HardhatUserConfig } from 'hardhat/config';
 dotenv.config();
 
 if (fs.existsSync('typechain-types')) {
-  require('./scripts/gas-price');
   require('./scripts/get-nft-owners');
+  require('./scripts/gas-price');
   require('./scripts/merkle-tree');
-  require('./scripts/nft-v2');
+  require('./scripts/mint');
+  require('./scripts/mint-special');
+  require('./scripts/set-merkle-root');
+  require('./scripts/start-mint');
 }
 
 const { MAINNET_RPC_URL, ROPSTEN_RPC_URL, PRIVATE_KEY, ETHERSCAN_API_KEY } =

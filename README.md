@@ -125,7 +125,7 @@ deploy tx:  0x8148515e0013a6cb9c01863a09e61f5fc1ac79ffb08528342ee04771de0f7e00
 
 ```zsh
 # non-dynamic special mint for genesis members
-❯ hh v2-special-mint --network localhost --token-uri ipfs://QmZXEgrU7oXEHSJsgdiTJK13a8K9YsaZ5PsRR54BAXrGWU/genesis.json metadata/genesis/genesis-addresses.json
+❯ hh mint-speical --network localhost --token-uri ipfs://QmRYkLgszoKpV15AUDcZJ82yL741pJRFSUogtNiUUF45S2  metadata/genesis/genesis-addresses.json
 
    running:  ATXDAONFT_V2.specialMint()
   contract:  0x610178dA211FEF7D417bC0e6FeD39F05609AD788
@@ -166,7 +166,7 @@ recipients:  0x723960d9a5C6ab71853059861D1C6146770a6Dc1
 
 ```zsh
 # dynamic special mint for active contributors
-❯ hh v2-special-mint --network localhost --dynamic --token-uri ipfs://QmQRFD3dSfNRDa7vvHwafwg4F6FUjA2NBjxBrGuPSrpKrV/  metadata/genesis/genesis-active-contributors.json
+❯ hh mint-special --network localhost --dynamic --token-uri ipfs://QmQRFD3dSfNRDa7vvHwafwg4F6FUjA2NBjxBrGuPSrpKrV/  metadata/genesis/genesis-active-contributors.json
 
    running:  ATXDAONFT_V2.specialMint()
   contract:  0x610178dA211FEF7D417bC0e6FeD39F05609AD788
@@ -196,7 +196,7 @@ recipients:  0xf83b3A823653E8351b173Fa2Ae083Af37EAbCC01
 
 ```zsh
 # dynamic special mint from arg list
-❯ hh v2-special-mint --network localhost --dynamic --token-uri ipfs://QmQRFD3dSfNRDa7vvHwafwg4F6FUjA2NBjxBrGuPSrpKrV/  0xf83b3A823653E8351b173Fa2Ae083Af37EAbCC01 0x5A17717abE73FEb3d4C4AAfD39B3CA5313cFB653
+❯ hh mint-special --network localhost --dynamic --token-uri ipfs://QmQRFD3dSfNRDa7vvHwafwg4F6FUjA2NBjxBrGuPSrpKrV/  0xf83b3A823653E8351b173Fa2Ae083Af37EAbCC01 0x5A17717abE73FEb3d4C4AAfD39B3CA5313cFB653
 
    running:  ATXDAONFT_V2.specialMint()
   contract:  0x610178dA211FEF7D417bC0e6FeD39F05609AD788
@@ -267,6 +267,18 @@ proof:
   '0x1468288056310c82aa4c01a7e12a10f8111a0560e72b700555479031b86c357d',
   '0x5b70e80538acdabd6137353b0f9d8d149f4dba91e8be2e7946e409bfdbe685b9'
 ]
+```
+
+### Set Merkle Root
+
+```zsh
+❯ hh set-merkle-root --network localhost --root 0x09bdac7838fdbc3d080baf0a069c66554ad41d9d468c3127e5ca1d19e4c38399
+   running:  ATXDAONFT_V2.setMerkleRoot()
+      root:  0x09bdac7838fdbc3d080baf0a069c66554ad41d9d468c3127e5ca1d19e4c38399
+  contract:  0x5FbDB2315678afecb367f032d93F642f64180aa3
+   network:  localhost
+    signer:  0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
+  gasPrice:  1.524160374 gwei
 ```
 
 ### Genesis Owners
