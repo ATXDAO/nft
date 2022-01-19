@@ -5,6 +5,7 @@ import '@typechain/hardhat';
 import dotenv from 'dotenv';
 import fs from 'fs';
 import 'hardhat-deploy';
+import 'hardhat-deploy-ethers';
 import { HardhatUserConfig } from 'hardhat/config';
 
 dotenv.config();
@@ -36,6 +37,10 @@ const config: HardhatUserConfig = {
   },
   networks: {
     hardhat: {},
+    localhost: {
+      url: 'http://localhost:8545',
+      accounts: privateKeys,
+    },
     ropsten: {
       url: ROPSTEN_RPC_URL,
       accounts: privateKeys,
