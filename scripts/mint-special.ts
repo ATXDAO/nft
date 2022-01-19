@@ -1,5 +1,7 @@
 import { ATXDAONFTV2 } from '../typechain-types/ATXDAONFTV2';
+import { assertValidTokenUri } from '../util/assertions';
 import { getContractAddress } from '../util/contract-meta';
+import { dynamicGetGasPrice } from '../util/gas-now';
 import { readFileSync } from 'fs';
 import { task } from 'hardhat/config';
 
@@ -11,7 +13,7 @@ interface SpecialMintArgs {
   gasPrice?: string;
 }
 
-task<SpecialMintArgs>('v2-special-mint', 'run a special mint')
+task<SpecialMintArgs>('mint-special', 'run a special mint')
   .addFlag('dynamic', 'use dynamic tokenURI')
   .addParam('tokenUri', 'token URI (or base tokenURI when --dynamic is set)')
   .addOptionalParam('contractAddress', 'nftv2 contract address')
@@ -34,6 +36,11 @@ task<SpecialMintArgs>('v2-special-mint', 'run a special mint')
       }: SpecialMintArgs,
       { ethers, network }
     ) => {
+      if (network.name === 'mainnet') {
+        ethers.providers.BaseProvider.prototype.getGasPrice =
+          dynamicGetGasPrice('fast');
+      }
+
       const signer = await ethers.provider.getSigner();
       const { isAddress } = ethers.utils;
 
@@ -54,23 +61,13 @@ task<SpecialMintArgs>('v2-special-mint', 'run a special mint')
         throw new Error(`${parsedRecipients} contains an invalid address!`);
       }
 
-      if (!tokenUri.startsWith('ipfs://')) {
-        throw new Error(
-          `expected token URI to be prefixed with 'ipfs://', got ${tokenUri}`
-        );
-      }
-
-      if (dynamic && !tokenUri.endsWith('/')) {
-        throw new Error(
-          `dynamic mint token-uri should be end with a "/", got: ${tokenUri}`
-        );
-      }
+      assertValidTokenUri(tokenUri, dynamic);
 
       const txGasPrice = ethers.BigNumber.from(
         gasPrice || (await ethers.provider.getGasPrice())
       );
 
-      const nftv2 = (await ethers.getContractAt(
+      const nftv2 = (await ethers.getContract(
         'ATXDAONFT_V2',
         parsedContractAddress
       )) as ATXDAONFTV2;

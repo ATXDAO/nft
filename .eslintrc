@@ -30,7 +30,10 @@
   "rules": {
     "indent": [
       "error",
-      2
+      2,
+      {
+        "flatTernaryExpressions": false
+      }
     ],
     "quotes": [
       "error",

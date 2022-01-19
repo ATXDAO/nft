@@ -11,7 +11,7 @@ interface MerkleTreeArgs {
   proofFor?: string;
 }
 
-interface MerkleOutput {
+export interface MerkleOutput {
   root: string;
   proofs: Record<string, string[]>;
 }

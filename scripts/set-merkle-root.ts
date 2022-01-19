@@ -1,23 +1,80 @@
+/* eslint-disable indent */
+import { ATXDAONFTV2 } from '../typechain-types/ATXDAONFTV2';
+import { getContractAddress } from '../util/contract-meta';
+import { dynamicGetGasPrice } from '../util/gas-now';
+import { MerkleOutput } from './merkle-tree';
+import { readFileSync } from 'fs';
+import { task } from 'hardhat/config';
 
-import hre from 'hardhat';
-import gasnow from 'ethers-gasnow';
-import merkleTree from '../metadata/zilker/zilker-merkle-tree.json';
+interface SetMerkleRootArgs {
+  contractAddress?: string;
+  gasPrice?: string;
+  root?: string;
+}
 
-const { ethers } = hre;
+task<SetMerkleRootArgs>('set-merkle-root', 'set the merkle root')
+  .addOptionalParam('contractAddress', 'nftv2 contract address')
+  .addOptionalParam(
+    'gasPrice',
+    'gas price in wei to deploy with (uses provider.getGasPrice() otherwise)'
+  )
+  .addOptionalParam('root', 'merkle root')
+  .setAction(
+    async (
+      { contractAddress, gasPrice, root }: SetMerkleRootArgs,
+      { ethers, network }
+    ) => {
+      const { isAddress } = ethers.utils;
+      if (network.name === 'mainnet') {
+        ethers.providers.BaseProvider.prototype.getGasPrice =
+          dynamicGetGasPrice('fast');
+      }
 
-ethers.providers.BaseProvider.prototype.getGasPrice =
-  gasnow.createGetGasPrice('rapid');
+      const parsedRoot =
+        !root || root.endsWith('.json')
+          ? (
+              JSON.parse(
+                readFileSync(
+                  root || 'metadata/zilker/zilker-merkle-tree.json'
+                ).toString()
+              ) as MerkleOutput
+            ).root
+          : root;
 
-(async () => {
-  const [ signer ] = await ethers.getSigners();
-  const contract = await ethers.getContract('ATXDAONFT_V2');
-  const tx = await contract.setMerkleRoot(merkleTree.root);
-  console.log(tx.hash);
-})()
-  .then(() => {
-    process.exit(0);
-  })
-  .catch((err) => {
-    console.error(err);
-    process.exit(1);
-  });
+      // prob need to adds spoofiny
+      const signer = await ethers.provider.getSigner();
+
+      const parsedContractAddress =
+        contractAddress || getContractAddress('ATXDAONFT_V2', network.name);
+      if (!isAddress(parsedContractAddress)) {
+        throw new Error(
+          `${parsedContractAddress} is not a valid contract address!`
+        );
+      }
+
+      const txGasPrice = ethers.BigNumber.from(
+        gasPrice || (await ethers.provider.getGasPrice())
+      );
+
+      const contract = (await ethers.getContractAt(
+        'ATXDAONFT_V2',
+        parsedContractAddress
+      )) as ATXDAONFTV2;
+
+      console.log('   running:  ATXDAONFT_V2.setMerkleRoot()');
+      console.log(`      root:  ${parsedRoot}`);
+      console.log(`  contract:  ${parsedContractAddress}`);
+      console.log(`   network:  ${network.name}`);
+      console.log(`    signer:  ${await signer.getAddress()}`);
+
+      console.log(
+        `  gasPrice:  ${ethers.utils.formatUnits(txGasPrice, 'gwei')} gwei\n`
+      );
+
+      const tx = await contract.setMerkleRoot(parsedRoot, {
+        gasPrice: txGasPrice,
+      });
+
+      console.log(`\n  tx hash:   ${tx.hash}`);
+    }
+  );

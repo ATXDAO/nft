@@ -5,16 +5,18 @@ import '@typechain/hardhat';
 import dotenv from 'dotenv';
 import fs from 'fs';
 import 'hardhat-deploy';
-import 'hardhat-deploy-ethers';
 import { HardhatUserConfig } from 'hardhat/config';
 
 dotenv.config();
 
 if (fs.existsSync('typechain-types')) {
-  require('./scripts/gas-price');
   require('./scripts/get-nft-owners');
+  require('./scripts/gas-price');
   require('./scripts/merkle-tree');
-  require('./scripts/nft-v2');
+  require('./scripts/mint');
+  require('./scripts/mint-special');
+  require('./scripts/set-merkle-root');
+  require('./scripts/start-mint');
 }
 
 const { MAINNET_RPC_URL, ROPSTEN_RPC_URL, PRIVATE_KEY, ETHERSCAN_API_KEY } =
@@ -37,10 +39,6 @@ const config: HardhatUserConfig = {
   },
   networks: {
     hardhat: {},
-    localhost: {
-      url: 'http://localhost:8545',
-      accounts: privateKeys,
-    },
     ropsten: {
       url: ROPSTEN_RPC_URL,
       accounts: privateKeys,
