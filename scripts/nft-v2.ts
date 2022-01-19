@@ -1,47 +1,10 @@
 import { ATXDAONFTV2 } from '../typechain-types/ATXDAONFTV2';
+import { getContractAddress } from '../util/contract-meta';
 import { readFileSync } from 'fs';
 import { task } from 'hardhat/config';
 
-interface NftListArgs {
-  contractAddress: string;
-  json: boolean;
-  startId?: number;
-  endId?: number;
-}
-
-task<NftListArgs>('v2-list-nfts', 'get list of nfts with owners')
-  .addFlag('json', 'json results')
-  .addOptionalParam<number>('startId', 'starting token id')
-  .addOptionalParam<number>('endId', 'ending token id (inclusive)')
-  .addPositionalParam('contractAddress', 'nftv2 contract address')
-  .setAction(
-    async (
-      { contractAddress, startId, endId }: NftListArgs,
-      { ethers, network }
-    ) => {
-      console.error(`   network:  ${network.name}`);
-      console.error(`  contract:  ${contractAddress}\n`);
-      const nftv2 = (await ethers.getContractAt(
-        'ATXDAONFT_V2',
-        contractAddress
-      )) as ATXDAONFTV2;
-      const nfts = [];
-      for (let i = startId || 1; i <= (endId || 1e9); i += 1) {
-        try {
-          nfts.push({
-            owner: await nftv2.ownerOf(i),
-            uri: await nftv2.tokenURI(i),
-          });
-        } catch (err) {
-          break;
-        }
-      }
-      console.log(JSON.stringify(nfts, null, 4));
-    }
-  );
-
 interface SpecialMintArgs {
-  contractAddress: string;
+  contractAddress?: string;
   recipients: string[];
   dynamic: boolean;
   tokenUri: string;
@@ -51,14 +14,14 @@ interface SpecialMintArgs {
 task<SpecialMintArgs>('v2-special-mint', 'run a special mint')
   .addFlag('dynamic', 'use dynamic tokenURI')
   .addParam('tokenUri', 'token URI (or base tokenURI when --dynamic is set)')
-  .addPositionalParam('contractAddress', 'nftv2 contract address')
-  .addVariadicPositionalParam(
-    'recipients',
-    'specialMint recipient addresses (json filename or space separated list)'
-  )
+  .addOptionalParam('contractAddress', 'nftv2 contract address')
   .addOptionalParam(
     'gasPrice',
     'gas price in wei to deploy with (uses provider.getGasPrice() otherwise)'
+  )
+  .addVariadicPositionalParam(
+    'recipients',
+    'specialMint recipient addresses (json filename or space separated list)'
   )
   .setAction(
     async (
@@ -73,8 +36,13 @@ task<SpecialMintArgs>('v2-special-mint', 'run a special mint')
     ) => {
       const signer = await ethers.provider.getSigner();
       const { isAddress } = ethers.utils;
-      if (!isAddress(contractAddress)) {
-        throw new Error(`${contractAddress} is not a valid contract address!`);
+
+      const parsedContractAddress =
+        contractAddress || getContractAddress('ATXDAONFT_V2', network.name);
+      if (!isAddress(parsedContractAddress)) {
+        throw new Error(
+          `${parsedContractAddress} is not a valid contract address!`
+        );
       }
 
       const parsedRecipients: string[] =
@@ -104,11 +72,11 @@ task<SpecialMintArgs>('v2-special-mint', 'run a special mint')
 
       const nftv2 = (await ethers.getContractAt(
         'ATXDAONFT_V2',
-        contractAddress
+        parsedContractAddress
       )) as ATXDAONFTV2;
 
       console.log('   running:  ATXDAONFT_V2.specialMint()');
-      console.log(`  contract:  ${contractAddress}`);
+      console.log(`  contract:  ${parsedContractAddress}`);
       console.log(`   network:  ${network.name}`);
       console.log(`    signer:  ${await signer.getAddress()}`);
       console.log('  tokenURI: ', tokenUri);
