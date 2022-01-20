@@ -85,7 +85,7 @@ https://ropsten.etherscan.io/address/0xe1e1561881aba2cbb4d29fa4e846c71cbd8073e4#
 ### Deploy Contract
 
 ```zsh
-❯ hh deploy ATXDAONFT_V2
+❯ hh deploy --network hardhat
 deploying:  ATXDAONFT_V2
   network:  hardhat
  deployer:  0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
@@ -111,7 +111,7 @@ standard  61000000000 wei
    rapid  65982650839 wei
           65.982650839 gwei
 
-❯ hh deploy ATXDAONFT_V2 --network ropsten --gas-price 24986498384
+❯ hh deploy --network ropsten --gas-price 24986498384
 deploying:  ATXDAONFT_V2
   network:  ropsten
  deployer:  0x51040CE6FC9b9C5Da69B044109f637dc997e92DE
