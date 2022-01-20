@@ -67,7 +67,7 @@ task<SpecialMintArgs>('mint-special', 'run a special mint')
         gasPrice || (await ethers.provider.getGasPrice())
       );
 
-      const nftv2 = (await ethers.getContract(
+      const nftv2 = (await ethers.getContractAt(
         'ATXDAONFT_V2',
         parsedContractAddress
       )) as ATXDAONFTV2;
