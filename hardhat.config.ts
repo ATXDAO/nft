@@ -10,6 +10,7 @@ import { HardhatUserConfig } from 'hardhat/config';
 dotenv.config();
 
 if (fs.existsSync('typechain-types')) {
+  require('./scripts/end-mint');
   require('./scripts/get-nft-owners');
   require('./scripts/gas-price');
   require('./scripts/merkle-tree');
@@ -18,6 +19,7 @@ if (fs.existsSync('typechain-types')) {
   require('./scripts/reset-has-minted');
   require('./scripts/set-merkle-root');
   require('./scripts/start-mint');
+  require('./scripts/sweep-eth');
 }
 
 const {
