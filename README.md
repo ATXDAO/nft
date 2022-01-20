@@ -323,3 +323,24 @@ proof:
     }
 ]
 ```
+
+### Reset hasMinted
+
+```zsh
+❯ hh reset-has-minted --network ropsten 0x51040CE6FC9b9C5Da69B044109f637dc997e92DE
+   running:  ATXDAONFT_V2.resetHasMinted()
+ addresses:  0x51040CE6FC9b9C5Da69B044109f637dc997e92DE
+  contract:  0xc38D8Da0c1cA6314474a3442103F543551f0F177
+   network:  ropsten
+    signer:  0x51040CE6FC9b9C5Da69B044109f637dc997e92DE
+  gasPrice:  14.034465295 gwei
+
+
+  tx hash:   0x2e0fc7fe78aa1fcdb58857e0f99c446525258227060ea0cb3c2a7d465d45d10c
+```
+
+### Ropsten mint
+
+```zsh
+❯ hh start-mint --network ropsten --root 0xeaa7c77029072bf029aef546fe224070e90af3f17d11d49282c8214953b777bc --token-uri ipfs://QmQRFD3dSfNRDa7vvHwafwg4F6FUjA2NBjxBrGuPSrpKrV/ --mint-price 0.02
+```

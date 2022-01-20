@@ -15,6 +15,7 @@ if (fs.existsSync('typechain-types')) {
   require('./scripts/merkle-tree');
   require('./scripts/mint');
   require('./scripts/mint-special');
+  require('./scripts/reset-has-minted');
   require('./scripts/set-merkle-root');
   require('./scripts/start-mint');
 }
