@@ -20,8 +20,13 @@ if (fs.existsSync('typechain-types')) {
   require('./scripts/start-mint');
 }
 
-const { MAINNET_RPC_URL, ROPSTEN_RPC_URL, PRIVATE_KEY, ETHERSCAN_API_KEY } =
-  process.env;
+const {
+  MAINNET_RPC_URL,
+  ROPSTEN_RPC_URL,
+  PRIVATE_KEY,
+  ETHERSCAN_API_KEY,
+  RINKEBY_RPC_URL,
+} = process.env;
 const privateKeys = PRIVATE_KEY ? [`0x${PRIVATE_KEY}`] : undefined;
 
 const config: HardhatUserConfig = {
@@ -42,6 +47,10 @@ const config: HardhatUserConfig = {
     hardhat: {},
     ropsten: {
       url: ROPSTEN_RPC_URL,
+      accounts: privateKeys,
+    },
+    rinkeby: {
+      url: RINKEBY_RPC_URL,
       accounts: privateKeys,
     },
     mainnet: {
