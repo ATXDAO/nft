@@ -284,7 +284,22 @@ proof:
 ### Start Mint
 
 ```zsh
-❯ hh start-mint --network localhost --root 0x09bdac7838fdbc3d080baf0a069c66554ad41d9d468c3127e5ca1d19e4c38399 --token-uri ipfs://QmYVgQoE74xp5TigTe1EC9vDQw7tx39t3U9ySTaNHa7CdV/ --mint-price 0.63
+# test locally
+❯ hh start-mint --network localhost --root 0x09bdac7838fdbc3d080baf0a069c66554ad41d9d468c3127e5ca1d19e4c38399 --token-uri ipfs://QmYVgQoE74xp5TigTe1EC9vDQw7tx39t3U9ySTaNHa7CdV/ --mint-price 0.02
+   running:  ATXDAONFT_V2.startMint()
+     price:  0.63 eth
+             630000000000000000 wei
+  tokenUri:  ipfs://QmQRFD3dSfNRDa7vvHwafwg4F6FUjA2NBjxBrGuPSrpKrV/
+      root:  0x09bdac7838fdbc3d080baf0a069c66554ad41d9d468c3127e5ca1d19e4c38399
+  contract:  0x5FbDB2315678afecb367f032d93F642f64180aa3
+   network:  localhost
+    signer:  0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
+  gasPrice:  1.458767035 gwei
+```
+
+```zsh
+# mainnet
+❯ hh start-mint --network mainnet --root 0x3e5146470e217408c29036a78fa3f617bb7c11bd82cee7ff56afce6d45f45e94 --token-uri ipfs://QmYVgQoE74xp5TigTe1EC9vDQw7tx39t3U9ySTaNHa7CdV/ --mint-price 0.63
    running:  ATXDAONFT_V2.startMint()
      price:  0.63 eth
              630000000000000000 wei
