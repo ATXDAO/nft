@@ -13,9 +13,9 @@
     - image (all): `ipfs://QmcWLJWwLMG3kNTYvKUw4TZeMQDVvmyBwMt2iV9YFaSbia/genesis.png`
 - Zilker (id 26-176)
   - metadata
-    - root: `ipfs://QmQRFD3dSfNRDa7vvHwafwg4F6FUjA2NBjxBrGuPSrpKrV/`
-    - ex (id 26): `ipfs://QmQRFD3dSfNRDa7vvHwafwg4F6FUjA2NBjxBrGuPSrpKrV/26.json`
-  - image (id 26): `ipfs://QmeJVHwX4fv6hiRWgM5YkyAstYWGgMkXxjxRxbBv8XTcPh/26.png`
+    - root: `ipfs://QmYVgQoE74xp5TigTe1EC9vDQw7tx39t3U9ySTaNHa7CdV/`
+    - ex (id 26): `ipfs://QmYVgQoE74xp5TigTe1EC9vDQw7tx39t3U9ySTaNHa7CdV/26.json`
+  - image (id 26): `ipfs://QmQkvjEARKXL41vXtP1m1ws2jnEefJNB743NoTyGHJ1Y27/26.png`
 
 ### Deployed Contracts
 
@@ -166,7 +166,7 @@ recipients:  0x723960d9a5C6ab71853059861D1C6146770a6Dc1
 
 ```zsh
 # dynamic special mint for active contributors
-❯ hh mint-special --network localhost --dynamic --token-uri ipfs://QmQRFD3dSfNRDa7vvHwafwg4F6FUjA2NBjxBrGuPSrpKrV/  metadata/genesis/genesis-active-contributors.json
+❯ hh mint-special --network localhost --dynamic --token-uri ipfs://QmYVgQoE74xp5TigTe1EC9vDQw7tx39t3U9ySTaNHa7CdV/  metadata/genesis/genesis-active-contributors.json
 
    running:  ATXDAONFT_V2.specialMint()
   contract:  0x610178dA211FEF7D417bC0e6FeD39F05609AD788
@@ -196,7 +196,7 @@ recipients:  0xf83b3A823653E8351b173Fa2Ae083Af37EAbCC01
 
 ```zsh
 # dynamic special mint from arg list
-❯ hh mint-special --network localhost --dynamic --token-uri ipfs://QmQRFD3dSfNRDa7vvHwafwg4F6FUjA2NBjxBrGuPSrpKrV/  0xf83b3A823653E8351b173Fa2Ae083Af37EAbCC01 0x5A17717abE73FEb3d4C4AAfD39B3CA5313cFB653
+❯ hh mint-special --network localhost --dynamic --token-uri ipfs://QmYVgQoE74xp5TigTe1EC9vDQw7tx39t3U9ySTaNHa7CdV/  0xf83b3A823653E8351b173Fa2Ae083Af37EAbCC01 0x5A17717abE73FEb3d4C4AAfD39B3CA5313cFB653
 
    running:  ATXDAONFT_V2.specialMint()
   contract:  0x610178dA211FEF7D417bC0e6FeD39F05609AD788
@@ -284,7 +284,7 @@ proof:
 ### Start Mint
 
 ```zsh
-❯ hh start-mint --network localhost --root 0x09bdac7838fdbc3d080baf0a069c66554ad41d9d468c3127e5ca1d19e4c38399 --token-uri ipfs://QmQRFD3dSfNRDa7vvHwafwg4F6FUjA2NBjxBrGuPSrpKrV/ --mint-price 0.63
+❯ hh start-mint --network localhost --root 0x09bdac7838fdbc3d080baf0a069c66554ad41d9d468c3127e5ca1d19e4c38399 --token-uri ipfs://QmYVgQoE74xp5TigTe1EC9vDQw7tx39t3U9ySTaNHa7CdV/ --mint-price 0.63
    running:  ATXDAONFT_V2.startMint()
      price:  0.63 eth
              630000000000000000 wei
