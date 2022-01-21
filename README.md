@@ -25,7 +25,9 @@
 
 #### [v2 contract](contracts/ATXDAONFT_V2.sol)
 
+- mainnet: [0x63f8F23ce0f3648097447622209E95A391c44b00](https://etherscan.io/address/0x63f8F23ce0f3648097447622209E95A391c44b00)
 - ropsten: [0xc38D8Da0c1cA6314474a3442103F543551f0F177](https://ropsten.etherscan.io/address/0xc38D8Da0c1cA6314474a3442103F543551f0F177#readContract)
+- rinkeby: [0x683d067d5cA4158271A6c79BBaFDDb05a698D2b4](https://rinkeby.etherscan.io/address/0x683d067d5cA4158271A6c79BBaFDDb05a698D2b4)
 
 ## Setup
 
