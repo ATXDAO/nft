@@ -123,11 +123,11 @@ deploy tx:  0x8148515e0013a6cb9c01863a09e61f5fc1ac79ffb08528342ee04771de0f7e00
   address:  0xe1e1561881aBa2cbb4D29Fa4e846C71CbD8073E4
 ```
 
-### Speical Mint
+### Special Mint
 
 ```zsh
 # non-dynamic special mint for genesis members
-❯ hh mint-speical --network localhost --token-uri ipfs://QmRYkLgszoKpV15AUDcZJ82yL741pJRFSUogtNiUUF45S2  metadata/genesis/genesis-addresses.json
+❯ hh mint-special --network localhost --token-uri ipfs://QmRYkLgszoKpV15AUDcZJ82yL741pJRFSUogtNiUUF45S2  metadata/genesis/genesis-addresses.json
 
    running:  ATXDAONFT_V2.specialMint()
   contract:  0x610178dA211FEF7D417bC0e6FeD39F05609AD788
