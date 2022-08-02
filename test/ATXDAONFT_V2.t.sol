@@ -3,7 +3,7 @@ pragma solidity ^0.8.9;
 
 import "ds-test/test.sol";
 import "contracts/ATXDAONFT_V2.sol";
-import "tests/utils/vm.sol";
+import "test/utils/vm.sol";
 
 contract ATXDAONFTV2Test is DSTest {
     // see https://github.com/gakonst/foundry/tree/master/forge
