@@ -16,13 +16,13 @@ task<SetMerkleRootArgs>('set-merkle-root', 'set the merkle root')
   .addOptionalParam('contractAddress', 'nftv2 contract address')
   .addOptionalParam(
     'gasPrice',
-    'gas price in wei to deploy with (uses provider.getGasPrice() otherwise)'
+    'gas price in wei to deploy with (uses provider.getGasPrice() otherwise)',
   )
   .addOptionalParam('root', 'merkle root')
   .setAction(
     async (
       { contractAddress, gasPrice, root }: SetMerkleRootArgs,
-      { ethers, network }
+      { ethers, network },
     ) => {
       const { isAddress } = ethers.utils;
       if (network.name === 'mainnet') {
@@ -35,8 +35,8 @@ task<SetMerkleRootArgs>('set-merkle-root', 'set the merkle root')
           ? (
               JSON.parse(
                 readFileSync(
-                  root || 'metadata/zilker/zilker-merkle-tree.json'
-                ).toString()
+                  root || 'metadata/zilker/zilker-merkle-tree.json',
+                ).toString(),
               ) as MerkleOutput
             ).root
           : root;
@@ -48,17 +48,17 @@ task<SetMerkleRootArgs>('set-merkle-root', 'set the merkle root')
         contractAddress || getContractAddress('ATXDAONFT_V2', network.name);
       if (!isAddress(parsedContractAddress)) {
         throw new Error(
-          `${parsedContractAddress} is not a valid contract address!`
+          `${parsedContractAddress} is not a valid contract address!`,
         );
       }
 
       const txGasPrice = ethers.BigNumber.from(
-        gasPrice || (await ethers.provider.getGasPrice())
+        gasPrice || (await ethers.provider.getGasPrice()),
       );
 
       const contract = (await ethers.getContractAt(
         'ATXDAONFT_V2',
-        parsedContractAddress
+        parsedContractAddress,
       )) as ATXDAONFTV2;
 
       console.log('   running:  ATXDAONFT_V2.setMerkleRoot()');
@@ -68,7 +68,7 @@ task<SetMerkleRootArgs>('set-merkle-root', 'set the merkle root')
       console.log(`    signer:  ${await signer.getAddress()}`);
 
       console.log(
-        `  gasPrice:  ${ethers.utils.formatUnits(txGasPrice, 'gwei')} gwei\n`
+        `  gasPrice:  ${ethers.utils.formatUnits(txGasPrice, 'gwei')} gwei\n`,
       );
 
       const tx = await contract.setMerkleRoot(parsedRoot, {
@@ -76,5 +76,5 @@ task<SetMerkleRootArgs>('set-merkle-root', 'set the merkle root')
       });
 
       console.log(`\n  tx hash:   ${tx.hash}`);
-    }
+    },
   );

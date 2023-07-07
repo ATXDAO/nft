@@ -12,7 +12,7 @@ task<EndMintArgs>('end-mint', 'ends mint')
   .addOptionalParam('contractAddress', 'nftv2 contract address')
   .addOptionalParam(
     'gasPrice',
-    'gas price in wei to deploy with (uses provider.getGasPrice() otherwise)'
+    'gas price in wei to deploy with (uses provider.getGasPrice() otherwise)',
   )
   .setAction(
     async ({ contractAddress, gasPrice }: EndMintArgs, { ethers, network }) => {
@@ -29,17 +29,17 @@ task<EndMintArgs>('end-mint', 'ends mint')
         contractAddress || getContractAddress('ATXDAONFT_V2', network.name);
       if (!isAddress(parsedContractAddress)) {
         throw new Error(
-          `${parsedContractAddress} is not a valid contract address!`
+          `${parsedContractAddress} is not a valid contract address!`,
         );
       }
 
       const txGasPrice = ethers.BigNumber.from(
-        gasPrice || (await ethers.provider.getGasPrice())
+        gasPrice || (await ethers.provider.getGasPrice()),
       );
 
       const contract = (await ethers.getContractAt(
         'ATXDAONFT_V2',
-        parsedContractAddress
+        parsedContractAddress,
       )) as ATXDAONFTV2;
 
       console.log('   running:  ATXDAONFT_V2.endMint()');
@@ -48,7 +48,7 @@ task<EndMintArgs>('end-mint', 'ends mint')
       console.log(`    signer:  ${await signer.getAddress()}`);
 
       console.log(
-        `  gasPrice:  ${ethers.utils.formatUnits(txGasPrice, 'gwei')} gwei\n`
+        `  gasPrice:  ${ethers.utils.formatUnits(txGasPrice, 'gwei')} gwei\n`,
       );
 
       const tx = await contract.endMint({
@@ -56,5 +56,5 @@ task<EndMintArgs>('end-mint', 'ends mint')
       });
 
       console.log(`\n  tx hash:   ${tx.hash}`);
-    }
+    },
   );

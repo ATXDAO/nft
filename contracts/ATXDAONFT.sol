@@ -57,10 +57,10 @@ contract ATXDAONFT is ERC721URIStorage, Ownable {
     }
 
     // Dev mint
-    function mintSpecial(address[] memory recipients, string memory tokenURI)
-        external
-        onlyOwner
-    {
+    function mintSpecial(
+        address[] memory recipients,
+        string memory tokenURI
+    ) external onlyOwner {
         for (uint64 i = 0; i < recipients.length; i++) {
             _tokenIds.increment();
             uint256 newTokenId = _tokenIds.current();

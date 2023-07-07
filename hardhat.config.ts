@@ -1,11 +1,10 @@
 import '@nomiclabs/hardhat-ethers';
 import '@nomiclabs/hardhat-etherscan';
-import '@nomiclabs/hardhat-waffle';
 import '@typechain/hardhat';
 import dotenv from 'dotenv';
 import fs from 'fs';
 import 'hardhat-deploy';
-import { HardhatUserConfig } from 'hardhat/config';
+import {HardhatUserConfig} from 'hardhat/config';
 
 dotenv.config();
 

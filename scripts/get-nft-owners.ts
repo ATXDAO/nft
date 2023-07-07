@@ -11,19 +11,19 @@ interface GetNftOwnersArgs {
 task('get-nft-owners', 'gets a list of nft owners, ordered by token id')
   .addParam<ContractName>(
     'contract',
-    'contract name (e.g. ATXDAONFT or ATXDAONFT_V2)'
+    'contract name (e.g. ATXDAONFT or ATXDAONFT_V2)',
   )
   .addOptionalParam<number>('start', 'token id to start')
   .addOptionalParam<number>('end', 'token id to end (inclusive)')
   .setAction(
     async (
       { contract, start = 3, end = 999999 }: GetNftOwnersArgs,
-      { ethers, network }
+      { ethers, network },
     ) => {
       const contractAddress = getContractAddress(contract, network.name);
       const nft = (await ethers.getContractAt(
         contract,
-        contractAddress
+        contractAddress,
       )) as ATXDAONFT;
       const nftData: { owner: string; uri: string }[] = [];
       for (let id = start; id <= end; id += 1) {
@@ -38,5 +38,5 @@ task('get-nft-owners', 'gets a list of nft owners, ordered by token id')
 
       console.error(`${nftData.length} found!`);
       console.log(JSON.stringify(nftData, null, 4));
-    }
+    },
   );

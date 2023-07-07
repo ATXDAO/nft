@@ -18,16 +18,16 @@ export interface MerkleOutput {
 
 task<MerkleTreeArgs>(
   'classic-merkle',
-  'generate a NFT v2 merkle tree from a set of space-separated addresses'
+  'generate a NFT v2 merkle tree from a set of space-separated addresses',
 )
   .addVariadicPositionalParam(
     'recipients',
-    'specialMint recipient addresses (json filename or space separated list)'
+    'specialMint recipient addresses (json filename or space separated list)',
   )
   .addFlag('allProofs', 'generate proofs for all recipients')
   .addOptionalParam(
     'proofFor',
-    'generate proof for a given recipient address (ignored if allProofs is set)'
+    'generate proof for a given recipient address (ignored if allProofs is set)',
   )
   .setAction(
     async ({ recipients, allProofs, proofFor }: MerkleTreeArgs, { ethers }) => {
@@ -36,7 +36,7 @@ task<MerkleTreeArgs>(
           ? JSON.parse(readFileSync(recipients[0]).toString())
           : recipients;
       const leafNodes = parsedRecipients.map((addr: string) =>
-        getAddress(addr)
+        getAddress(addr),
       );
       const tree = new MerkleTree(leafNodes, keccak256, {
         hashLeaves: true,
@@ -70,5 +70,5 @@ task<MerkleTreeArgs>(
       if (allProofs) {
         console.log(JSON.stringify(output, undefined, 4));
       }
-    }
+    },
   );
