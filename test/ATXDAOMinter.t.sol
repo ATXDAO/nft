@@ -11,7 +11,8 @@ contract ATXDAOMinterTest is DSTest {
     // see https://github.com/gakonst/foundry/tree/master/forge
     Vm vm = Vm(0x7109709ECfa91a80626fF3989D68f67F5b1DD12D);
 
-    address public constant daoVault = address(0x80);
+    address public constant bank1 = address(0x80);
+    address public constant bank2 = address(0x81);
 
     bytes32 public constant MERKLE_ROOT =
         0x9decc5afe188d8a4ca9aad9fcc0d5c4ba29ed2473f5c0728c00775b2bb54df47;
@@ -29,7 +30,7 @@ contract ATXDAOMinterTest is DSTest {
 
     function setUp() public {
         nft = new ATXDAONFT_V2();
-        minter = new ATXDAOMinter(address(nft), daoVault);
+        minter = new ATXDAOMinter(address(nft), bank1);
         nft.transferOwnership(address(minter));
     }
 
@@ -40,7 +41,7 @@ contract ATXDAOMinterTest is DSTest {
         vm.prank(nftDeployer);
         nft = new ATXDAONFT_V2();
         vm.prank(minterDeployer);
-        minter = new ATXDAOMinter(address(nft), daoVault);
+        minter = new ATXDAOMinter(address(nft), bank1);
 
         assertEq(nft.owner(), nftDeployer);
         assertEq(minter.owner(), minterDeployer);
@@ -64,7 +65,7 @@ contract ATXDAOMinterTest is DSTest {
 
     function testStartMintAuth() public {
         nft = new ATXDAONFT_V2();
-        minter = new ATXDAOMinter(address(nft), daoVault);
+        minter = new ATXDAOMinter(address(nft), bank1);
 
         nft.startMint(1 wei, "foo", bytes32(0x0));
         assert(nft.isMintable());
@@ -102,7 +103,7 @@ contract ATXDAOMinterTest is DSTest {
             0
         ] = 0xdd0183c844aefebba5b4b87b9a7c53e9b1dbeaf2d298164799ff55f32ff8d4eb;
 
-        assertEq(daoVault.balance, 0);
+        assertEq(bank1.balance, 0);
         assert(!minter.isMintable());
         minter.startMint(MERKLE_ROOT, 0.02 ether);
         assert(minter.isMintable());
@@ -111,12 +112,20 @@ contract ATXDAOMinterTest is DSTest {
         // console2.logBytes32(
         //     keccak256(abi.encodePacked(ADDRESS_A, TOKEN_URI_A))
         // );
+
+        // user a should be able to mint
         assertEq(nft.balanceOf(ADDRESS_A), 0);
         vm.deal(ADDRESS_A, 0.04 ether);
         vm.prank(ADDRESS_A);
         minter.mint{value: 0.02 ether}(proof_a, TOKEN_URI_A);
         assertEq(nft.tokenURI(1), "ipfs://born/in-the-usa.json");
         assertEq(nft.ownerOf(1), ADDRESS_A);
+
+        assertEq(bank1.balance, 0.02 ether);
+        vm.prank(address(0x2));
+        vm.expectRevert("Ownable: caller is not the owner");
+        minter.setBank(bank2);
+        minter.setBank(bank2);
 
         vm.deal(ADDRESS_B, 0.04 ether);
         vm.prank(ADDRESS_B);
@@ -125,7 +134,7 @@ contract ATXDAOMinterTest is DSTest {
         vm.expectRevert("Not on the list or invalid token URI!");
         minter.mint{value: 0.02 ether}(proof_b, "im cheating");
 
-        // user should be able to mint
+        // user b should be able to mint
         assert(minter.canMint(ADDRESS_B, proof_b, TOKEN_URI_B));
         assertEq(nft.balanceOf(ADDRESS_B), 0);
         vm.prank(ADDRESS_B);
@@ -147,6 +156,7 @@ contract ATXDAOMinterTest is DSTest {
         minter.mint{value: 0.02 ether}(proof_b, TOKEN_URI_B);
 
         // contract should send all eth received directly to the dao vault
-        assertEq(daoVault.balance, 0.04 ether);
+        assertEq(bank1.balance, 0.02 ether);
+        assertEq(bank2.balance, 0.02 ether);
     }
 }

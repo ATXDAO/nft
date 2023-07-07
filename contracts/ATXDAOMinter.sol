@@ -28,13 +28,21 @@ contract ATXDAOMinter is Ownable {
     uint256 public price;
     bool public isMintable;
     mapping(address => bool) public hasMinted;
-    address payable ethRecipient;
+    address payable bank;
 
-    constructor(address _nftAddress, address _ethRecipient) {
-        require(_ethRecipient != address(0), "Recipient is address(0)");
+    constructor(address _nftAddress, address _bank) {
         require(_nftAddress != address(0), "NFT is address(0)");
+        _setBank(_bank);
         nft = IATXDAONFT_V2(_nftAddress);
-        ethRecipient = payable(_ethRecipient);
+    }
+
+    function _setBank(address _bank) private {
+        require(_bank != address(0), "Recipient is address(0)");
+        bank = payable(_bank);
+    }
+
+    function setBank(address _bank) external onlyOwner {
+        _setBank(_bank);
     }
 
     function transferNftOwnership(address to) external onlyOwner {
@@ -84,7 +92,7 @@ contract ATXDAOMinter is Ownable {
         require(!hasMinted[msg.sender], "You have already minted an NFT!");
         require(msg.value >= price, "Not enough ether sent to mint!");
 
-        (bool success, ) = ethRecipient.call{value: address(this).balance}("");
+        (bool success, ) = bank.call{value: address(this).balance}("");
         require(success, "Transfer to vault failed.");
 
         hasMinted[msg.sender] = true;
