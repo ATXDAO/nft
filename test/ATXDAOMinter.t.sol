@@ -93,6 +93,7 @@ contract ATXDAOMinterTest is DSTest {
     }
 
     function testMint() public {
+        assertEq(daoVault.balance, 0);
         assert(!minter.isMintable());
         minter.startMint(MERKLE_ROOT, 0.02 ether);
         assert(minter.isMintable());
@@ -139,5 +140,8 @@ contract ATXDAOMinterTest is DSTest {
         vm.prank(ADDRESS_B);
         vm.expectRevert("You have already minted an NFT!");
         minter.mint{value: 0.02 ether}(proof_b, TOKEN_URI_B);
+
+        // contract should send all eth received directly to the dao vault
+        assertEq(daoVault.balance, 0.04 ether);
     }
 }
