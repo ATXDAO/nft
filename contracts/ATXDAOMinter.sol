@@ -69,10 +69,10 @@ contract ATXDAOMinter is Ownable {
         nft.mintSpecial(recipients, tokenURI, false);
     }
 
-    function mint(
-        bytes32[] memory proof,
-        string memory tokenURI
-    ) external payable {
+    function mint(bytes32[] memory proof, string memory tokenURI)
+        external
+        payable
+    {
         require(isMintable, "Mint has not been started!");
         require(
             proof.verify(
@@ -105,10 +105,10 @@ contract ATXDAOMinter is Ownable {
             );
     }
 
-    function mintSpecial(
-        address to,
-        string memory tokenURI
-    ) external onlyOwner {
+    function mintSpecial(address to, string memory tokenURI)
+        external
+        onlyOwner
+    {
         _mint(to, tokenURI);
     }
 }
