@@ -93,28 +93,31 @@ contract ATXDAOMinterTest is DSTest {
     }
 
     function testMint() public {
+        bytes32[] memory proof_a = new bytes32[](1);
+        proof_a[
+            0
+        ] = 0xd505d9d405a036d7cdcb4e90bf4cf6ab97aa16f026089cbd1ec02da2a4915e7f;
+        bytes32[] memory proof_b = new bytes32[](1);
+        proof_b[
+            0
+        ] = 0xdd0183c844aefebba5b4b87b9a7c53e9b1dbeaf2d298164799ff55f32ff8d4eb;
+
         assertEq(daoVault.balance, 0);
         assert(!minter.isMintable());
         minter.startMint(MERKLE_ROOT, 0.02 ether);
         assert(minter.isMintable());
 
-        bytes32[] memory proof_a = new bytes32[](1);
-        proof_a[
-            0
-        ] = 0xd505d9d405a036d7cdcb4e90bf4cf6ab97aa16f026089cbd1ec02da2a4915e7f;
         // debug merkle proof construction
         // console2.logBytes32(
         //     keccak256(abi.encodePacked(ADDRESS_A, TOKEN_URI_A))
         // );
+        assertEq(nft.balanceOf(ADDRESS_A), 0);
         vm.deal(ADDRESS_A, 0.04 ether);
         vm.prank(ADDRESS_A);
         minter.mint{value: 0.02 ether}(proof_a, TOKEN_URI_A);
         assertEq(nft.tokenURI(1), "ipfs://born/in-the-usa.json");
+        assertEq(nft.ownerOf(1), ADDRESS_A);
 
-        bytes32[] memory proof_b = new bytes32[](1);
-        proof_b[
-            0
-        ] = 0xdd0183c844aefebba5b4b87b9a7c53e9b1dbeaf2d298164799ff55f32ff8d4eb;
         vm.deal(ADDRESS_B, 0.04 ether);
         vm.prank(ADDRESS_B);
 
@@ -124,9 +127,11 @@ contract ATXDAOMinterTest is DSTest {
 
         // user should be able to mint
         assert(minter.canMint(ADDRESS_B, proof_b, TOKEN_URI_B));
+        assertEq(nft.balanceOf(ADDRESS_B), 0);
         vm.prank(ADDRESS_B);
         minter.mint{value: 0.02 ether}(proof_b, TOKEN_URI_B);
-        assertEq(nft.tokenURI(1), "ipfs://born/in-the-usa.json");
+        assertEq(nft.tokenURI(2), "ipfs://not-born/in-the-usa.json");
+        assertEq(nft.ownerOf(2), ADDRESS_B);
 
         // fails if user unauthorized
         address unauthorized = address(0x13);
