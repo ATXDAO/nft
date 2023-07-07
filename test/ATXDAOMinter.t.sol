@@ -2,9 +2,10 @@
 pragma solidity ^0.8.9;
 
 import "ds-test/test.sol";
+import "forge-std/console2.sol";
+import "forge-std/Vm.sol";
 import "contracts/ATXDAONFT_V2.sol";
 import "contracts/ATXDAOMinter.sol";
-import "test/utils/vm.sol";
 
 contract ATXDAOMinterTest is DSTest {
     // see https://github.com/gakonst/foundry/tree/master/forge
@@ -13,14 +14,14 @@ contract ATXDAOMinterTest is DSTest {
     address public constant daoVault = address(0x80);
 
     bytes32 public constant MERKLE_ROOT =
-        0x015f54e898f173304a7c3c7f7c512bf094b48dc992c221e9395e816c4499eb6a;
+        0x9decc5afe188d8a4ca9aad9fcc0d5c4ba29ed2473f5c0728c00775b2bb54df47;
 
     address public constant ADDRESS_A =
-        0x7109709ECfa91a80626fF3989D68f67F5b1DD12D;
+        0xabC1000000000000000000000000000000000000;
     string public constant TOKEN_URI_A = "ipfs://born/in-the-usa.json";
 
     address public constant ADDRESS_B =
-        0x51040CE6FC9b9C5Da69B044109f637dc997e92DE;
+        0xAbc2000000000000000000000000000000000000;
     string public constant TOKEN_URI_B = "ipfs://not-born/in-the-usa.json";
 
     ATXDAONFT_V2 nft;
@@ -46,7 +47,7 @@ contract ATXDAOMinterTest is DSTest {
 
         // fails because minter is not owner of NFT contract
         vm.expectRevert("Ownable: caller is not the owner");
-        minter.transferNft(address(this));
+        minter.transferNftOwnership(address(this));
 
         vm.prank(nftDeployer);
         nft.transferOwnership(address(minter));
@@ -54,10 +55,10 @@ contract ATXDAOMinterTest is DSTest {
 
         // fails because address(this) is not owner of minter contract
         vm.expectRevert("Ownable: caller is not the owner");
-        minter.transferNft(address(this));
+        minter.transferNftOwnership(address(this));
 
         vm.prank(minterDeployer);
-        minter.transferNft(address(this));
+        minter.transferNftOwnership(address(this));
         assertEq(nft.owner(), address(this));
     }
 
@@ -76,17 +77,30 @@ contract ATXDAOMinterTest is DSTest {
         minter.startMint(MERKLE_ROOT, 0.02 ether);
         assert(minter.isMintable());
 
-        vm.deal(ADDRESS_A, 0.04 ether);
-        vm.prank(ADDRESS_A);
-
         bytes32[] memory proof_a = new bytes32[](1);
         proof_a[
             0
-        ] = 0xd7caa2ed9297f3c40c06b812fbe902426ec552798ace7049dc4f6a9c0e999bda;
+        ] = 0xd505d9d405a036d7cdcb4e90bf4cf6ab97aa16f026089cbd1ec02da2a4915e7f;
+        // debug merkle proof construction
+        // console2.logBytes32(
+        //     keccak256(abi.encodePacked(ADDRESS_A, TOKEN_URI_A))
+        // );
+        vm.deal(ADDRESS_A, 0.04 ether);
+        vm.prank(ADDRESS_A);
+        minter.mint{value: 0.02 ether}(proof_a, TOKEN_URI_A);
+        assertEq(nft.tokenURI(1), "ipfs://born/in-the-usa.json");
+
         bytes32[] memory proof_b = new bytes32[](1);
         proof_b[
             0
-        ] = 0x97d7b29317dc59e5db1d80b1b4154126870c34edd86c916a6f4857c958c830f5;
-        minter.mint{value: 0.02 ether}(proof_a, TOKEN_URI_A);
+        ] = 0xdd0183c844aefebba5b4b87b9a7c53e9b1dbeaf2d298164799ff55f32ff8d4eb;
+        vm.deal(ADDRESS_B, 0.04 ether);
+        vm.prank(ADDRESS_B);
+        // fails with the wrong token uri
+        vm.expectRevert("Not on the list or invalid token URI!");
+        minter.mint{value: 0.02 ether}(proof_b, "im cheating");
+        vm.prank(ADDRESS_B);
+        minter.mint{value: 0.02 ether}(proof_b, TOKEN_URI_B);
+        assertEq(nft.tokenURI(1), "ipfs://born/in-the-usa.json");
     }
 }

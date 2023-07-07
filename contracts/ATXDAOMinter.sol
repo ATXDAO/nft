@@ -33,7 +33,7 @@ contract ATXDAOMinter is Ownable {
         ethRecipient = _ethRecipient;
     }
 
-    function transferNft(address to) external onlyOwner {
+    function transferNftOwnership(address to) external onlyOwner {
         require(
             nft.owner() == address(this),
             "Minter is not owner of the NFT contract"

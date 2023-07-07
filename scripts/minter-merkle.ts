@@ -1,8 +1,14 @@
 /* eslint-disable indent */
-import { getAddress, solidityKeccak256 } from 'ethers/lib/utils';
+import {
+  getAddress,
+  arrayify,
+  toUtf8Bytes,
+  concat,
+  keccak256,
+} from 'ethers/lib/utils';
 import { readFileSync } from 'fs';
 import { task } from 'hardhat/config';
-import keccak256 from 'keccak256';
+// import keccak256 from 'keccak256';
 import { MerkleTree } from 'merkletreejs';
 
 interface MinterMerkleArgs {
@@ -21,8 +27,15 @@ export interface MerkleOutput {
   proofs: Record<string, string[]>;
 }
 
-const concatAndHashAddressAndString = (address: string, str: string): string =>
-  solidityKeccak256(['address', 'string'], [address, str]);
+const concatAndHashAddressAndString = (
+  address: string,
+  str: string
+): string => {
+  const addressBytes = arrayify(getAddress(address));
+  const stringBytes = toUtf8Bytes(str);
+  const concatenated = concat([addressBytes, stringBytes]);
+  return keccak256(concatenated);
+};
 
 task<MinterMerkleArgs>(
   'minter-merkle',
@@ -54,7 +67,6 @@ task<MinterMerkleArgs>(
       );
       const leafNodes = Object.values(dataByAddress);
       const tree = new MerkleTree(leafNodes, keccak256, {
-        hashLeaves: false,
         sortPairs: true,
       });
       const root = tree.getHexRoot();
