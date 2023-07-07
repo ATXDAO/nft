@@ -62,17 +62,37 @@ contract ATXDAOMinterTest is DSTest {
         assertEq(nft.owner(), address(this));
     }
 
-    function testMint() public {
+    function testStartMintAuth() public {
+        nft = new ATXDAONFT_V2();
+        minter = new ATXDAOMinter(address(nft), daoVault);
+
+        nft.startMint(1 wei, "foo", bytes32(0x0));
+        assert(nft.isMintable());
+
+        // if random address is not the owner of the minter contract
         vm.prank(address(0x1));
         vm.expectRevert("Ownable: caller is not the owner");
-        minter.startMint(0x0, 0.01 ether);
+        minter.startMint(MERKLE_ROOT, 0.01 ether);
 
         vm.expectRevert("Price must be greater than 0.01 ether");
-        minter.startMint(0x0, 0.001 ether);
+        minter.startMint(MERKLE_ROOT, 0.001 ether);
 
         vm.expectRevert("Invalid merkle root");
         minter.startMint(0x0, 0.02 ether);
 
+        // if minter is not the owner of the nft contract
+        vm.expectRevert("Ownable: caller is not the owner");
+        minter.startMint(MERKLE_ROOT, 0.02 ether);
+
+        nft.transferOwnership(address(minter));
+
+        assert(!minter.isMintable());
+        minter.startMint(MERKLE_ROOT, 0.02 ether);
+        assert(minter.isMintable());
+        assert(!nft.isMintable());
+    }
+
+    function testMint() public {
         assert(!minter.isMintable());
         minter.startMint(MERKLE_ROOT, 0.02 ether);
         assert(minter.isMintable());
@@ -96,11 +116,28 @@ contract ATXDAOMinterTest is DSTest {
         ] = 0xdd0183c844aefebba5b4b87b9a7c53e9b1dbeaf2d298164799ff55f32ff8d4eb;
         vm.deal(ADDRESS_B, 0.04 ether);
         vm.prank(ADDRESS_B);
+
         // fails with the wrong token uri
         vm.expectRevert("Not on the list or invalid token URI!");
         minter.mint{value: 0.02 ether}(proof_b, "im cheating");
+
+        // user should be able to mint
+        assert(minter.canMint(ADDRESS_B, proof_b, TOKEN_URI_B));
         vm.prank(ADDRESS_B);
         minter.mint{value: 0.02 ether}(proof_b, TOKEN_URI_B);
         assertEq(nft.tokenURI(1), "ipfs://born/in-the-usa.json");
+
+        // fails if user unauthorized
+        address unauthorized = address(0x13);
+        vm.prank(unauthorized);
+        vm.deal(unauthorized, 0.04 ether);
+        vm.expectRevert("Not on the list or invalid token URI!");
+        minter.mint{value: 0.02 ether}(proof_b, TOKEN_URI_B);
+
+        // test already minted
+        assert(!minter.canMint(ADDRESS_B, proof_b, TOKEN_URI_B));
+        vm.prank(ADDRESS_B);
+        vm.expectRevert("You have already minted an NFT!");
+        minter.mint{value: 0.02 ether}(proof_b, TOKEN_URI_B);
     }
 }

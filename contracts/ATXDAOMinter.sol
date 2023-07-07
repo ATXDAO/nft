@@ -14,6 +14,10 @@ interface IATXDAONFT_V2 {
     function transferOwnership(address newOwner) external;
 
     function owner() external view returns (address);
+
+    function isMintable() external view returns (bool);
+
+    function endMint() external;
 }
 
 contract ATXDAOMinter is Ownable {
@@ -45,6 +49,10 @@ contract ATXDAOMinter is Ownable {
     function startMint(bytes32 _merkleRoot, uint256 _price) external onlyOwner {
         require(_price > 0.01 ether, "Price must be greater than 0.01 ether");
         require(_merkleRoot != bytes32(0), "Invalid merkle root");
+
+        if (nft.isMintable()) {
+            nft.endMint();
+        }
 
         price = _price;
         merkleRoot = _merkleRoot;
@@ -81,15 +89,16 @@ contract ATXDAOMinter is Ownable {
     }
 
     function canMint(
+        address recipient,
         bytes32[] memory proof,
         string memory tokenURI
     ) external view returns (bool) {
         return
             isMintable &&
-            !hasMinted[msg.sender] &&
+            !hasMinted[recipient] &&
             proof.verify(
                 merkleRoot,
-                keccak256(abi.encodePacked(msg.sender, tokenURI))
+                keccak256(abi.encodePacked(recipient, tokenURI))
             );
     }
 
