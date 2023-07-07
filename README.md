@@ -214,9 +214,9 @@ recipients:  0xf83b3A823653E8351b173Fa2Ae083Af37EAbCC01
   tx hash:   0xdb4d8108e35783fb3b0912c5a77612d6d371d418f40e67afa1c55041ac504fdb
 ```
 
-### Generate merkle tree
+### Generate classic merkle tree
 
-You can generate a merkle root + proof with the `merkle-tree` task. Here's an
+You can generate a merkle root + proof with the `classic-merkle` task. Here's an
 example passing is 0x1, 0x2, and 0x3 as whitelisted addresses. It generates the
 merkle root for the set of addresses and the proof for 0x3
 
@@ -360,4 +360,28 @@ proof:
 
 ```zsh
 ❯ hh start-mint --network ropsten --root 0xeaa7c77029072bf029aef546fe224070e90af3f17d11d49282c8214953b777bc --token-uri ipfs://QmQRFD3dSfNRDa7vvHwafwg4F6FUjA2NBjxBrGuPSrpKrV/ --mint-price 0.02
+```
+
+## ATXDAO Minter Contract
+
+This is for the new ATX DAO Minter contract.
+
+```zsh
+❯ hh minter-merkle metadata/test/minter-test.json --all-proofs
+0x015f54e898f173304a7c3c7f7c512bf094b48dc992c221e9395e816c4499eb6a
+└─ 015f54e898f173304a7c3c7f7c512bf094b48dc992c221e9395e816c4499eb6a
+   ├─ 97d7b29317dc59e5db1d80b1b4154126870c34edd86c916a6f4857c958c830f5
+   └─ d7caa2ed9297f3c40c06b812fbe902426ec552798ace7049dc4f6a9c0e999bda
+
+{
+    "root": "0x015f54e898f173304a7c3c7f7c512bf094b48dc992c221e9395e816c4499eb6a",
+    "proofs": {
+        "0x7109709ecfa91a80626ff3989d68f67f5b1dd12d": [
+            "0xd7caa2ed9297f3c40c06b812fbe902426ec552798ace7049dc4f6a9c0e999bda"
+        ],
+        "0x51040ce6fc9b9c5da69b044109f637dc997e92de": [
+            "0x97d7b29317dc59e5db1d80b1b4154126870c34edd86c916a6f4857c958c830f5"
+        ]
+    }
+}
 ```

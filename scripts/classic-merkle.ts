@@ -17,8 +17,8 @@ export interface MerkleOutput {
 }
 
 task<MerkleTreeArgs>(
-  'merkle-tree',
-  'generate a merkle tree from a set of space-separated addresses'
+  'classic-merkle',
+  'generate a NFT v2 merkle tree from a set of space-separated addresses'
 )
   .addVariadicPositionalParam(
     'recipients',

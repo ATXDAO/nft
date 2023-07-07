@@ -3,7 +3,7 @@ import { ATXDAONFTV2 } from '../typechain-types/ATXDAONFTV2';
 import { assertValidTokenUri } from '../util/assertions';
 import { getContractAddress } from '../util/contract-meta';
 import { dynamicGetGasPrice } from '../util/gas-now';
-import { MerkleOutput } from './merkle-tree';
+import { MerkleOutput } from './classic-merkle';
 import { readFileSync } from 'fs';
 import { task } from 'hardhat/config';
 
