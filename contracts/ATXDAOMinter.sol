@@ -29,6 +29,7 @@ contract ATXDAOMinter is Ownable {
     bool public isMintable;
     mapping(address => bool) public hasMinted;
     address payable bank;
+    uint256 public lastRoundTokenId;
 
     constructor(address _nftAddress, address _bank) {
         require(_nftAddress != address(0), "NFT is address(0)");

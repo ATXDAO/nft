@@ -1,11 +1,11 @@
 /* eslint-disable indent */
-import { ATXDAONFTV2 } from '../typechain-types/ATXDAONFTV2';
-import { assertValidTokenUri } from '../util/assertions';
-import { getContractAddress } from '../util/contract-meta';
-import { dynamicGetGasPrice } from '../util/gas-now';
-import { MerkleOutput } from './classic-merkle';
-import { readFileSync } from 'fs';
-import { task } from 'hardhat/config';
+import {ATXDAONFT_V2} from '../typechain-types';
+import {assertValidTokenUri} from '../util/assertions';
+import {getContractAddress} from '../util/contract-meta';
+import {dynamicGetGasPrice} from '../util/gas-now';
+import {MerkleOutput} from './classic-merkle';
+import {readFileSync} from 'fs';
+import {task} from 'hardhat/config';
 
 interface StartMintArgs {
   contractAddress?: string;
@@ -19,17 +19,17 @@ task<StartMintArgs>('start-mint', 'enable nft minting')
   .addOptionalParam('contractAddress', 'nftv2 contract address')
   .addOptionalParam(
     'gasPrice',
-    'gas price in wei to deploy with (uses provider.getGasPrice() otherwise)',
+    'gas price in wei to deploy with (uses provider.getGasPrice() otherwise)'
   )
   .addParam('root', 'merkle root')
   .addParam('tokenUri', 'base token uri (should end with "/"')
   .addParam('mintPrice', 'price in ether, e.g. "0.512"')
   .setAction(
     async (
-      { contractAddress, gasPrice, mintPrice, tokenUri, root }: StartMintArgs,
-      { ethers, network },
+      {contractAddress, gasPrice, mintPrice, tokenUri, root}: StartMintArgs,
+      {ethers, network}
     ) => {
-      const { isAddress, parseEther, formatEther } = ethers.utils;
+      const {isAddress, parseEther, formatEther} = ethers.utils;
       if (network.name === 'mainnet') {
         ethers.providers.BaseProvider.prototype.getGasPrice =
           dynamicGetGasPrice('fast');
@@ -41,7 +41,7 @@ task<StartMintArgs>('start-mint', 'enable nft minting')
 
       if (parsedPrice < parseEther('0.01')) {
         console.error(
-          `mint-price (${formatEther(parsedPrice)} eth) less than 0.01 eth!`,
+          `mint-price (${formatEther(parsedPrice)} eth) less than 0.01 eth!`
         );
         process.exit(1);
       }
@@ -51,8 +51,8 @@ task<StartMintArgs>('start-mint', 'enable nft minting')
           ? (
               JSON.parse(
                 readFileSync(
-                  root || 'metadata/zilker/zilker-merkle-tree.json',
-                ).toString(),
+                  root || 'metadata/zilker/zilker-merkle-tree.json'
+                ).toString()
               ) as MerkleOutput
             ).root
           : root;
@@ -64,18 +64,18 @@ task<StartMintArgs>('start-mint', 'enable nft minting')
         contractAddress || getContractAddress('ATXDAONFT_V2', network.name);
       if (!isAddress(parsedContractAddress)) {
         throw new Error(
-          `${parsedContractAddress} is not a valid contract address!`,
+          `${parsedContractAddress} is not a valid contract address!`
         );
       }
 
       const txGasPrice = ethers.BigNumber.from(
-        gasPrice || (await ethers.provider.getGasPrice()),
+        gasPrice || (await ethers.provider.getGasPrice())
       );
 
       const contract = (await ethers.getContractAt(
         'ATXDAONFT_V2',
-        parsedContractAddress,
-      )) as ATXDAONFTV2;
+        parsedContractAddress
+      )) as ATXDAONFT_V2;
 
       console.log('   running:  ATXDAONFT_V2.startMint()');
       console.log(`     price:  ${formatEther(parsedPrice)} eth`);
@@ -87,7 +87,7 @@ task<StartMintArgs>('start-mint', 'enable nft minting')
       console.log(`    signer:  ${await signer.getAddress()}`);
 
       console.log(
-        `  gasPrice:  ${ethers.utils.formatUnits(txGasPrice, 'gwei')} gwei\n`,
+        `  gasPrice:  ${ethers.utils.formatUnits(txGasPrice, 'gwei')} gwei\n`
       );
 
       const tx = await contract.startMint(parsedPrice, tokenUri, parsedRoot, {
@@ -95,7 +95,7 @@ task<StartMintArgs>('start-mint', 'enable nft minting')
       });
 
       console.log(`\n  tx hash:   ${tx.hash}`);
-    },
+    }
   );
 
 // import hre from 'hardhat';

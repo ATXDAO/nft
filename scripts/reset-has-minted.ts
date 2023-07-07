@@ -1,4 +1,4 @@
-import { ATXDAONFTV2 } from '../typechain-types/ATXDAONFTV2';
+import { ATXDAONFT_V2 } from '../typechain-types';
 import { getContractAddress } from '../util/contract-meta';
 import { dynamicGetGasPrice } from '../util/gas-now';
 import { getAddress } from 'ethers/lib/utils';
@@ -52,7 +52,7 @@ task<ResetHasMintedArgs>('reset-has-minted', 'reset hasMinted for an address')
       const contract = (await ethers.getContractAt(
         'ATXDAONFT_V2',
         parsedContractAddress,
-      )) as ATXDAONFTV2;
+      )) as ATXDAONFT_V2;
 
       console.log('   running:  ATXDAONFT_V2.resetHasMinted()');
       console.log(` addresses:  ${parsedAddresses.join(' ')}`);

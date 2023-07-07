@@ -1,6 +1,6 @@
 import { FixedDeployFunction } from '../types';
 import { dynamicGetGasPrice } from '../util/gas-now';
-import { ATXDAONFTV2 } from '../typechain-types/ATXDAONFTV2';
+import { ATXDAONFT_V2 } from '../typechain-types';
 
 const nftContractName = 'ATXDAONFT_V2';
 const contractName = 'ATXDAOMinter';
@@ -32,7 +32,7 @@ const deployFunc: FixedDeployFunction = async ({
   const nftContract = (await ethers.getContractAt(
     'ATXDAONFT_V2',
     nftAddress,
-  )) as ATXDAONFTV2;
+  )) as ATXDAONFT_V2;
 
   if (await nftContract.isMintable()) {
     console.error('nft is mintable! ending mint...');
