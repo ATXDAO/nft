@@ -14,13 +14,13 @@ task<ResetHasMintedArgs>('reset-has-minted', 'reset hasMinted for an address')
   .addOptionalParam('contractAddress', 'nftv2 contract address')
   .addOptionalParam(
     'gasPrice',
-    'gas price in wei to deploy with (uses provider.getGasPrice() otherwise)',
+    'gas price in wei to deploy with (uses provider.getGasPrice() otherwise)'
   )
   .addVariadicPositionalParam('addresses', 'the address to reset hasMinted for')
   .setAction(
     async (
       { contractAddress, gasPrice, addresses }: ResetHasMintedArgs,
-      { ethers, network },
+      { ethers, network }
     ) => {
       const { isAddress } = ethers.utils;
       if (network.name === 'mainnet') {
@@ -41,17 +41,17 @@ task<ResetHasMintedArgs>('reset-has-minted', 'reset hasMinted for an address')
         contractAddress || getContractAddress('ATXDAONFT_V2', network.name);
       if (!isAddress(parsedContractAddress)) {
         throw new Error(
-          `${parsedContractAddress} is not a valid contract address!`,
+          `${parsedContractAddress} is not a valid contract address!`
         );
       }
 
       const txGasPrice = ethers.BigNumber.from(
-        gasPrice || (await ethers.provider.getGasPrice()),
+        gasPrice || (await ethers.provider.getGasPrice())
       );
 
       const contract = (await ethers.getContractAt(
         'ATXDAONFT_V2',
-        parsedContractAddress,
+        parsedContractAddress
       )) as ATXDAONFT_V2;
 
       console.log('   running:  ATXDAONFT_V2.resetHasMinted()');
@@ -61,7 +61,7 @@ task<ResetHasMintedArgs>('reset-has-minted', 'reset hasMinted for an address')
       console.log(`    signer:  ${await signer.getAddress()}`);
 
       console.log(
-        `  gasPrice:  ${ethers.utils.formatUnits(txGasPrice, 'gwei')} gwei\n`,
+        `  gasPrice:  ${ethers.utils.formatUnits(txGasPrice, 'gwei')} gwei\n`
       );
 
       const tx = await contract.resetHasMinted(parsedAddresses, {
@@ -69,5 +69,5 @@ task<ResetHasMintedArgs>('reset-has-minted', 'reset hasMinted for an address')
       });
 
       console.log(`\n  tx hash:   ${tx.hash}`);
-    },
+    }
   );

@@ -14,7 +14,7 @@ module.exports = {
       files: '*.ts',
       options: {
         bracketSpacing: true,
-        trailingComma: 'all',
+        trailingComma: 'es5',
       },
     },
   ],
