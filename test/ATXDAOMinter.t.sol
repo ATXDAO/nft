@@ -72,22 +72,22 @@ contract ATXDAOMinterTest is DSTest {
         // if random address is not the owner of the minter contract
         vm.prank(address(0x1));
         vm.expectRevert("Ownable: caller is not the owner");
-        minter.startMint(MERKLE_ROOT, 0.01 ether);
+        minter.startMint(MERKLE_ROOT, 0.01 ether, false);
 
         vm.expectRevert("Price must be greater than 0.01 ether");
-        minter.startMint(MERKLE_ROOT, 0.001 ether);
+        minter.startMint(MERKLE_ROOT, 0.001 ether, false);
 
         vm.expectRevert("Invalid merkle root");
-        minter.startMint(0x0, 0.02 ether);
+        minter.startMint(0x0, 0.02 ether, false);
 
         // if minter is not the owner of the nft contract
         vm.expectRevert("Ownable: caller is not the owner");
-        minter.startMint(MERKLE_ROOT, 0.02 ether);
+        minter.startMint(MERKLE_ROOT, 0.02 ether, false);
 
         nft.transferOwnership(address(minter));
 
         assert(!minter.isMintable());
-        minter.startMint(MERKLE_ROOT, 0.02 ether);
+        minter.startMint(MERKLE_ROOT, 0.02 ether, false);
         assert(minter.isMintable());
         assert(!nft.isMintable());
     }
@@ -100,7 +100,7 @@ contract ATXDAOMinterTest is DSTest {
 
         assertEq(bank1.balance, 0);
         assert(!minter.isMintable());
-        minter.startMint(MERKLE_ROOT, 0.02 ether);
+        minter.startMint(MERKLE_ROOT, 0.02 ether, false);
         assert(minter.isMintable());
 
         // debug merkle proof construction
@@ -171,7 +171,7 @@ contract ATXDAOMinterTest is DSTest {
         vm.deal(ADDRESS_A, 0.05 ether);
         vm.deal(ADDRESS_B, 0.01 ether);
 
-        minter.startMint(MERKLE_ROOT, 0.02 ether);
+        minter.startMint(MERKLE_ROOT, 0.02 ether, false);
         assert(minter.isMintable());
         assert(minter.canMint(ADDRESS_A, proof_a, TOKEN_URI_A));
 
@@ -251,10 +251,7 @@ contract ATXDAOMinterTest is DSTest {
 
         // test resetAllHasMinted
         assert(!minter.canTradeIn(ADDRESS_B, proof_b, TOKEN_URI_B));
-        vm.prank(ADDRESS_A);
-        vm.expectRevert("Ownable: caller is not the owner");
-        minter.resetAllHasMinted();
-        minter.resetAllHasMinted();
+        minter.startMint(MERKLE_ROOT, 0.02 ether, true);
         assert(minter.canTradeIn(ADDRESS_B, proof_b, TOKEN_URI_B));
     }
 }

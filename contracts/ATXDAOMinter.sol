@@ -73,7 +73,8 @@ contract ATXDAOMinter is Ownable {
         nft.transferOwnership(to);
     }
 
-    function startMint(bytes32 _merkleRoot, uint256 _price) external onlyOwner {
+    // setting isNewRound to `true` will let anyone perform another trade-in
+    function startMint(bytes32 _merkleRoot, uint256 _price, bool _isNewRound) external onlyOwner {
         require(_price > 0.01 ether, "Price must be greater than 0.01 ether");
         require(_merkleRoot != bytes32(0), "Invalid merkle root");
 
@@ -84,6 +85,10 @@ contract ATXDAOMinter is Ownable {
         price = _price;
         merkleRoot = _merkleRoot;
         isMintable = true;
+
+        if (_isNewRound) {
+            _resetAllHasMinted();
+        }
     }
 
     function endMint() external onlyOwner {
@@ -165,7 +170,7 @@ contract ATXDAOMinter is Ownable {
         }
     }
 
-    function resetAllHasMinted() external onlyOwner {
+    function _resetAllHasMinted() private {
         mintedIndex++;
     }
 }
