@@ -91,7 +91,7 @@ contract ATXDAOMinter is Ownable {
         view
         returns (bool)
     {
-        return isMintable && !hasMinted[recipient]
+        return isMintable && !hasMinted[recipient] && nft.balanceOf(recipient) == 0
             && proof.verify(merkleRoot, keccak256(abi.encodePacked(recipient, tokenURI)));
     }
 
@@ -100,18 +100,13 @@ contract ATXDAOMinter is Ownable {
         emit Mint(to, tokenURI, 0);
     }
 
-    function resetHasMinted(address[] calldata addrs) external onlyOwner {
-        for (uint256 i = 0; i < addrs.length; i++) {
-            hasMinted[addrs[i]] = false;
-        }
-    }
-
     function canTradeIn(address recipient, bytes32[] calldata proof, string calldata tokenURI)
         external
         view
         returns (bool)
     {
-        return nft.balanceOf(recipient) > 0 && this.canMint(recipient, proof, tokenURI);
+        return isMintable && !hasMinted[recipient] && nft.balanceOf(recipient) > 0
+            && proof.verify(merkleRoot, keccak256(abi.encodePacked(recipient, tokenURI)));
     }
 
     function _checkMint(address recipient, bytes32[] calldata proof, string calldata tokenURI) private view {

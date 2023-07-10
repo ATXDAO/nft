@@ -155,43 +155,6 @@ contract ATXDAOMinterTest is DSTest {
         assertEq(bank2.balance, 0.02 ether);
     }
 
-    function testResetHasMinted() public {
-        bytes32[] memory proof_a = new bytes32[](1);
-        proof_a[0] = PROOF_A;
-
-        minter.startMint(MERKLE_ROOT, 0.02 ether);
-        assert(minter.isMintable());
-        assert(minter.canMint(ADDRESS_A, proof_a, TOKEN_URI_A));
-
-        assertEq(nft.balanceOf(ADDRESS_A), 0);
-        vm.deal(ADDRESS_A, 0.04 ether);
-        vm.prank(ADDRESS_A);
-        minter.mint{value: 0.02 ether}(proof_a, TOKEN_URI_A);
-        assertEq(nft.tokenURI(1), "ipfs://born/in-the-usa.json");
-        assertEq(nft.ownerOf(1), ADDRESS_A);
-
-        assert(!minter.canMint(ADDRESS_A, proof_a, TOKEN_URI_A));
-
-        vm.prank(ADDRESS_A);
-        vm.expectRevert("You have already minted an NFT!");
-        minter.mint{value: 0.02 ether}(proof_a, TOKEN_URI_A);
-
-        address[] memory recipients = new address[](1);
-        recipients[0] = ADDRESS_A;
-        vm.prank(ADDRESS_A);
-        vm.expectRevert("Ownable: caller is not the owner");
-        minter.resetHasMinted(recipients);
-
-        assert(!minter.canMint(ADDRESS_A, proof_a, TOKEN_URI_A));
-        minter.resetHasMinted(recipients);
-        assert(minter.canMint(ADDRESS_A, proof_a, TOKEN_URI_A));
-
-        vm.prank(ADDRESS_A);
-        minter.mint{value: 0.02 ether}(proof_a, TOKEN_URI_A);
-
-        assertEq(nft.balanceOf(ADDRESS_A), 2);
-    }
-
     function testMintSpecial() public {
         assertEq(nft.balanceOf(ADDRESS_A), 0);
         minter.mintSpecial(ADDRESS_A, "ipfs://special/mint.json");
@@ -212,7 +175,9 @@ contract ATXDAOMinterTest is DSTest {
         assert(minter.isMintable());
         assert(minter.canMint(ADDRESS_A, proof_a, TOKEN_URI_A));
 
+        assert(minter.canMint(ADDRESS_B, proof_b, TOKEN_URI_B));
         minter.mintSpecial(ADDRESS_B, "ipfs://old-nft/meta.json");
+        assert(!minter.canMint(ADDRESS_B, proof_b, TOKEN_URI_B));
 
         assert(!minter.canTradeIn(ADDRESS_A, proof_a, TOKEN_URI_A));
         assert(minter.canTradeIn(ADDRESS_B, proof_b, TOKEN_URI_B));
@@ -237,7 +202,8 @@ contract ATXDAOMinterTest is DSTest {
         vm.prank(ADDRESS_B);
         minter.tradeIn(proof_b, TOKEN_URI_B, 1);
 
-        assertEq(nft.balanceOf(ADDRESS_B), 1);
-        assertEq(nft.balanceOf(address(minter)), 1);
+        assertEq(nft.ownerOf(1), address(minter));
+        assertEq(nft.ownerOf(2), ADDRESS_A);
+        assertEq(nft.ownerOf(3), ADDRESS_B);
     }
 }
