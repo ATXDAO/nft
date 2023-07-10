@@ -98,8 +98,14 @@ contract ATXDAOMinterTest is DSTest {
         bytes32[] memory proof_b = new bytes32[](1);
         proof_b[0] = PROOF_B;
 
+        vm.deal(ADDRESS_A, 0.04 ether);
+        vm.deal(ADDRESS_B, 0.04 ether);
         assertEq(bank1.balance, 0);
+
         assert(!minter.isMintable());
+        vm.expectRevert("Mint has not been started!");
+        minter.mint{value: 0.02 ether}(proof_a, TOKEN_URI_A);
+
         minter.startMint(MERKLE_ROOT, 0.02 ether, false);
         assert(minter.isMintable());
 
@@ -110,7 +116,6 @@ contract ATXDAOMinterTest is DSTest {
 
         // user a should be able to mint
         assertEq(nft.balanceOf(ADDRESS_A), 0);
-        vm.deal(ADDRESS_A, 0.04 ether);
 
         vm.prank(ADDRESS_A);
         vm.expectRevert("Not enough ether sent to mint!");
@@ -127,10 +132,8 @@ contract ATXDAOMinterTest is DSTest {
         minter.setBank(bank2);
         minter.setBank(bank2);
 
-        vm.deal(ADDRESS_B, 0.04 ether);
-        vm.prank(ADDRESS_B);
-
         // fails with the wrong token uri
+        vm.prank(ADDRESS_B);
         vm.expectRevert("Not on the list or invalid token URI!");
         minter.mint{value: 0.02 ether}(proof_b, "im cheating");
 
