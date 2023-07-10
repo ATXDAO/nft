@@ -79,8 +79,8 @@ contract ATXDAOMinter is Ownable {
     }
 
     function mint(
-        bytes32[] memory proof,
-        string memory tokenURI
+        bytes32[] calldata proof,
+        string calldata tokenURI
     ) external payable {
         require(isMintable, "Mint has not been started!");
         require(
@@ -102,8 +102,8 @@ contract ATXDAOMinter is Ownable {
 
     function canMint(
         address recipient,
-        bytes32[] memory proof,
-        string memory tokenURI
+        bytes32[] calldata proof,
+        string calldata tokenURI
     ) external view returns (bool) {
         return
             isMintable &&
@@ -119,5 +119,11 @@ contract ATXDAOMinter is Ownable {
         string memory tokenURI
     ) external onlyOwner {
         _mint(to, tokenURI);
+    }
+
+    function resetHasMinted(address[] calldata addrs) external onlyOwner {
+        for (uint256 i = 0; i < addrs.length; i++) {
+            hasMinted[addrs[i]] = false;
+        }
     }
 }

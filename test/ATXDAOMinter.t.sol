@@ -20,10 +20,14 @@ contract ATXDAOMinterTest is DSTest {
     address public constant ADDRESS_A =
         0xabC1000000000000000000000000000000000000;
     string public constant TOKEN_URI_A = "ipfs://born/in-the-usa.json";
+    bytes32 public constant PROOF_A =
+        0xd505d9d405a036d7cdcb4e90bf4cf6ab97aa16f026089cbd1ec02da2a4915e7f;
 
     address public constant ADDRESS_B =
         0xAbc2000000000000000000000000000000000000;
     string public constant TOKEN_URI_B = "ipfs://not-born/in-the-usa.json";
+    bytes32 public constant PROOF_B =
+        0xdd0183c844aefebba5b4b87b9a7c53e9b1dbeaf2d298164799ff55f32ff8d4eb;
 
     ATXDAONFT_V2 nft;
     ATXDAOMinter minter;
@@ -95,13 +99,9 @@ contract ATXDAOMinterTest is DSTest {
 
     function testMint() public {
         bytes32[] memory proof_a = new bytes32[](1);
-        proof_a[
-            0
-        ] = 0xd505d9d405a036d7cdcb4e90bf4cf6ab97aa16f026089cbd1ec02da2a4915e7f;
+        proof_a[0] = PROOF_A;
         bytes32[] memory proof_b = new bytes32[](1);
-        proof_b[
-            0
-        ] = 0xdd0183c844aefebba5b4b87b9a7c53e9b1dbeaf2d298164799ff55f32ff8d4eb;
+        proof_b[0] = PROOF_B;
 
         assertEq(bank1.balance, 0);
         assert(!minter.isMintable());
@@ -158,5 +158,39 @@ contract ATXDAOMinterTest is DSTest {
         // contract should send all eth received directly to the dao vault
         assertEq(bank1.balance, 0.02 ether);
         assertEq(bank2.balance, 0.02 ether);
+    }
+
+    function testResetHasMinted() public {
+        bytes32[] memory proof_a = new bytes32[](1);
+        proof_a[0] = PROOF_A;
+
+        minter.startMint(MERKLE_ROOT, 0.02 ether);
+        assert(minter.isMintable());
+        assert(minter.canMint(ADDRESS_A, proof_a, TOKEN_URI_A));
+
+        assertEq(nft.balanceOf(ADDRESS_A), 0);
+        vm.deal(ADDRESS_A, 0.04 ether);
+        vm.prank(ADDRESS_A);
+        minter.mint{value: 0.02 ether}(proof_a, TOKEN_URI_A);
+        assertEq(nft.tokenURI(1), "ipfs://born/in-the-usa.json");
+        assertEq(nft.ownerOf(1), ADDRESS_A);
+
+        assert(!minter.canMint(ADDRESS_A, proof_a, TOKEN_URI_A));
+
+        vm.prank(ADDRESS_A);
+        vm.expectRevert("You have already minted an NFT!");
+        minter.mint{value: 0.02 ether}(proof_a, TOKEN_URI_A);
+
+        address[] memory recipients = new address[](1);
+        recipients[0] = ADDRESS_A;
+        vm.prank(ADDRESS_A);
+        vm.expectRevert("Ownable: caller is not the owner");
+        minter.resetHasMinted(recipients);
+
+        minter.resetHasMinted(recipients);
+        vm.prank(ADDRESS_A);
+        minter.mint{value: 0.02 ether}(proof_a, TOKEN_URI_A);
+
+        assertEq(nft.balanceOf(ADDRESS_A), 2);
     }
 }
