@@ -187,7 +187,10 @@ contract ATXDAOMinterTest is DSTest {
         vm.expectRevert("Ownable: caller is not the owner");
         minter.resetHasMinted(recipients);
 
+        assert(!minter.canMint(ADDRESS_A, proof_a, TOKEN_URI_A));
         minter.resetHasMinted(recipients);
+        assert(minter.canMint(ADDRESS_A, proof_a, TOKEN_URI_A));
+
         vm.prank(ADDRESS_A);
         minter.mint{value: 0.02 ether}(proof_a, TOKEN_URI_A);
 
