@@ -86,6 +86,11 @@ contract ATXDAOMinter is Ownable {
         nft.mintSpecial(recipients, tokenURI, false);
     }
 
+    function mintSpecial(address to, string calldata tokenURI) external onlyOwner {
+        _mint(to, tokenURI);
+        emit Mint(to, tokenURI, 0);
+    }
+
     function canMint(address recipient, bytes32[] calldata proof, string calldata tokenURI)
         external
         view
@@ -93,11 +98,6 @@ contract ATXDAOMinter is Ownable {
     {
         return isMintable && !hasMinted[recipient] && nft.balanceOf(recipient) == 0
             && proof.verify(merkleRoot, keccak256(abi.encodePacked(recipient, tokenURI)));
-    }
-
-    function mintSpecial(address to, string calldata tokenURI) external onlyOwner {
-        _mint(to, tokenURI);
-        emit Mint(to, tokenURI, 0);
     }
 
     function canTradeIn(address recipient, bytes32[] calldata proof, string calldata tokenURI)
@@ -147,5 +147,11 @@ contract ATXDAOMinter is Ownable {
 
     function onERC721Received(address, address, uint256, bytes calldata) external pure returns (bytes4) {
         return this.onERC721Received.selector;
+    }
+
+    function resetHasMinted(address[] calldata addrs) external onlyOwner {
+        for (uint256 i = 0; i < addrs.length; i++) {
+            hasMinted[addrs[i]] = false;
+        }
     }
 }
