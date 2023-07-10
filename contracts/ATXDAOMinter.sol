@@ -16,6 +16,14 @@ interface IATXDAONFT_V2 {
     function endMint() external;
 
     function balanceOf(address _owner) external view returns (uint256);
+
+    function getApproved(uint256 tokenId) external view returns (address);
+
+    function ownerOf(uint256 tokenId) external view returns (address);
+
+    function burn(uint256 tokenId) external;
+
+    function safeTransferFrom(address from, address to, uint256 tokenId) external;
 }
 
 contract ATXDAOMinter is Ownable {
@@ -28,6 +36,8 @@ contract ATXDAOMinter is Ownable {
     mapping(address => bool) public hasMinted;
     address payable bank;
     uint256 public lastRoundTokenId;
+
+    bytes4 constant ERC721_RECEIVED = 0xf0b9e5ba;
 
     constructor(address _nftAddress, address _bank) {
         require(_nftAddress != address(0), "NFT is address(0)");
@@ -73,22 +83,6 @@ contract ATXDAOMinter is Ownable {
         nft.mintSpecial(recipients, tokenURI, false);
     }
 
-    function mint(bytes32[] calldata proof, string calldata tokenURI) external payable {
-        require(isMintable, "Mint has not been started!");
-        require(
-            proof.verify(merkleRoot, keccak256(abi.encodePacked(msg.sender, tokenURI))),
-            "Not on the list or invalid token URI!"
-        );
-        require(!hasMinted[msg.sender], "You have already minted an NFT!");
-        require(msg.value >= price, "Not enough ether sent to mint!");
-
-        (bool success,) = bank.call{value: address(this).balance}("");
-        require(success, "Transfer to vault failed.");
-
-        hasMinted[msg.sender] = true;
-        _mint(msg.sender, tokenURI);
-    }
-
     function canMint(address recipient, bytes32[] calldata proof, string calldata tokenURI)
         external
         view
@@ -114,5 +108,40 @@ contract ATXDAOMinter is Ownable {
         returns (bool)
     {
         return nft.balanceOf(recipient) > 0 && this.canMint(recipient, proof, tokenURI);
+    }
+
+    function _checkMint(address recipient, bytes32[] calldata proof, string calldata tokenURI) private view {
+        require(isMintable, "Mint has not been started!");
+        require(
+            proof.verify(merkleRoot, keccak256(abi.encodePacked(recipient, tokenURI))),
+            "Not on the list or invalid token URI!"
+        );
+        require(!hasMinted[msg.sender], "You have already minted an NFT!");
+    }
+
+    function mint(bytes32[] calldata proof, string calldata tokenURI) external payable {
+        _checkMint(msg.sender, proof, tokenURI);
+        require(msg.value >= price, "Not enough ether sent to mint!");
+
+        (bool success,) = bank.call{value: msg.value}("");
+        require(success, "Transfer to vault failed.");
+
+        hasMinted[msg.sender] = true;
+        _mint(msg.sender, tokenURI);
+    }
+
+    function tradeIn(bytes32[] calldata proof, string calldata tokenURI, uint256 tokenId) external {
+        _checkMint(msg.sender, proof, tokenURI);
+        require(nft.ownerOf(tokenId) == msg.sender, "You do not own this NFT!");
+        require(nft.getApproved(tokenId) == address(this), "Minter does not have permission to burn this NFT!");
+
+        nft.safeTransferFrom(msg.sender, address(this), tokenId);
+
+        hasMinted[msg.sender] = true;
+        _mint(msg.sender, tokenURI);
+    }
+
+    function onERC721Received(address, address, uint256, bytes calldata) external pure returns (bytes4) {
+        return this.onERC721Received.selector;
     }
 }

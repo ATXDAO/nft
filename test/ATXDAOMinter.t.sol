@@ -192,43 +192,51 @@ contract ATXDAOMinterTest is DSTest {
         assertEq(nft.balanceOf(ADDRESS_A), 2);
     }
 
-    // test
+    function testMintSpecial() public {
+        assertEq(nft.balanceOf(ADDRESS_A), 0);
+        minter.mintSpecial(ADDRESS_A, "ipfs://special/mint.json");
+        assertEq(nft.balanceOf(ADDRESS_A), 1);
+    }
+
+    // test address B can perform a trade-in, address A cannot
     function testTradeIn() public {
         bytes32[] memory proof_a = new bytes32[](1);
         proof_a[0] = PROOF_A;
         bytes32[] memory proof_b = new bytes32[](1);
         proof_b[0] = PROOF_B;
 
+        vm.deal(ADDRESS_A, 0.04 ether);
+        vm.deal(ADDRESS_B, 0.01 ether);
+
         minter.startMint(MERKLE_ROOT, 0.02 ether);
         assert(minter.isMintable());
         assert(minter.canMint(ADDRESS_A, proof_a, TOKEN_URI_A));
 
-        assertEq(nft.balanceOf(ADDRESS_A), 0);
-        vm.deal(ADDRESS_A, 0.04 ether);
-        vm.prank(ADDRESS_A);
-        minter.mint{value: 0.02 ether}(proof_a, TOKEN_URI_A);
-        assertEq(nft.tokenURI(1), "ipfs://born/in-the-usa.json");
-        assertEq(nft.ownerOf(1), ADDRESS_A);
+        minter.mintSpecial(ADDRESS_B, "ipfs://old-nft/meta.json");
 
-        assert(!minter.canMint(ADDRESS_A, proof_a, TOKEN_URI_A));
-
-        vm.prank(ADDRESS_A);
-        vm.expectRevert("You have already minted an NFT!");
-        minter.mint{value: 0.02 ether}(proof_a, TOKEN_URI_A);
-
-        address[] memory recipients = new address[](1);
-        recipients[0] = ADDRESS_A;
-        vm.prank(ADDRESS_A);
-        vm.expectRevert("Ownable: caller is not the owner");
-        minter.resetHasMinted(recipients);
-
-        assert(!minter.canMint(ADDRESS_A, proof_a, TOKEN_URI_A));
-        minter.resetHasMinted(recipients);
-        assert(minter.canMint(ADDRESS_A, proof_a, TOKEN_URI_A));
+        assert(!minter.canTradeIn(ADDRESS_A, proof_a, TOKEN_URI_A));
+        assert(minter.canTradeIn(ADDRESS_B, proof_b, TOKEN_URI_B));
 
         vm.prank(ADDRESS_A);
         minter.mint{value: 0.02 ether}(proof_a, TOKEN_URI_A);
 
-        assertEq(nft.balanceOf(ADDRESS_A), 2);
+        assertEq(nft.ownerOf(1), ADDRESS_B);
+        assertEq(nft.ownerOf(2), ADDRESS_A);
+        assertEq(nft.balanceOf(ADDRESS_A), 1);
+        assertEq(nft.balanceOf(ADDRESS_B), 1);
+
+        vm.prank(ADDRESS_B);
+        vm.expectRevert("Minter does not have permission to burn this NFT!");
+        minter.tradeIn(proof_b, TOKEN_URI_B, 1);
+
+        assertEq(nft.balanceOf(address(minter)), 0);
+
+        vm.prank(ADDRESS_B);
+        nft.approve(address(minter), 1);
+        vm.prank(ADDRESS_B);
+        minter.tradeIn(proof_b, TOKEN_URI_B, 1);
+
+        assertEq(nft.balanceOf(ADDRESS_B), 1);
+        assertEq(nft.balanceOf(address(minter)), 1);
     }
 }

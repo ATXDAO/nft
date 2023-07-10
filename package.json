@@ -11,7 +11,7 @@
     "fmt": "npm run fmt:sol && npm run fmt:ts",
     "fmt:ts": "prettier --write deploy scripts types util hardhat.config.ts",
     "fmt:sol": "forge fmt",
-    "test": "forge clean && forge test -vv && forge clean"
+    "test": "forge clean && forge test -vvv && forge clean"
   },
   "devDependencies": {
     "@alch/alchemy-web3": "1.4.7",
