@@ -111,6 +111,11 @@ contract ATXDAOMinterTest is DSTest {
         // user a should be able to mint
         assertEq(nft.balanceOf(ADDRESS_A), 0);
         vm.deal(ADDRESS_A, 0.04 ether);
+
+        vm.prank(ADDRESS_A);
+        vm.expectRevert("Not enough ether sent to mint!");
+        minter.mint{value: 0.01 ether}(proof_a, TOKEN_URI_A);
+
         vm.prank(ADDRESS_A);
         minter.mint{value: 0.02 ether}(proof_a, TOKEN_URI_A);
         assertEq(nft.tokenURI(1), "ipfs://born/in-the-usa.json");
