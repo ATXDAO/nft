@@ -175,6 +175,8 @@ contract ATXDAOMinterTest is DSTest {
         assert(minter.isMintable());
         assert(minter.canMint(ADDRESS_A, proof_a, TOKEN_URI_A));
 
+        minter.mintSpecial(address(0x1), "ipfs://orphan/meta.json");
+
         assert(minter.canMint(ADDRESS_B, proof_b, TOKEN_URI_B));
         minter.mintSpecial(ADDRESS_B, "ipfs://old-nft/meta.json");
         assert(!minter.canMint(ADDRESS_B, proof_b, TOKEN_URI_B));
@@ -185,25 +187,29 @@ contract ATXDAOMinterTest is DSTest {
         vm.prank(ADDRESS_A);
         minter.mint{value: 0.02 ether}(proof_a, TOKEN_URI_A);
 
-        assertEq(nft.ownerOf(1), ADDRESS_B);
-        assertEq(nft.ownerOf(2), ADDRESS_A);
-        assertEq(nft.balanceOf(ADDRESS_A), 1);
-        assertEq(nft.balanceOf(ADDRESS_B), 1);
+        assertEq(nft.ownerOf(1), address(0x1));
+        assertEq(nft.ownerOf(2), ADDRESS_B);
+        assertEq(nft.ownerOf(3), ADDRESS_A);
+
+        vm.prank(ADDRESS_B);
+        vm.expectRevert("You do not own this NFT!");
+        minter.tradeIn(proof_b, TOKEN_URI_B, 1);
 
         vm.prank(ADDRESS_B);
         vm.expectRevert("Minter does not have permission to burn this NFT!");
-        minter.tradeIn(proof_b, TOKEN_URI_B, 1);
+        minter.tradeIn(proof_b, TOKEN_URI_B, 2);
 
         assertEq(nft.balanceOf(address(minter)), 0);
 
         vm.prank(ADDRESS_B);
-        nft.approve(address(minter), 1);
+        nft.approve(address(minter), 2);
 
         vm.prank(ADDRESS_B);
-        minter.tradeIn(proof_b, TOKEN_URI_B, 1);
+        minter.tradeIn(proof_b, TOKEN_URI_B, 2);
 
-        assertEq(nft.ownerOf(1), address(minter));
-        assertEq(nft.ownerOf(2), ADDRESS_A);
-        assertEq(nft.ownerOf(3), ADDRESS_B);
+        assertEq(nft.ownerOf(1), address(0x1));
+        assertEq(nft.ownerOf(2), address(minter));
+        assertEq(nft.ownerOf(3), ADDRESS_A);
+        assertEq(nft.ownerOf(4), ADDRESS_B);
     }
 }
