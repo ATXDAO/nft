@@ -19,11 +19,11 @@ task<SpecialMintArgs>('mint-special', 'run a special mint')
   .addOptionalParam('contractAddress', 'nftv2 contract address')
   .addOptionalParam(
     'gasPrice',
-    'gas price in wei to deploy with (uses provider.getGasPrice() otherwise)',
+    'gas price in wei to deploy with (uses provider.getGasPrice() otherwise)'
   )
   .addVariadicPositionalParam(
     'recipients',
-    'specialMint recipient addresses (json filename or space separated list)',
+    'specialMint recipient addresses (json filename or space separated list)'
   )
   .setAction(
     async (
@@ -34,7 +34,7 @@ task<SpecialMintArgs>('mint-special', 'run a special mint')
         tokenUri,
         gasPrice,
       }: SpecialMintArgs,
-      { ethers, network },
+      { ethers, network }
     ) => {
       if (network.name === 'mainnet') {
         ethers.providers.BaseProvider.prototype.getGasPrice =
@@ -48,7 +48,7 @@ task<SpecialMintArgs>('mint-special', 'run a special mint')
         contractAddress || getContractAddress('ATXDAONFT_V2', network.name);
       if (!isAddress(parsedContractAddress)) {
         throw new Error(
-          `${parsedContractAddress} is not a valid contract address!`,
+          `${parsedContractAddress} is not a valid contract address!`
         );
       }
 
@@ -64,12 +64,12 @@ task<SpecialMintArgs>('mint-special', 'run a special mint')
       assertValidTokenUri(tokenUri, dynamic);
 
       const txGasPrice = ethers.BigNumber.from(
-        gasPrice || (await ethers.provider.getGasPrice()),
+        gasPrice || (await ethers.provider.getGasPrice())
       );
 
       const nftv2 = (await ethers.getContractAt(
         'ATXDAONFT_V2',
-        parsedContractAddress,
+        parsedContractAddress
       )) as ATXDAONFT_V2;
 
       console.log('   running:  ATXDAONFT_V2.specialMint()');
@@ -80,7 +80,7 @@ task<SpecialMintArgs>('mint-special', 'run a special mint')
       console.log('   dynamic: ', dynamic);
 
       console.log(
-        `  gasPrice:  ${ethers.utils.formatUnits(txGasPrice, 'gwei')} gwei\n`,
+        `  gasPrice:  ${ethers.utils.formatUnits(txGasPrice, 'gwei')} gwei\n`
       );
 
       console.log(`recipients:  ${parsedRecipients[0]}`);
@@ -93,5 +93,5 @@ task<SpecialMintArgs>('mint-special', 'run a special mint')
       });
 
       console.log(`\n  tx hash:   ${tx.hash}`);
-    },
+    }
   );

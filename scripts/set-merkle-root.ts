@@ -1,10 +1,10 @@
 /* eslint-disable indent */
-import {ATXDAONFT_V2} from '../typechain-types';
-import {getContractAddress} from '../util/contract-meta';
-import {dynamicGetGasPrice} from '../util/gas-now';
-import {MerkleOutput} from './classic-merkle';
-import {readFileSync} from 'fs';
-import {task} from 'hardhat/config';
+import { ATXDAONFT_V2 } from '../typechain-types';
+import { getContractAddress } from '../util/contract-meta';
+import { dynamicGetGasPrice } from '../util/gas-now';
+import { MerkleOutput } from './classic-merkle';
+import { readFileSync } from 'fs';
+import { task } from 'hardhat/config';
 
 interface SetMerkleRootArgs {
   contractAddress?: string;
@@ -21,10 +21,10 @@ task<SetMerkleRootArgs>('set-merkle-root', 'set the merkle root')
   .addOptionalParam('root', 'merkle root')
   .setAction(
     async (
-      {contractAddress, gasPrice, root}: SetMerkleRootArgs,
-      {ethers, network}
+      { contractAddress, gasPrice, root }: SetMerkleRootArgs,
+      { ethers, network }
     ) => {
-      const {isAddress} = ethers.utils;
+      const { isAddress } = ethers.utils;
       if (network.name === 'mainnet') {
         ethers.providers.BaseProvider.prototype.getGasPrice =
           dynamicGetGasPrice('fast');

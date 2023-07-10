@@ -1,11 +1,11 @@
 /* eslint-disable indent */
-import {ATXDAONFT_V2} from '../typechain-types';
-import {assertValidTokenUri} from '../util/assertions';
-import {getContractAddress} from '../util/contract-meta';
-import {dynamicGetGasPrice} from '../util/gas-now';
-import {MerkleOutput} from './classic-merkle';
-import {readFileSync} from 'fs';
-import {task} from 'hardhat/config';
+import { ATXDAONFT_V2 } from '../typechain-types';
+import { assertValidTokenUri } from '../util/assertions';
+import { getContractAddress } from '../util/contract-meta';
+import { dynamicGetGasPrice } from '../util/gas-now';
+import { MerkleOutput } from './classic-merkle';
+import { readFileSync } from 'fs';
+import { task } from 'hardhat/config';
 
 interface StartMintArgs {
   contractAddress?: string;
@@ -26,10 +26,10 @@ task<StartMintArgs>('start-mint', 'enable nft minting')
   .addParam('mintPrice', 'price in ether, e.g. "0.512"')
   .setAction(
     async (
-      {contractAddress, gasPrice, mintPrice, tokenUri, root}: StartMintArgs,
-      {ethers, network}
+      { contractAddress, gasPrice, mintPrice, tokenUri, root }: StartMintArgs,
+      { ethers, network }
     ) => {
-      const {isAddress, parseEther, formatEther} = ethers.utils;
+      const { isAddress, parseEther, formatEther } = ethers.utils;
       if (network.name === 'mainnet') {
         ethers.providers.BaseProvider.prototype.getGasPrice =
           dynamicGetGasPrice('fast');

@@ -10,5 +10,12 @@ module.exports = {
         singleQuote: false,
       },
     },
+    {
+      files: '*.ts',
+      options: {
+        bracketSpacing: true,
+        trailingComma: 'es5',
+      },
+    },
   ],
 };

@@ -15,7 +15,7 @@ interface GasNowResponse {
 
 export async function gasNow(): Promise<GasNowData> {
   const result: GasNowResponse = await fetchJson(
-    'https://etherchain.org/api/gasnow',
+    'https://etherchain.org/api/gasnow'
   );
   return result.data;
 }
@@ -26,7 +26,7 @@ export async function getGasPrice(priority: GasPriority): Promise<BigNumber> {
 }
 
 export function dynamicGetGasPrice(
-  priority: GasPriority,
+  priority: GasPriority
 ): () => Promise<BigNumber> {
   return () => getGasPrice(priority);
 }
