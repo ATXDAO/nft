@@ -35,7 +35,8 @@ contract ATXDAOMinter is Ownable {
     bytes32 public merkleRoot;
     uint256 public price;
     bool public isMintable;
-    mapping(address => bool) public hasMinted;
+    mapping(address => uint8) public lastMinted;
+    uint8 public mintedIndex;
     address payable bank;
     uint256 public lastRoundTokenId;
 
@@ -46,6 +47,15 @@ contract ATXDAOMinter is Ownable {
         require(_nftAddress != address(0), "NFT is address(0)");
         _setBank(_bank);
         nft = IATXDAONFT_V2(_nftAddress);
+        mintedIndex = 1;
+    }
+
+    function _setHasMinted(address recipient) private {
+        lastMinted[recipient] = mintedIndex;
+    }
+
+    function hasMinted(address recipient) public view returns (bool) {
+        return lastMinted[recipient] == mintedIndex;
     }
 
     function _setBank(address _bank) private {
@@ -96,7 +106,7 @@ contract ATXDAOMinter is Ownable {
         view
         returns (bool)
     {
-        return isMintable && !hasMinted[recipient] && nft.balanceOf(recipient) == 0
+        return isMintable && !hasMinted(recipient) && nft.balanceOf(recipient) == 0
             && proof.verify(merkleRoot, keccak256(abi.encodePacked(recipient, tokenURI)));
     }
 
@@ -105,7 +115,7 @@ contract ATXDAOMinter is Ownable {
         view
         returns (bool)
     {
-        return isMintable && !hasMinted[recipient] && nft.balanceOf(recipient) > 0
+        return isMintable && !hasMinted(recipient) && nft.balanceOf(recipient) > 0
             && proof.verify(merkleRoot, keccak256(abi.encodePacked(recipient, tokenURI)));
     }
 
@@ -115,7 +125,7 @@ contract ATXDAOMinter is Ownable {
             proof.verify(merkleRoot, keccak256(abi.encodePacked(recipient, tokenURI))),
             "Not on the list or invalid token URI!"
         );
-        require(!hasMinted[msg.sender], "You have already minted an NFT!");
+        require(!hasMinted(msg.sender), "You have already minted an NFT!");
     }
 
     function mint(bytes32[] calldata proof, string calldata tokenURI) external payable {
@@ -126,7 +136,7 @@ contract ATXDAOMinter is Ownable {
         (bool success,) = bank.call{value: msg.value}("");
         require(success, "Transfer to vault failed.");
 
-        hasMinted[msg.sender] = true;
+        _setHasMinted(msg.sender);
         _mint(msg.sender, tokenURI);
 
         emit Mint(msg.sender, tokenURI, msg.value);
@@ -139,7 +149,7 @@ contract ATXDAOMinter is Ownable {
 
         nft.safeTransferFrom(msg.sender, address(this), tokenId);
 
-        hasMinted[msg.sender] = true;
+        _setHasMinted(msg.sender);
         _mint(msg.sender, tokenURI);
 
         emit TradeIn(msg.sender, tokenURI, tokenId);
@@ -151,7 +161,11 @@ contract ATXDAOMinter is Ownable {
 
     function resetHasMinted(address[] calldata addrs) external onlyOwner {
         for (uint256 i = 0; i < addrs.length; i++) {
-            hasMinted[addrs[i]] = false;
+            lastMinted[addrs[i]] = 0;
         }
+    }
+
+    function resetAllHasMinted() external onlyOwner {
+        mintedIndex++;
     }
 }

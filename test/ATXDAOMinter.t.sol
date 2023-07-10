@@ -248,5 +248,13 @@ contract ATXDAOMinterTest is DSTest {
         assertEq(nft.balanceOf(ADDRESS_B), 1);
         assertEq(nft.ownerOf(4), address(minter));
         assertEq(nft.ownerOf(5), ADDRESS_B);
+
+        // test resetAllHasMinted
+        assert(!minter.canTradeIn(ADDRESS_B, proof_b, TOKEN_URI_B));
+        vm.prank(ADDRESS_A);
+        vm.expectRevert("Ownable: caller is not the owner");
+        minter.resetAllHasMinted();
+        minter.resetAllHasMinted();
+        assert(minter.canTradeIn(ADDRESS_B, proof_b, TOKEN_URI_B));
     }
 }
