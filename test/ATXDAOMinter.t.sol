@@ -207,6 +207,12 @@ contract ATXDAOMinterTest is DSTest {
         vm.prank(ADDRESS_B);
         minter.tradeIn(proof_b, TOKEN_URI_B, 2);
 
+        // test cant trade in twice
+        vm.prank(ADDRESS_B);
+        vm.expectRevert("You have already minted an NFT!");
+        minter.tradeIn(proof_b, TOKEN_URI_B, 4);
+
+        // verify owners
         assertEq(nft.ownerOf(1), address(0x1));
         assertEq(nft.ownerOf(2), address(minter));
         assertEq(nft.ownerOf(3), ADDRESS_A);

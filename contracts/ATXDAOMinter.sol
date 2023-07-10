@@ -120,6 +120,7 @@ contract ATXDAOMinter is Ownable {
 
     function mint(bytes32[] calldata proof, string calldata tokenURI) external payable {
         _checkMint(msg.sender, proof, tokenURI);
+        require(nft.balanceOf(msg.sender) == 0, "You already own an NFT!");
         require(msg.value >= price, "Not enough ether sent to mint!");
 
         (bool success,) = bank.call{value: msg.value}("");
