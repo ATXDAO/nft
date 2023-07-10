@@ -233,6 +233,7 @@ contract ATXDAOMinterTest is DSTest {
 
         vm.prank(ADDRESS_B);
         nft.approve(address(minter), 1);
+
         vm.prank(ADDRESS_B);
         minter.tradeIn(proof_b, TOKEN_URI_B, 1);
 

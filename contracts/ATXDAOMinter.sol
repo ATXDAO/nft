@@ -29,6 +29,8 @@ interface IATXDAONFT_V2 {
 contract ATXDAOMinter is Ownable {
     using MerkleProof for bytes32[];
 
+    bytes4 constant ERC721_RECEIVED = 0xf0b9e5ba;
+
     IATXDAONFT_V2 public nft;
     bytes32 public merkleRoot;
     uint256 public price;
@@ -37,7 +39,8 @@ contract ATXDAOMinter is Ownable {
     address payable bank;
     uint256 public lastRoundTokenId;
 
-    bytes4 constant ERC721_RECEIVED = 0xf0b9e5ba;
+    event Mint(address to, string tokenURI, uint256 price);
+    event TradeIn(address to, string tokenURI, uint256 oldTokenId);
 
     constructor(address _nftAddress, address _bank) {
         require(_nftAddress != address(0), "NFT is address(0)");
@@ -94,6 +97,7 @@ contract ATXDAOMinter is Ownable {
 
     function mintSpecial(address to, string calldata tokenURI) external onlyOwner {
         _mint(to, tokenURI);
+        emit Mint(to, tokenURI, 0);
     }
 
     function resetHasMinted(address[] calldata addrs) external onlyOwner {
@@ -128,6 +132,8 @@ contract ATXDAOMinter is Ownable {
 
         hasMinted[msg.sender] = true;
         _mint(msg.sender, tokenURI);
+
+        emit Mint(msg.sender, tokenURI, msg.value);
     }
 
     function tradeIn(bytes32[] calldata proof, string calldata tokenURI, uint256 tokenId) external {
@@ -139,6 +145,8 @@ contract ATXDAOMinter is Ownable {
 
         hasMinted[msg.sender] = true;
         _mint(msg.sender, tokenURI);
+
+        emit TradeIn(msg.sender, tokenURI, tokenId);
     }
 
     function onERC721Received(address, address, uint256, bytes calldata) external pure returns (bytes4) {
