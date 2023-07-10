@@ -32,18 +32,9 @@ contract ATXDAONFT is ERC721URIStorage, Ownable {
 
     // Normal mint
     function mint() external payable {
-        require(
-            isMintable == true,
-            "ATX DAO NFT is not mintable at the moment!"
-        );
-        require(
-            balanceOf(msg.sender) == 0,
-            "Minting is only available for non-holders"
-        );
-        require(
-            _mintCount.current() < _mintQuantity,
-            "No more NFTs remaining!"
-        );
+        require(isMintable == true, "ATX DAO NFT is not mintable at the moment!");
+        require(balanceOf(msg.sender) == 0, "Minting is only available for non-holders");
+        require(_mintCount.current() < _mintQuantity, "No more NFTs remaining!");
         require(msg.value >= _mintPrice, "Not enough ether sent to mint!");
         require(msg.sender == tx.origin, "No contracts!");
 
@@ -57,10 +48,7 @@ contract ATXDAONFT is ERC721URIStorage, Ownable {
     }
 
     // Dev mint
-    function mintSpecial(
-        address[] memory recipients,
-        string memory tokenURI
-    ) external onlyOwner {
+    function mintSpecial(address[] memory recipients, string memory tokenURI) external onlyOwner {
         for (uint64 i = 0; i < recipients.length; i++) {
             _tokenIds.increment();
             uint256 newTokenId = _tokenIds.current();
@@ -70,11 +58,7 @@ contract ATXDAONFT is ERC721URIStorage, Ownable {
         }
     }
 
-    function startMint(
-        uint256 mintPrice,
-        uint256 mintQuantity,
-        string memory tokenURI
-    ) public onlyOwner {
+    function startMint(uint256 mintPrice, uint256 mintQuantity, string memory tokenURI) public onlyOwner {
         isMintable = true;
         _mintPrice = mintPrice;
         _mintQuantity = mintQuantity;

@@ -6,9 +6,11 @@
   "scripts": {
     "deploy": "node scripts/deploy.js",
     "lint": "npm run lint:sol && npm run lint:ts",
-    "lint:sol": "prettier --check 'contracts/**/*.sol' 'test/**/*.sol'",
+    "lint:sol": "forge fmt --check",
     "lint:ts": "tsc && eslint *.ts scripts/*.ts deploy/*.ts",
-    "prettier": "prettier --write 'contracts/**/*.sol' 'test/**/*.sol' scripts util hardhat.config.ts",
+    "fmt": "npm run fmt:sol && npm run fmt:ts",
+    "fmt:ts": "prettier --write deploy scripts types util hardhat.config.ts",
+    "fmt:sol": "forge fmt",
     "test": "forge clean && forge test -vv && forge clean"
   },
   "devDependencies": {

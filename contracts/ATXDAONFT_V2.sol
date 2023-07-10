@@ -51,18 +51,9 @@ contract ATXDAONFT_V2 is ERC721URIStorage, Ownable {
 
     // Normal mint
     function mint(bytes32[] memory proof) external payable {
-        require(
-            proof.verify(merkleRoot, keccak256(abi.encodePacked(msg.sender))),
-            "Not on the list!"
-        );
-        require(
-            isMintable == true,
-            "ATX DAO NFT is not mintable at the moment!"
-        );
-        require(
-            !hasMinted[msg.sender],
-            "Minting is only available for non-holders"
-        );
+        require(proof.verify(merkleRoot, keccak256(abi.encodePacked(msg.sender))), "Not on the list!");
+        require(isMintable == true, "ATX DAO NFT is not mintable at the moment!");
+        require(!hasMinted[msg.sender], "Minting is only available for non-holders");
         require(msg.value >= _mintPrice, "Not enough ether sent to mint!");
         require(!isContract(msg.sender), "No contracts!");
 
@@ -71,12 +62,7 @@ contract ATXDAONFT_V2 is ERC721URIStorage, Ownable {
         uint256 newTokenId = _tokenIds.current();
         hasMinted[msg.sender] = true;
         _safeMint(msg.sender, newTokenId);
-        _setTokenURI(
-            newTokenId,
-            string(
-                abi.encodePacked(baseURI, newTokenId.toString(), baseExtension)
-            )
-        );
+        _setTokenURI(newTokenId, string(abi.encodePacked(baseURI, newTokenId.toString(), baseExtension)));
 
         _mintCount.increment();
     }
@@ -88,11 +74,7 @@ contract ATXDAONFT_V2 is ERC721URIStorage, Ownable {
     }
 
     // Dev mint
-    function mintSpecial(
-        address[] memory recipients,
-        string memory tokenURI,
-        bool _dynamic
-    ) external onlyOwner {
+    function mintSpecial(address[] memory recipients, string memory tokenURI, bool _dynamic) external onlyOwner {
         for (uint64 i = 0; i < recipients.length; i++) {
             _tokenIds.increment();
             uint256 newTokenId = _tokenIds.current();
@@ -100,25 +82,12 @@ contract ATXDAONFT_V2 is ERC721URIStorage, Ownable {
 
             _safeMint(recipients[i], newTokenId);
             _dynamic
-                ? _setTokenURI(
-                    newTokenId,
-                    string(
-                        abi.encodePacked(
-                            tokenURI,
-                            newTokenId.toString(),
-                            baseExtension
-                        )
-                    )
-                )
+                ? _setTokenURI(newTokenId, string(abi.encodePacked(tokenURI, newTokenId.toString(), baseExtension)))
                 : _setTokenURI(newTokenId, tokenURI);
         }
     }
 
-    function startMint(
-        uint256 mintPrice,
-        string memory tokenURI,
-        bytes32 _root
-    ) public onlyOwner {
+    function startMint(uint256 mintPrice, string memory tokenURI, bytes32 _root) public onlyOwner {
         isMintable = true;
         _mintPrice = mintPrice;
         baseURI = tokenURI;

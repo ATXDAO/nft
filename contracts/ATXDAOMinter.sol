@@ -5,11 +5,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import {MerkleProof} from "@openzeppelin/contracts/utils/cryptography/MerkleProof.sol";
 
 interface IATXDAONFT_V2 {
-    function mintSpecial(
-        address[] memory recipients,
-        string memory tokenURI,
-        bool _dynamic
-    ) external;
+    function mintSpecial(address[] memory recipients, string memory tokenURI, bool _dynamic) external;
 
     function transferOwnership(address newOwner) external;
 
@@ -18,6 +14,8 @@ interface IATXDAONFT_V2 {
     function isMintable() external view returns (bool);
 
     function endMint() external;
+
+    function balanceOf(address _owner) external view returns (uint256);
 }
 
 contract ATXDAOMinter is Ownable {
@@ -47,10 +45,7 @@ contract ATXDAOMinter is Ownable {
     }
 
     function transferNftOwnership(address to) external onlyOwner {
-        require(
-            nft.owner() == address(this),
-            "Minter is not owner of the NFT contract"
-        );
+        require(nft.owner() == address(this), "Minter is not owner of the NFT contract");
         require(to != address(0), "Cannot transfer to zero address");
         nft.transferOwnership(to);
     }
@@ -72,52 +67,38 @@ contract ATXDAOMinter is Ownable {
         isMintable = false;
     }
 
-    function _mint(address to, string memory tokenURI) private {
+    function _mint(address to, string calldata tokenURI) private {
         address[] memory recipients = new address[](1);
         recipients[0] = to;
         nft.mintSpecial(recipients, tokenURI, false);
     }
 
-    function mint(
-        bytes32[] calldata proof,
-        string calldata tokenURI
-    ) external payable {
+    function mint(bytes32[] calldata proof, string calldata tokenURI) external payable {
         require(isMintable, "Mint has not been started!");
         require(
-            proof.verify(
-                merkleRoot,
-                keccak256(abi.encodePacked(msg.sender, tokenURI))
-            ),
+            proof.verify(merkleRoot, keccak256(abi.encodePacked(msg.sender, tokenURI))),
             "Not on the list or invalid token URI!"
         );
         require(!hasMinted[msg.sender], "You have already minted an NFT!");
         require(msg.value >= price, "Not enough ether sent to mint!");
 
-        (bool success, ) = bank.call{value: address(this).balance}("");
+        (bool success,) = bank.call{value: address(this).balance}("");
         require(success, "Transfer to vault failed.");
 
         hasMinted[msg.sender] = true;
         _mint(msg.sender, tokenURI);
     }
 
-    function canMint(
-        address recipient,
-        bytes32[] calldata proof,
-        string calldata tokenURI
-    ) external view returns (bool) {
-        return
-            isMintable &&
-            !hasMinted[recipient] &&
-            proof.verify(
-                merkleRoot,
-                keccak256(abi.encodePacked(recipient, tokenURI))
-            );
+    function canMint(address recipient, bytes32[] calldata proof, string calldata tokenURI)
+        external
+        view
+        returns (bool)
+    {
+        return isMintable && !hasMinted[recipient]
+            && proof.verify(merkleRoot, keccak256(abi.encodePacked(recipient, tokenURI)));
     }
 
-    function mintSpecial(
-        address to,
-        string memory tokenURI
-    ) external onlyOwner {
+    function mintSpecial(address to, string calldata tokenURI) external onlyOwner {
         _mint(to, tokenURI);
     }
 
@@ -125,5 +106,13 @@ contract ATXDAOMinter is Ownable {
         for (uint256 i = 0; i < addrs.length; i++) {
             hasMinted[addrs[i]] = false;
         }
+    }
+
+    function canTradeIn(address recipient, bytes32[] calldata proof, string calldata tokenURI)
+        external
+        view
+        returns (bool)
+    {
+        return nft.balanceOf(recipient) > 0 && this.canMint(recipient, proof, tokenURI);
     }
 }
