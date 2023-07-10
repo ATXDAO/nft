@@ -20,6 +20,14 @@ interface IATXDAONFT_V2 {
     function endMint() external;
 }
 
+error ZeroAddress();
+error NotOwner();
+error InvalidPrice();
+error InvalidMerkleRoot();
+error InvalidEtherSent();
+error InvalidMint();
+error FailedTransferToVault();
+
 contract ATXDAOMinter is Ownable {
     using MerkleProof for bytes32[];
 
@@ -32,13 +40,13 @@ contract ATXDAOMinter is Ownable {
     uint256 public lastRoundTokenId;
 
     constructor(address _nftAddress, address _bank) {
-        require(_nftAddress != address(0), "NFT is address(0)");
+        if (_nftAddress == address(0)) revert ZeroAddress();
         _setBank(_bank);
         nft = IATXDAONFT_V2(_nftAddress);
     }
 
     function _setBank(address _bank) private {
-        require(_bank != address(0), "Recipient is address(0)");
+        if (_bank == address(0)) revert ZeroAddress();
         bank = payable(_bank);
     }
 
@@ -47,17 +55,14 @@ contract ATXDAOMinter is Ownable {
     }
 
     function transferNftOwnership(address to) external onlyOwner {
-        require(
-            nft.owner() == address(this),
-            "Minter is not owner of the NFT contract"
-        );
-        require(to != address(0), "Cannot transfer to zero address");
+        //if (nft.owner() != address(this)) revert NotOwner(); //TODO: Is this safe to remove?
+        if (to == address(0)) revert ZeroAddress();
         nft.transferOwnership(to);
     }
 
     function startMint(bytes32 _merkleRoot, uint256 _price) external onlyOwner {
-        require(_price > 0.01 ether, "Price must be greater than 0.01 ether");
-        require(_merkleRoot != bytes32(0), "Invalid merkle root");
+        if (_price <= 0.01 ether) revert InvalidPrice();
+        if (_merkleRoot == bytes32(0)) revert InvalidMerkleRoot();
 
         if (nft.isMintable()) {
             nft.endMint();
@@ -82,19 +87,22 @@ contract ATXDAOMinter is Ownable {
         bytes32[] memory proof,
         string memory tokenURI
     ) external payable {
-        require(isMintable, "Mint has not been started!");
-        require(
-            proof.verify(
+        if (!isMintable) revert InvalidMint();
+        if (
+            !proof.verify(
                 merkleRoot,
                 keccak256(abi.encodePacked(msg.sender, tokenURI))
-            ),
-            "Not on the list or invalid token URI!"
-        );
-        require(!hasMinted[msg.sender], "You have already minted an NFT!");
-        require(msg.value >= price, "Not enough ether sent to mint!");
+            )
+        ) {
+            revert InvalidMint();
+        }
+        if (hasMinted[msg.sender]) revert InvalidMint();
+
+        if (msg.value < price) revert InvalidEtherSent();
+        //if (!canMint(msg.sender, proof, tokenURI)) revert InvalidMint();
 
         (bool success, ) = bank.call{value: address(this).balance}("");
-        require(success, "Transfer to vault failed.");
+        if (!success) revert FailedTransferToVault();
 
         hasMinted[msg.sender] = true;
         _mint(msg.sender, tokenURI);

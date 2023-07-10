@@ -75,10 +75,10 @@ contract ATXDAOMinterTest is DSTest {
         vm.expectRevert("Ownable: caller is not the owner");
         minter.startMint(MERKLE_ROOT, 0.01 ether);
 
-        vm.expectRevert("Price must be greater than 0.01 ether");
+        vm.expectRevert(InvalidPrice.selector);
         minter.startMint(MERKLE_ROOT, 0.001 ether);
 
-        vm.expectRevert("Invalid merkle root");
+        vm.expectRevert(InvalidMerkleRoot.selector);
         minter.startMint(0x0, 0.02 ether);
 
         // if minter is not the owner of the nft contract
@@ -131,7 +131,8 @@ contract ATXDAOMinterTest is DSTest {
         vm.prank(ADDRESS_B);
 
         // fails with the wrong token uri
-        vm.expectRevert("Not on the list or invalid token URI!");
+        //vm.expectRevert("Not on the list or invalid token URI!");
+        vm.expectRevert(InvalidMint.selector);
         minter.mint{value: 0.02 ether}(proof_b, "im cheating");
 
         // user b should be able to mint
@@ -146,13 +147,13 @@ contract ATXDAOMinterTest is DSTest {
         address unauthorized = address(0x13);
         vm.prank(unauthorized);
         vm.deal(unauthorized, 0.04 ether);
-        vm.expectRevert("Not on the list or invalid token URI!");
+        vm.expectRevert(InvalidMint.selector);
         minter.mint{value: 0.02 ether}(proof_b, TOKEN_URI_B);
 
         // test already minted
         assert(!minter.canMint(ADDRESS_B, proof_b, TOKEN_URI_B));
         vm.prank(ADDRESS_B);
-        vm.expectRevert("You have already minted an NFT!");
+        vm.expectRevert(InvalidMint.selector);
         minter.mint{value: 0.02 ether}(proof_b, TOKEN_URI_B);
 
         // contract should send all eth received directly to the dao vault
