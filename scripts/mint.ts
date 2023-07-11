@@ -1,8 +1,8 @@
-import {ATXDAONFT_V2} from '../typechain-types';
-import {getContractAddress} from '../util/contract-meta';
-import {dynamicGetGasPrice} from '../util/gas-now';
-import {MerkleOutput} from './classic-merkle';
-import {task} from 'hardhat/config';
+import { ATXDAONFT_V2 } from '../typechain-types';
+import { getContractAddress } from '../util/contract-meta';
+import { dynamicGetGasPrice } from '../util/gas-now';
+import { MerkleOutput } from './classic-merkle';
+import { task } from 'hardhat/config';
 
 interface MintArgs {
   contractAddress?: string;
@@ -18,7 +18,10 @@ task<MintArgs>('mint', 'mint an nft')
   )
   .addVariadicPositionalParam('proof', 'space separated bytes32')
   .setAction(
-    async ({contractAddress, gasPrice, proof}: MintArgs, {ethers, network}) => {
+    async (
+      { contractAddress, gasPrice, proof }: MintArgs,
+      { ethers, network }
+    ) => {
       if (network.name === 'mainnet') {
         ethers.providers.BaseProvider.prototype.getGasPrice =
           dynamicGetGasPrice('fast');
@@ -33,7 +36,7 @@ task<MintArgs>('mint', 'mint an nft')
       const parsedProof = proof?.length
         ? proof
         : tree.proofs[ethers.utils.getAddress(await signer.getAddress())];
-      const {isAddress} = ethers.utils;
+      const { isAddress } = ethers.utils;
 
       const parsedContractAddress =
         contractAddress || getContractAddress('ATXDAONFT_V2', network.name);

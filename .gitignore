@@ -5,4 +5,5 @@ cache/
 out/
 dist/
 typechain-types/
+deployments/localhost/
 yarn-error.log

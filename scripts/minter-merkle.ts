@@ -29,7 +29,7 @@ export interface MerkleOutput {
 
 const concatAndHashAddressAndString = (
   address: string,
-  str: string,
+  str: string
 ): string => {
   const addressBytes = arrayify(getAddress(address));
   const stringBytes = toUtf8Bytes(str);
@@ -39,31 +39,31 @@ const concatAndHashAddressAndString = (
 
 task<MinterMerkleArgs>(
   'minter-merkle',
-  'generate a merkle tree from a json file of [{"address": "0x...", "tokenURI": "..."}, ...]}]',
+  'generate a merkle tree from a json file of [{"address": "0x...", "tokenURI": "..."}, ...]}]'
 )
   .addPositionalParam(
     'jsonFile',
-    'json file of [{"address": "0x...", "tokenURI": "..."}, ...]}',
+    'json file of [{"address": "0x...", "tokenURI": "..."}, ...]}'
   )
   .addFlag('allProofs', 'generate proofs for all recipients')
   .addOptionalParam(
     'proofFor',
-    'generate proof for a given recipient address (ignored if allProofs is set)',
+    'generate proof for a given recipient address (ignored if allProofs is set)'
   )
   .setAction(
     async ({ jsonFile, allProofs, proofFor }: MinterMerkleArgs, {}) => {
       const parsedRecipients: MerkleRecord[] = JSON.parse(
-        readFileSync(jsonFile).toString(),
+        readFileSync(jsonFile).toString()
       );
       const dataByAddress = parsedRecipients.reduce(
         (acc: Record<string, string>, { address, tokenURI }) => {
           acc[address] = concatAndHashAddressAndString(
             getAddress(address),
-            tokenURI,
+            tokenURI
           );
           return acc;
         },
-        {},
+        {}
       );
       const leafNodes = Object.values(dataByAddress);
       const tree = new MerkleTree(leafNodes, keccak256, {
@@ -98,5 +98,5 @@ task<MinterMerkleArgs>(
       if (allProofs) {
         console.log(JSON.stringify(output, undefined, 4));
       }
-    },
+    }
   );

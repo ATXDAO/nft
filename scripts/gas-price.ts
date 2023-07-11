@@ -15,9 +15,9 @@ task('gas-price', 'get gas price').setAction(async (_, { ethers, network }) => {
 
         console.log(`${priority.padStart(8)}  ${priorityPrice} wei`);
         console.log(
-          `          ${ethers.utils.formatUnits(priorityPrice, 'gwei')} gwei`,
+          `          ${ethers.utils.formatUnits(priorityPrice, 'gwei')} gwei`
         );
-      },
+      }
     );
   }
 });

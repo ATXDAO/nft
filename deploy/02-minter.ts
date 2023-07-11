@@ -1,6 +1,7 @@
 import { FixedDeployFunction } from '../types';
 import { dynamicGetGasPrice } from '../util/gas-now';
 import { ATXDAONFT_V2 } from '../typechain-types';
+import { getAddress } from 'ethers/lib/utils';
 
 const nftContractName = 'ATXDAONFT_V2';
 const contractName = 'ATXDAOMinter';
@@ -31,7 +32,7 @@ const deployFunc: FixedDeployFunction = async ({
 
   const nftContract = (await ethers.getContractAt(
     'ATXDAONFT_V2',
-    nftAddress,
+    nftAddress
   )) as ATXDAONFT_V2;
 
   if (await nftContract.isMintable()) {
@@ -47,8 +48,8 @@ const deployFunc: FixedDeployFunction = async ({
   console.log(
     ` gasPrice:  ${ethers.utils.formatUnits(
       await ethers.provider.getGasPrice(),
-      'gwei',
-    )} gwei`,
+      'gwei'
+    )} gwei`
   );
   console.log(`      nft:  ${nftAddress}`);
   console.log(`recipient:  ${from}\n`);
@@ -59,18 +60,18 @@ const deployFunc: FixedDeployFunction = async ({
     from,
     log: true,
     autoMine: true,
-    gasPrice: await ethers.provider.getGasPrice(),
   });
   console.log(`deploy tx: ${contract.receipt?.transactionHash}`);
   console.log(`  address: ${contract.address}\n`);
 
-  console.log(
-    `transferring ownership of ${nftContractName} to ${contractName}...`,
-  );
-  await nftContract.transferOwnership(contract.address, {
-    gasPrice: await ethers.provider.getGasPrice(),
-  });
-  console.log('ownership transferred!\n');
+  const nftOwner = getAddress(await nftContract.owner());
+  if (nftOwner !== getAddress(contract.address)) {
+    console.log(
+      `transferring ownership of ${nftContractName} to ${contractName}...`
+    );
+    await nftContract.transferOwnership(contract.address);
+    console.log('ownership transferred!\n');
+  }
 };
 
 deployFunc.id = contractName;
