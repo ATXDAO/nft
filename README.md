@@ -367,7 +367,7 @@ proof:
 This is for the new ATX DAO Minter contract.
 
 ```zsh
-❯ hh minter-merkle metadata/test/minter-test.json --all-proofs
+❯ hh hh minter-merkle metadata/test/bluebonnet-test.json --all-proofs
 0x7ee2dcd2a719699cc78051649539508af2ed128303181fa0751dc62919baaed0
 └─ 7ee2dcd2a719699cc78051649539508af2ed128303181fa0751dc62919baaed0
    ├─ f5b3cf2222887d42bd8a10e83c542861256f7dc8f2777c62fa661942bbaf15ca
