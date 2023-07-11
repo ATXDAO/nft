@@ -7,3 +7,4 @@ dist/
 typechain-types/
 deployments/localhost/
 yarn-error.log
+.gas-snapshot
