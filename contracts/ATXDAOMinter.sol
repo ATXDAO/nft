@@ -42,13 +42,13 @@ contract ATXDAOMinter is Ownable {
     bytes4 constant ERC721_RECEIVED = 0xf0b9e5ba;
 
     IATXDAONFT_V2 public nft;
+    bool public isMintable;
+    uint8 public mintedIndex;
     bytes32 public merkleRoot;
     uint256 public price;
-    bool public isMintable;
-    mapping(address => uint8) public lastMinted;
-    uint8 public mintedIndex;
     address payable bank;
     uint256 public lastRoundTokenId;
+    mapping(address => uint8) public lastMinted;
 
     event Mint(address to, string tokenURI, uint256 price);
     event TradeIn(address to, string tokenURI, uint256 oldTokenId);
