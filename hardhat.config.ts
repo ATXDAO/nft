@@ -9,8 +9,10 @@ import { HardhatUserConfig } from 'hardhat/config';
 dotenv.config();
 
 if (fs.existsSync('typechain-types')) {
-  require('./scripts/bluebonnet-01-meta');
-  require('./scripts/bluebonnet-02-download');
+  require('./scripts/bluebonnet-01-fetch-minters');
+  require('./scripts/bluebonnet-02-download-images');
+  require('./scripts/bluebonnet-03-gen-nft-json');
+  require('./scripts/bluebonnet-04-prepare-merkle');
   require('./scripts/classic-merkle');
   require('./scripts/end-mint');
   require('./scripts/get-nft-owners');

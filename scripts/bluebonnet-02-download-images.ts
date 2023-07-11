@@ -49,7 +49,7 @@ const downloadImage = (imageUrl: string, dest: string): Promise<void> =>
   });
 
 task(
-  'bluebonnet-02-download',
+  'bluebonnet-02-download-images',
   'from metadata groups, download images'
 ).setAction(async ({}, {}): Promise<void> => {
   const groups = globSync('metadata/bluebonnet/groups/*.json').map((path) => {

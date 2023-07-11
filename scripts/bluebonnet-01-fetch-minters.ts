@@ -68,7 +68,7 @@ const getImageHash = (address: string, imageUrl: string): string => {
 };
 
 task(
-  'bluebonnet-01-meta',
+  'bluebonnet-01-fetch-minters',
   'fetch bluebonnet metadata from google sheets and generate metadata groups'
 ).setAction(async ({}, { ethers, network }): Promise<void> => {
   let previousMinters: MinterData[] = [];
