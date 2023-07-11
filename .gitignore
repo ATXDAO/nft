@@ -6,4 +6,5 @@ out/
 dist/
 typechain-types/
 deployments/localhost/
+keys/
 yarn-error.log
