@@ -5,6 +5,7 @@
     "es2021": true
   },
   "plugins": [
+    "@babel",
     "@typescript-eslint",
     "eslint-comments",
     "promise",
@@ -21,7 +22,6 @@
     "*.js",
     "typechain-types"
   ],
-  "parser": "@babel/eslint-parser",
   "parserOptions": {
     "ecmaVersion": 12,
     "sourceType": "module",
