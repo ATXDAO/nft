@@ -38,4 +38,4 @@ const deployFunc: FixedDeployFunction = async ({
 
 deployFunc.id = 'ATXDAONFT_V2';
 
-export default deployFunc;
+export default () => {};

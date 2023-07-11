@@ -15,7 +15,7 @@ interface GasNowResponse {
 
 export async function gasNow(): Promise<GasNowData> {
   const result: GasNowResponse = await fetchJson(
-    'https://etherchain.org/api/gasnow'
+    'https://beaconcha.in/api/v1/execution/gasnow'
   );
   return result.data;
 }
