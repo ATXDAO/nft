@@ -1,4 +1,4 @@
-import { ATXDAONFTV2 } from '../typechain-types/ATXDAONFTV2';
+import { ATXDAONFT_V2 } from '../typechain-types';
 import { getContractAddress } from '../util/contract-meta';
 import { dynamicGetGasPrice } from '../util/gas-now';
 import { task } from 'hardhat/config';
@@ -40,7 +40,7 @@ task<EndMintArgs>('end-mint', 'ends mint')
       const contract = (await ethers.getContractAt(
         'ATXDAONFT_V2',
         parsedContractAddress
-      )) as ATXDAONFTV2;
+      )) as ATXDAONFT_V2;
 
       console.log('   running:  ATXDAONFT_V2.endMint()');
       console.log(`  contract:  ${parsedContractAddress}`);

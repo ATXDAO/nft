@@ -1,8 +1,8 @@
 /* eslint-disable indent */
-import { ATXDAONFTV2 } from '../typechain-types/ATXDAONFTV2';
+import { ATXDAONFT_V2 } from '../typechain-types';
 import { getContractAddress } from '../util/contract-meta';
 import { dynamicGetGasPrice } from '../util/gas-now';
-import { MerkleOutput } from './merkle-tree';
+import { MerkleOutput } from './classic-merkle';
 import { readFileSync } from 'fs';
 import { task } from 'hardhat/config';
 
@@ -59,7 +59,7 @@ task<SetMerkleRootArgs>('set-merkle-root', 'set the merkle root')
       const contract = (await ethers.getContractAt(
         'ATXDAONFT_V2',
         parsedContractAddress
-      )) as ATXDAONFTV2;
+      )) as ATXDAONFT_V2;
 
       console.log('   running:  ATXDAONFT_V2.setMerkleRoot()');
       console.log(`      root:  ${parsedRoot}`);

@@ -1,9 +1,9 @@
 /* eslint-disable indent */
-import { ATXDAONFTV2 } from '../typechain-types/ATXDAONFTV2';
+import { ATXDAONFT_V2 } from '../typechain-types';
 import { assertValidTokenUri } from '../util/assertions';
 import { getContractAddress } from '../util/contract-meta';
 import { dynamicGetGasPrice } from '../util/gas-now';
-import { MerkleOutput } from './merkle-tree';
+import { MerkleOutput } from './classic-merkle';
 import { readFileSync } from 'fs';
 import { task } from 'hardhat/config';
 
@@ -75,7 +75,7 @@ task<StartMintArgs>('start-mint', 'enable nft minting')
       const contract = (await ethers.getContractAt(
         'ATXDAONFT_V2',
         parsedContractAddress
-      )) as ATXDAONFTV2;
+      )) as ATXDAONFT_V2;
 
       console.log('   running:  ATXDAONFT_V2.startMint()');
       console.log(`     price:  ${formatEther(parsedPrice)} eth`);

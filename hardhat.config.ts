@@ -1,6 +1,5 @@
 import '@nomiclabs/hardhat-ethers';
 import '@nomiclabs/hardhat-etherscan';
-import '@nomiclabs/hardhat-waffle';
 import '@typechain/hardhat';
 import dotenv from 'dotenv';
 import fs from 'fs';
@@ -10,12 +9,13 @@ import { HardhatUserConfig } from 'hardhat/config';
 dotenv.config();
 
 if (fs.existsSync('typechain-types')) {
+  require('./scripts/classic-merkle');
   require('./scripts/end-mint');
   require('./scripts/get-nft-owners');
   require('./scripts/gas-price');
-  require('./scripts/merkle-tree');
   require('./scripts/mint');
   require('./scripts/mint-special');
+  require('./scripts/minter-merkle');
   require('./scripts/reset-has-minted');
   require('./scripts/set-merkle-root');
   require('./scripts/start-mint');

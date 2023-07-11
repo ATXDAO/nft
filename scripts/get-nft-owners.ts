@@ -1,4 +1,4 @@
-import { ATXDAONFT } from '../typechain-types/ATXDAONFT';
+import { ATXDAONFT } from '../typechain-types';
 import { getContractAddress, ContractName } from '../util/contract-meta';
 import { task } from 'hardhat/config';
 

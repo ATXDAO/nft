@@ -3,7 +3,7 @@ pragma solidity ^0.8.9;
 
 import "ds-test/test.sol";
 import "contracts/ATXDAONFT_V2.sol";
-import "test/utils/vm.sol";
+import "forge-std/Vm.sol";
 
 contract ATXDAONFTV2Test is DSTest {
     // see https://github.com/gakonst/foundry/tree/master/forge
@@ -22,25 +22,16 @@ contract ATXDAONFTV2Test is DSTest {
     // > hh merkle-tree 0x0000000000000000000000000000000000000001 \
     //                  0x0000000000000000000000000000000000000002 \
     //                  0x0000000000000000000000000000000000000003 --all-proofs
-    bytes32 merkleRootABC =
-        0x344510bd0c324c3912b13373e89df42d1b50450e9764a454b2aa6e2968a4578a;
+    bytes32 merkleRootABC = 0x344510bd0c324c3912b13373e89df42d1b50450e9764a454b2aa6e2968a4578a;
 
     function setUp() public {
         nft = new ATXDAONFT_V2();
         nft.setMerkleRoot(merkleRootABC);
 
-        proofA[
-            0
-        ] = 0xd52688a8f926c816ca1e079067caba944f158e764817b83fc43594370ca9cf62;
-        proofA[
-            1
-        ] = 0x5b70e80538acdabd6137353b0f9d8d149f4dba91e8be2e7946e409bfdbe685b9;
-        proofB[
-            0
-        ] = 0x1468288056310c82aa4c01a7e12a10f8111a0560e72b700555479031b86c357d;
-        proofB[
-            1
-        ] = 0x5b70e80538acdabd6137353b0f9d8d149f4dba91e8be2e7946e409bfdbe685b9;
+        proofA[0] = 0xd52688a8f926c816ca1e079067caba944f158e764817b83fc43594370ca9cf62;
+        proofA[1] = 0x5b70e80538acdabd6137353b0f9d8d149f4dba91e8be2e7946e409bfdbe685b9;
+        proofB[0] = 0x1468288056310c82aa4c01a7e12a10f8111a0560e72b700555479031b86c357d;
+        proofB[1] = 0x5b70e80538acdabd6137353b0f9d8d149f4dba91e8be2e7946e409bfdbe685b9;
     }
 
     function testMintBasic() public {

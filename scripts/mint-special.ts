@@ -1,4 +1,4 @@
-import { ATXDAONFTV2 } from '../typechain-types/ATXDAONFTV2';
+import { ATXDAONFT_V2 } from '../typechain-types';
 import { assertValidTokenUri } from '../util/assertions';
 import { getContractAddress } from '../util/contract-meta';
 import { dynamicGetGasPrice } from '../util/gas-now';
@@ -70,7 +70,7 @@ task<SpecialMintArgs>('mint-special', 'run a special mint')
       const nftv2 = (await ethers.getContractAt(
         'ATXDAONFT_V2',
         parsedContractAddress
-      )) as ATXDAONFTV2;
+      )) as ATXDAONFT_V2;
 
       console.log('   running:  ATXDAONFT_V2.specialMint()');
       console.log(`  contract:  ${parsedContractAddress}`);

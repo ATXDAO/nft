@@ -214,9 +214,9 @@ recipients:  0xf83b3A823653E8351b173Fa2Ae083Af37EAbCC01
   tx hash:   0xdb4d8108e35783fb3b0912c5a77612d6d371d418f40e67afa1c55041ac504fdb
 ```
 
-### Generate merkle tree
+### Generate classic merkle tree
 
-You can generate a merkle root + proof with the `merkle-tree` task. Here's an
+You can generate a merkle root + proof with the `classic-merkle` task. Here's an
 example passing is 0x1, 0x2, and 0x3 as whitelisted addresses. It generates the
 merkle root for the set of addresses and the proof for 0x3
 
@@ -360,4 +360,53 @@ proof:
 
 ```zsh
 ❯ hh start-mint --network ropsten --root 0xeaa7c77029072bf029aef546fe224070e90af3f17d11d49282c8214953b777bc --token-uri ipfs://QmQRFD3dSfNRDa7vvHwafwg4F6FUjA2NBjxBrGuPSrpKrV/ --mint-price 0.02
+```
+
+## ATXDAO Minter Contract
+
+This is for the new ATX DAO Minter contract.
+
+```zsh
+❯ hh hh minter-merkle metadata/test/bluebonnet-test.json --all-proofs
+0x7ee2dcd2a719699cc78051649539508af2ed128303181fa0751dc62919baaed0
+└─ 7ee2dcd2a719699cc78051649539508af2ed128303181fa0751dc62919baaed0
+   ├─ f5b3cf2222887d42bd8a10e83c542861256f7dc8f2777c62fa661942bbaf15ca
+   │  ├─ f281f139d4a1621bf1b7dda51af7021da60d554583b18cf8ab6f6e53fbcb8103
+   │  │  ├─ a5d2a00dc1d4eeb07ec917686e56fe00c240c6f85ff79abfc6bd03704755c01a
+   │  │  └─ 25dffc87238c566203023ffd7d26a3833fa08ab1a98d8bcef029bca26b1d2dc9
+   │  └─ fbf4ceb2f1443e5e03dc05000b9e1fcbc597fd489f0caa8c80802afaac41e808
+   │     ├─ 842a993e94b3de757ffa3b3f96d183e7267b35c5b11cb6fda2573d9bfe2a144e
+   │     └─ 62bb8c08e43e16e4b5fdbea7bb1225253e2415e73ac9cb49e49d0cfabd286c97
+   └─ ea8ad6ad448b67b5846b8ff7d25198f19577af4819932e98d7e6a5f9446998fb
+      └─ ea8ad6ad448b67b5846b8ff7d25198f19577af4819932e98d7e6a5f9446998fb
+         └─ ea8ad6ad448b67b5846b8ff7d25198f19577af4819932e98d7e6a5f9446998fb
+
+{
+    "root": "0x7ee2dcd2a719699cc78051649539508af2ed128303181fa0751dc62919baaed0",
+    "proofs": {
+        "0xabc1000000000000000000000000000000000000": [
+            "0x25dffc87238c566203023ffd7d26a3833fa08ab1a98d8bcef029bca26b1d2dc9",
+            "0xfbf4ceb2f1443e5e03dc05000b9e1fcbc597fd489f0caa8c80802afaac41e808",
+            "0xea8ad6ad448b67b5846b8ff7d25198f19577af4819932e98d7e6a5f9446998fb"
+        ],
+        "0xabc2000000000000000000000000000000000000": [
+            "0xa5d2a00dc1d4eeb07ec917686e56fe00c240c6f85ff79abfc6bd03704755c01a",
+            "0xfbf4ceb2f1443e5e03dc05000b9e1fcbc597fd489f0caa8c80802afaac41e808",
+            "0xea8ad6ad448b67b5846b8ff7d25198f19577af4819932e98d7e6a5f9446998fb"
+        ],
+        "0xabc3000000000000000000000000000000000000": [
+            "0x62bb8c08e43e16e4b5fdbea7bb1225253e2415e73ac9cb49e49d0cfabd286c97",
+            "0xf281f139d4a1621bf1b7dda51af7021da60d554583b18cf8ab6f6e53fbcb8103",
+            "0xea8ad6ad448b67b5846b8ff7d25198f19577af4819932e98d7e6a5f9446998fb"
+        ],
+        "0x51040ce6fc9b9c5da69b044109f637dc997e92de": [
+            "0x842a993e94b3de757ffa3b3f96d183e7267b35c5b11cb6fda2573d9bfe2a144e",
+            "0xf281f139d4a1621bf1b7dda51af7021da60d554583b18cf8ab6f6e53fbcb8103",
+            "0xea8ad6ad448b67b5846b8ff7d25198f19577af4819932e98d7e6a5f9446998fb"
+        ],
+        "0x6d7ddd863eb2dad990bc05bdd3357e32850509e9": [
+            "0xf5b3cf2222887d42bd8a10e83c542861256f7dc8f2777c62fa661942bbaf15ca"
+        ]
+    }
+}
 ```
