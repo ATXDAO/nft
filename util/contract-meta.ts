@@ -1,6 +1,6 @@
 import { readFileSync } from 'fs';
 
-export type ContractName = 'ATXDAONFT' | 'ATXDAONFT_V2';
+export type ContractName = 'ATXDAONFT' | 'ATXDAONFT_V2' | 'ATXDAOMinter';
 
 export function getContractAddress(
   contractName: ContractName,

@@ -146,6 +146,25 @@ generated manifest of 90 minters
    │  │  │  │  │     └─ 5c5197a89e15a33c16593cf23a969a77c2fc8bec3e3981dc8bc3ec3afbc32dd0
 ```
 
+#### Start Mint
+
+```zsh
+# for localhost testing
+❯ hh bluebonnet-start-mint --network localhost --root 0x7ee2dcd2a719699cc78051649539508af2ed128303181fa0751dc62919baaed0 --mint-price 0.02
+   running:  ATXDAOMinter.startMint()
+     price:  0.02 eth
+             20000000000000000 wei
+      root:  0x7ee2dcd2a719699cc78051649539508af2ed128303181fa0751dc62919baaed0
+isNewRound:  false
+  contract:  0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512
+   network:  localhost
+    signer:  0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
+  gasPrice:  1.463738132 gwei
+
+
+  tx hash:   0x8cf27243e6c88175aa3b2ba1166afb4c151ca7e08d48d6b9e86135871157c474
+```
+
 ### Verify Contract
 
 ```zsh
