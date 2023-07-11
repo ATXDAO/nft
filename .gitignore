@@ -6,5 +6,6 @@ out/
 dist/
 typechain-types/
 deployments/localhost/
+metadata/bluebonnet/images
 keys/
 yarn-error.log

@@ -4,7 +4,13 @@ import { google } from 'googleapis';
 import { task } from 'hardhat/config';
 import { ATXDAONFT_V2 } from '../typechain-types';
 import { getContractAddress } from '../util/contract-meta';
-import { getAddress } from 'ethers/lib/utils';
+import {
+  getAddress,
+  arrayify,
+  toUtf8Bytes,
+  concat,
+  keccak256,
+} from 'ethers/lib/utils';
 
 interface MinterInput {
   addressOrEns: string;
@@ -16,6 +22,7 @@ interface MinterData {
   address: string;
   imageUrl: string;
   isNewMember: boolean;
+  imageHash: string;
 }
 
 async function getWorksheetData(
@@ -52,6 +59,13 @@ async function getWorksheetData(
       })
     );
 }
+
+const getImageHash = (address: string, imageUrl: string): string => {
+  const addressBytes = arrayify(getAddress(address));
+  const imageBytes = toUtf8Bytes(imageUrl);
+  const concatenated = concat([addressBytes, imageBytes]);
+  return keccak256(concatenated).slice(-6);
+};
 
 task(
   'bluebonnet-01-meta',
@@ -114,6 +128,7 @@ task(
         address,
         imageUrl: imageUrl,
         isNewMember: isNewMember,
+        imageHash: getImageHash(address, imageUrl),
       };
     })
   );

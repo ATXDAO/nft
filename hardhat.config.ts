@@ -10,6 +10,7 @@ dotenv.config();
 
 if (fs.existsSync('typechain-types')) {
   require('./scripts/bluebonnet-01-meta');
+  require('./scripts/bluebonnet-02-download');
   require('./scripts/classic-merkle');
   require('./scripts/end-mint');
   require('./scripts/get-nft-owners');

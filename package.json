@@ -5,14 +5,15 @@
   "main": "index.js",
   "scripts": {
     "deploy": "node scripts/deploy.js",
+    "fmt": "npm run fmt:sol && npm run fmt:ts",
+    "fmt:sol": "forge fmt",
+    "fmt:ts": "prettier --write deploy scripts types util hardhat.config.ts",
     "lint": "npm run lint:sol && npm run lint:ts",
     "lint:sol": "forge fmt --check",
     "lint:ts": "tsc && eslint *.ts scripts/*.ts deploy/*.ts",
-    "fmt": "npm run fmt:sol && npm run fmt:ts",
-    "fmt:ts": "prettier --write deploy scripts types util hardhat.config.ts",
-    "fmt:sol": "forge fmt",
     "test": "forge clean && forge test -vvv --gas-report && forge clean"
   },
+  "dependencies": {},
   "devDependencies": {
     "@alch/alchemy-web3": "1.4.7",
     "@ethersproject/providers": "^5.7.2",
@@ -38,11 +39,14 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-promise": "^6.1.1",
     "ethers": "^5.7.2",
+    "glob": "^10.3.3",
+    "googleapis": "^121.0.0",
     "hardhat": "2.16.1",
     "hardhat-deploy": "^0.11.34",
     "hardhat-deploy-ethers": "^0.4.1",
     "keccak256": "^1.0.6",
     "merkletreejs": "^0.3.10",
+    "mkdirp": "^3.0.1",
     "mocha": "^10.2.0",
     "prettier": "^3.0.0",
     "prettier-plugin-solidity": "^1.1.3",
@@ -52,11 +56,5 @@
     "ts-node": "^10.9.1",
     "typechain": "^8.2.0",
     "typescript": "^5.1.6"
-  },
-  "dependencies": {
-    "glob": "^10.3.3",
-    "googleapis": "^121.0.0",
-    "imagemin": "^8.0.1",
-    "imagemin-pngquant": "^9.0.2"
   }
 }
