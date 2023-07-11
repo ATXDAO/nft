@@ -14,7 +14,7 @@ contract ATXDAOMinterTest is DSTest {
     address public constant bank1 = address(0x80);
     address public constant bank2 = address(0x81);
 
-    bytes32 public constant MERKLE_ROOT = 0x1ce312df608a8d140bac746066a4dcc0bc109629ff4d48c0a276a66fd694b7bf;
+    bytes32 public constant MERKLE_ROOT = 0x7ee2dcd2a719699cc78051649539508af2ed128303181fa0751dc62919baaed0;
 
     address public constant NEW_MEMBER_A = 0xabC1000000000000000000000000000000000000;
     string public constant TOKEN_URI_A = "ipfs://QmYVgQoE74xp5TigTe1EC9vDQw7tx39t3U9ySTaNHa7CdV/26.json";
@@ -35,22 +35,26 @@ contract ATXDAOMinterTest is DSTest {
     }
 
     function _getProofA() private pure returns (bytes32[] memory) {
-        bytes32[] memory proof = new bytes32[](2);
+        bytes32[] memory proof = new bytes32[](3);
         proof[0] = 0x25dffc87238c566203023ffd7d26a3833fa08ab1a98d8bcef029bca26b1d2dc9;
-        proof[1] = 0x842a993e94b3de757ffa3b3f96d183e7267b35c5b11cb6fda2573d9bfe2a144e;
+        proof[1] = 0xfbf4ceb2f1443e5e03dc05000b9e1fcbc597fd489f0caa8c80802afaac41e808;
+        proof[2] = 0xea8ad6ad448b67b5846b8ff7d25198f19577af4819932e98d7e6a5f9446998fb;
         return proof;
     }
 
     function _getProofB() private pure returns (bytes32[] memory) {
-        bytes32[] memory proof = new bytes32[](2);
+        bytes32[] memory proof = new bytes32[](3);
         proof[0] = 0xa5d2a00dc1d4eeb07ec917686e56fe00c240c6f85ff79abfc6bd03704755c01a;
-        proof[1] = 0x842a993e94b3de757ffa3b3f96d183e7267b35c5b11cb6fda2573d9bfe2a144e;
+        proof[1] = 0xfbf4ceb2f1443e5e03dc05000b9e1fcbc597fd489f0caa8c80802afaac41e808;
+        proof[2] = 0xea8ad6ad448b67b5846b8ff7d25198f19577af4819932e98d7e6a5f9446998fb;
         return proof;
     }
 
     function _getProofC() private pure returns (bytes32[] memory) {
-        bytes32[] memory proof = new bytes32[](1);
-        proof[0] = 0xf281f139d4a1621bf1b7dda51af7021da60d554583b18cf8ab6f6e53fbcb8103;
+        bytes32[] memory proof = new bytes32[](3);
+        proof[0] = 0x62bb8c08e43e16e4b5fdbea7bb1225253e2415e73ac9cb49e49d0cfabd286c97;
+        proof[1] = 0xf281f139d4a1621bf1b7dda51af7021da60d554583b18cf8ab6f6e53fbcb8103;
+        proof[2] = 0xea8ad6ad448b67b5846b8ff7d25198f19577af4819932e98d7e6a5f9446998fb;
         return proof;
     }
 
