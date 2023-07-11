@@ -78,7 +78,6 @@ contract ATXDAOMinter is Ownable {
     }
 
     function transferNftOwnership(address to) external onlyOwner {
-        //if (nft.owner() != address(this)) revert NotOwner(); //TODO: Is this safe to remove?
         if (to == address(0)) revert ZeroAddress();
         nft.transferOwnership(to);
     }
@@ -155,13 +154,10 @@ contract ATXDAOMinter is Ownable {
 
     function tradeIn(bytes32[] calldata proof, string calldata tokenURI, uint256 tokenId) external {
         _checkMint(msg.sender, proof, tokenURI);
-        require(nft.ownerOf(tokenId) == msg.sender, "You do not own this NFT!");
-        require(nft.getApproved(tokenId) == address(this), "Minter does not have permission to burn this NFT!");
-
-        nft.safeTransferFrom(msg.sender, address(this), tokenId);
 
         _setHasMinted(msg.sender);
         _mint(msg.sender, tokenURI);
+        nft.safeTransferFrom(msg.sender, address(this), tokenId);
 
         emit TradeIn(msg.sender, tokenURI, tokenId);
     }

@@ -200,11 +200,11 @@ contract ATXDAOMinterTest is DSTest {
         assertEq(nft.ownerOf(3), ADDRESS_A);
 
         vm.prank(ADDRESS_B);
-        vm.expectRevert("You do not own this NFT!");
+        vm.expectRevert("ERC721: caller is not token owner or approved");
         minter.tradeIn(proof_b, TOKEN_URI_B, 1);
 
         vm.prank(ADDRESS_B);
-        vm.expectRevert("Minter does not have permission to burn this NFT!");
+        vm.expectRevert("ERC721: caller is not token owner or approved");
         minter.tradeIn(proof_b, TOKEN_URI_B, 2);
 
         assertEq(nft.balanceOf(address(minter)), 0);
