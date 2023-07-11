@@ -13,13 +13,13 @@ if (fs.existsSync('typechain-types')) {
   require('./scripts/bluebonnet-02-download-images');
   require('./scripts/bluebonnet-03-gen-nft-json');
   require('./scripts/bluebonnet-04-prepare-merkle');
+  require('./scripts/bluebonnet-05-gen-merkle-tree');
   require('./scripts/classic-merkle');
   require('./scripts/end-mint');
   require('./scripts/get-nft-owners');
   require('./scripts/gas-price');
   require('./scripts/mint');
   require('./scripts/mint-special');
-  require('./scripts/minter-merkle');
   require('./scripts/reset-has-minted');
   require('./scripts/set-merkle-root');
   require('./scripts/start-mint');

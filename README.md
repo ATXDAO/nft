@@ -69,6 +69,83 @@ Running 13 tests for ATXDAONFTV2Test.json:ATXDAONFTV2Test
 
 ## Hardhat tasks
 
+### ATXDAO Minter Contract
+
+This is for the new ATX DAO Minter contract.
+
+#### Step 1: Fetch minters from google sheets
+
+```zsh
+# fetch all new minters from the google sheet
+❯ hh bluebonnet-01-fetch-minters --network mainnet
+found 90 existing minters
+[
+  {
+    "address": "0x972C550F55F7Aa8B7E2dB9a36f6dDb8Adf7B21f9",
+    "imageUrl": "https://admin.minero.io/storage/generate/atxdao_64ad6e3098965.png",
+    "isNewMember": true,
+    "imageHash": "0ee5ce"
+  },
+  ...
+]
+
+# save results to a file
+❯ hh bluebonnet-01-fetch-minters --network mainnet > metadata/bluebonnet/groups/01.json
+found 90 existing minters
+```
+
+#### Step 2: Download all images and upload to IPFS
+
+```zsh
+# download all images
+❯ hh bluebonnet-02-download-images
+File metadata/bluebonnet/images/00/a53bdd.png already exists
+File metadata/bluebonnet/images/00/1d88f9.png already exists
+...
+
+# pngcrush images to 99% quality
+❯ pngquant metadata/bluebonnet/images/01/*.png --quality=99 --ext=.png --force
+
+# upload metadata/bluebonnet/images/01 to IPFS and note the cidr in step 03
+```
+
+#### Step 3: Generate JSON metadata for each nft
+
+```zsh
+# generate metadata/bluebonnet/json/01/*.json -- one for each NFT
+❯ hh bluebonnet-03-gen-nft-json
+
+# upload metadata/bluebonnet/json/01 to IPFS and note the cidr in step 04
+```
+
+#### Step 4: Generate master list of all minters
+
+```zsh
+# generate master list of all minters
+❯ hh bluebonnet-04-prepare-merkle
+generated manifest of 90 minters
+```
+
+#### Step 5: Generate merkle tree
+
+```zsh
+# generate merkle tree
+❯ hh bluebonnet-05-gen-merkle-tree metadata/bluebonnet/minters.json > metadata/bluebonnet/merkle-tree.json
+0xa666fd869f0cd0416673dd762d1bd5878c387dde000211b86e301380d258ed6c
+└─ a666fd869f0cd0416673dd762d1bd5878c387dde000211b86e301380d258ed6c
+   ├─ 4052bd84bbbbc538a4ae7fb475a1be2841331c54bcf6b307cf41301c51f91d8a
+   │  ├─ 802d2f97cfdf3a9245294a900e6c5b4469077daff6a19309b69b608fde9ede05
+   │  │  ├─ 0ad5eda43dad12f47cb1195b067098dc0a90b6d0eb835d727568c07c98698406
+   │  │  │  ├─ 129327f4c78e847807c7b8e577330b9417bda48c036b484049e0e86292fd765d
+   │  │  │  │  ├─ 5ef72ee29b28b163c144dd66c82a7ce2725d662fd6a9ce5aaec001c22f24d413
+   │  │  │  │  │  ├─ 00b7622535ab6579190218247535b748f35a7f7814ef870292925dff4e7f55a9
+   │  │  │  │  │  │  ├─ 6a4c83346b77d6dd498908e4b8dc8c79a3ec66c3764f7906fbe6e95e35c18adf
+   │  │  │  │  │  │  └─ f2a7468a6ca221de507b1342cd728e18f0b92a23d9d4d967a90971ba7182173b
+   │  │  │  │  │  └─ bc5f2e274db5e007e4cc956e330e3c81d5ec0ba6d1b7e0661255afb630d1b9bb
+   │  │  │  │  │     ├─ c0163b473dbcecb2c7261d49f66155c3c82db3c0b276d3716931683ab2dd8e33
+   │  │  │  │  │     └─ 5c5197a89e15a33c16593cf23a969a77c2fc8bec3e3981dc8bc3ec3afbc32dd0
+```
+
 ### Verify Contract
 
 ```zsh
@@ -360,53 +437,4 @@ proof:
 
 ```zsh
 ❯ hh start-mint --network ropsten --root 0xeaa7c77029072bf029aef546fe224070e90af3f17d11d49282c8214953b777bc --token-uri ipfs://QmQRFD3dSfNRDa7vvHwafwg4F6FUjA2NBjxBrGuPSrpKrV/ --mint-price 0.02
-```
-
-## ATXDAO Minter Contract
-
-This is for the new ATX DAO Minter contract.
-
-```zsh
-❯ hh hh minter-merkle metadata/test/bluebonnet-test.json --all-proofs
-0x7ee2dcd2a719699cc78051649539508af2ed128303181fa0751dc62919baaed0
-└─ 7ee2dcd2a719699cc78051649539508af2ed128303181fa0751dc62919baaed0
-   ├─ f5b3cf2222887d42bd8a10e83c542861256f7dc8f2777c62fa661942bbaf15ca
-   │  ├─ f281f139d4a1621bf1b7dda51af7021da60d554583b18cf8ab6f6e53fbcb8103
-   │  │  ├─ a5d2a00dc1d4eeb07ec917686e56fe00c240c6f85ff79abfc6bd03704755c01a
-   │  │  └─ 25dffc87238c566203023ffd7d26a3833fa08ab1a98d8bcef029bca26b1d2dc9
-   │  └─ fbf4ceb2f1443e5e03dc05000b9e1fcbc597fd489f0caa8c80802afaac41e808
-   │     ├─ 842a993e94b3de757ffa3b3f96d183e7267b35c5b11cb6fda2573d9bfe2a144e
-   │     └─ 62bb8c08e43e16e4b5fdbea7bb1225253e2415e73ac9cb49e49d0cfabd286c97
-   └─ ea8ad6ad448b67b5846b8ff7d25198f19577af4819932e98d7e6a5f9446998fb
-      └─ ea8ad6ad448b67b5846b8ff7d25198f19577af4819932e98d7e6a5f9446998fb
-         └─ ea8ad6ad448b67b5846b8ff7d25198f19577af4819932e98d7e6a5f9446998fb
-
-{
-    "root": "0x7ee2dcd2a719699cc78051649539508af2ed128303181fa0751dc62919baaed0",
-    "proofs": {
-        "0xabc1000000000000000000000000000000000000": [
-            "0x25dffc87238c566203023ffd7d26a3833fa08ab1a98d8bcef029bca26b1d2dc9",
-            "0xfbf4ceb2f1443e5e03dc05000b9e1fcbc597fd489f0caa8c80802afaac41e808",
-            "0xea8ad6ad448b67b5846b8ff7d25198f19577af4819932e98d7e6a5f9446998fb"
-        ],
-        "0xabc2000000000000000000000000000000000000": [
-            "0xa5d2a00dc1d4eeb07ec917686e56fe00c240c6f85ff79abfc6bd03704755c01a",
-            "0xfbf4ceb2f1443e5e03dc05000b9e1fcbc597fd489f0caa8c80802afaac41e808",
-            "0xea8ad6ad448b67b5846b8ff7d25198f19577af4819932e98d7e6a5f9446998fb"
-        ],
-        "0xabc3000000000000000000000000000000000000": [
-            "0x62bb8c08e43e16e4b5fdbea7bb1225253e2415e73ac9cb49e49d0cfabd286c97",
-            "0xf281f139d4a1621bf1b7dda51af7021da60d554583b18cf8ab6f6e53fbcb8103",
-            "0xea8ad6ad448b67b5846b8ff7d25198f19577af4819932e98d7e6a5f9446998fb"
-        ],
-        "0x51040ce6fc9b9c5da69b044109f637dc997e92de": [
-            "0x842a993e94b3de757ffa3b3f96d183e7267b35c5b11cb6fda2573d9bfe2a144e",
-            "0xf281f139d4a1621bf1b7dda51af7021da60d554583b18cf8ab6f6e53fbcb8103",
-            "0xea8ad6ad448b67b5846b8ff7d25198f19577af4819932e98d7e6a5f9446998fb"
-        ],
-        "0x6d7ddd863eb2dad990bc05bdd3357e32850509e9": [
-            "0xf5b3cf2222887d42bd8a10e83c542861256f7dc8f2777c62fa661942bbaf15ca"
-        ]
-    }
-}
 ```
