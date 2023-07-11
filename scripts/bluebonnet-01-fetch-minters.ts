@@ -1,5 +1,5 @@
 import { readFileSync } from 'fs';
-import { globSync } from 'glob';
+import { globSync } from 'fast-glob';
 import { google } from 'googleapis';
 import { task } from 'hardhat/config';
 import { ATXDAONFT_V2 } from '../typechain-types';

@@ -21,10 +21,12 @@
     "*.js",
     "typechain-types"
   ],
+  "parser": "@babel/eslint-parser",
   "parserOptions": {
     "ecmaVersion": 12,
     "sourceType": "module",
     "project": "./tsconfig.json",
+    "requireConfigFile": false,
     "tsconfigRootDir": "."
   },
   "rules": {

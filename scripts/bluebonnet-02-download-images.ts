@@ -1,6 +1,6 @@
 import { readFileSync, createWriteStream, unlink, existsSync } from 'fs';
 import https from 'https';
-import { globSync } from 'glob';
+import { globSync } from 'fast-glob';
 import { task } from 'hardhat/config';
 import { mkdirpSync } from 'mkdirp';
 

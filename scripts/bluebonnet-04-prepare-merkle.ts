@@ -1,5 +1,5 @@
 import { readFileSync, writeFileSync } from 'fs';
-import { globSync } from 'glob';
+import { globSync } from 'fast-glob';
 import { task } from 'hardhat/config';
 
 interface MinterData {
