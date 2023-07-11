@@ -5,6 +5,7 @@
     "es2021": true
   },
   "plugins": [
+    "@babel",
     "@typescript-eslint",
     "eslint-comments",
     "promise",
@@ -25,6 +26,7 @@
     "ecmaVersion": 12,
     "sourceType": "module",
     "project": "./tsconfig.json",
+    "requireConfigFile": false,
     "tsconfigRootDir": "."
   },
   "rules": {
