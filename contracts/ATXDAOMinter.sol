@@ -120,7 +120,7 @@ contract ATXDAOMinter is Ownable {
         returns (bool)
     {
         return isMintable && !hasMinted(recipient) && nft.balanceOf(recipient) == 0
-            && proof.verify(merkleRoot, keccak256(abi.encodePacked(recipient, tokenURI)));
+            && verifyProof(proof, recipient, tokenURI, true);
     }
 
     function canTradeIn(address recipient, bytes32[] calldata proof, string calldata tokenURI)
@@ -129,17 +129,28 @@ contract ATXDAOMinter is Ownable {
         returns (bool)
     {
         return isMintable && !hasMinted(recipient) && nft.balanceOf(recipient) > 0
-            && proof.verify(merkleRoot, keccak256(abi.encodePacked(recipient, tokenURI)));
+            && verifyProof(proof, recipient, tokenURI, false);
     }
 
-    function _checkMint(address recipient, bytes32[] calldata proof, string calldata tokenURI) private view {
+    function verifyProof(bytes32[] calldata proof, address recipient, string calldata tokenURI, bool isNewMember)
+        public
+        view
+        returns (bool)
+    {
+        return proof.verify(merkleRoot, keccak256(abi.encodePacked(recipient, isNewMember ? 1 : 0, tokenURI)));
+    }
+
+    function _authMint(address recipient, bytes32[] calldata proof, string calldata tokenURI, bool isNewMember)
+        private
+        view
+    {
         if (!isMintable) revert MintNotStarted();
-        if (!proof.verify(merkleRoot, keccak256(abi.encodePacked(recipient, tokenURI)))) revert InvalidProof();
+        if (!verifyProof(proof, recipient, tokenURI, isNewMember)) revert InvalidProof();
         if (hasMinted(msg.sender)) revert DoubleMint();
     }
 
     function mint(bytes32[] calldata proof, string calldata tokenURI) external payable {
-        _checkMint(msg.sender, proof, tokenURI);
+        _authMint(msg.sender, proof, tokenURI, true);
         if (nft.balanceOf(msg.sender) != 0) revert DoubleMint();
         if (msg.value < price) revert InvalidEtherSent();
 
@@ -153,7 +164,7 @@ contract ATXDAOMinter is Ownable {
     }
 
     function tradeIn(bytes32[] calldata proof, string calldata tokenURI, uint256 tokenId) external {
-        _checkMint(msg.sender, proof, tokenURI);
+        _authMint(msg.sender, proof, tokenURI, false);
 
         _setHasMinted(msg.sender);
         _mint(msg.sender, tokenURI);

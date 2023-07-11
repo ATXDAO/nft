@@ -1,10 +1,17 @@
 [
   {
     "address": "0xabC1000000000000000000000000000000000000",
-    "tokenURI": "ipfs://born/in-the-usa.json"
+    "tokenURI": "ipfs://QmYVgQoE74xp5TigTe1EC9vDQw7tx39t3U9ySTaNHa7CdV/26.json",
+    "isNewMember": true
   },
   {
     "address": "0xAbc2000000000000000000000000000000000000",
-    "tokenURI": "ipfs://not-born/in-the-usa.json"
+    "tokenURI": "ipfs://QmYVgQoE74xp5TigTe1EC9vDQw7tx39t3U9ySTaNHa7CdV/27.json",
+    "isNewMember": true
+  },
+  {
+    "address": "0xaBc3000000000000000000000000000000000000",
+    "tokenURI": "ipfs://QmYVgQoE74xp5TigTe1EC9vDQw7tx39t3U9ySTaNHa7CdV/28.json",
+    "isNewMember": false
   }
 ]

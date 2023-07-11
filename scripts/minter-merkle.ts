@@ -20,6 +20,7 @@ interface MinterMerkleArgs {
 interface MerkleRecord {
   address: string;
   tokenURI: string;
+  isNewMember: boolean;
 }
 
 export interface MerkleOutput {
@@ -29,11 +30,13 @@ export interface MerkleOutput {
 
 const concatAndHashAddressAndString = (
   address: string,
-  str: string
+  str: string,
+  isNewMember: boolean
 ): string => {
   const addressBytes = arrayify(getAddress(address));
+  const isNewMemberBytes = arrayify(isNewMember ? 1 : 0);
   const stringBytes = toUtf8Bytes(str);
-  const concatenated = concat([addressBytes, stringBytes]);
+  const concatenated = concat([addressBytes, isNewMemberBytes, stringBytes]);
   return keccak256(concatenated);
 };
 
@@ -56,10 +59,11 @@ task<MinterMerkleArgs>(
         readFileSync(jsonFile).toString()
       );
       const dataByAddress = parsedRecipients.reduce(
-        (acc: Record<string, string>, { address, tokenURI }) => {
+        (acc: Record<string, string>, { address, tokenURI, isNewMember }) => {
           acc[address] = concatAndHashAddressAndString(
             getAddress(address),
-            tokenURI
+            tokenURI,
+            isNewMember
           );
           return acc;
         },
