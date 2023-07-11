@@ -9,11 +9,16 @@ import { HardhatUserConfig } from 'hardhat/config';
 dotenv.config();
 
 if (fs.existsSync('typechain-types')) {
+  // bluebonnet merkle tree generation
   require('./scripts/bluebonnet-01-fetch-minters');
   require('./scripts/bluebonnet-02-download-images');
   require('./scripts/bluebonnet-03-gen-nft-json');
   require('./scripts/bluebonnet-04-prepare-merkle');
   require('./scripts/bluebonnet-05-gen-merkle-tree');
+
+  // bluebonnet admin tasks
+  require('./scripts/bluebonnet-start-mint');
+
   require('./scripts/classic-merkle');
   require('./scripts/end-mint');
   require('./scripts/get-nft-owners');
@@ -61,6 +66,10 @@ const config: HardhatUserConfig = {
     },
     mainnet: {
       url: MAINNET_RPC_URL,
+      accounts: privateKeys,
+    },
+    sepolia: {
+      url: 'https://ethereum-sepolia.blockpi.network/v1/rpc/public',
       accounts: privateKeys,
     },
   },
