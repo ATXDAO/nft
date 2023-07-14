@@ -23,5 +23,30 @@
     "address": "0x6d7ddD863eB2Dad990bC05BDd3357E32850509E9",
     "tokenURI": "ipfs://QmYVgQoE74xp5TigTe1EC9vDQw7tx39t3U9ySTaNHa7CdV/30.json",
     "isNewMember": false
+  },
+  {
+    "address": "0x05A1ff0a32bc24265BCB39499d0c5D9A6cb2011c",
+    "tokenURI": "ipfs://QmUHL3QB4UvmzvBBNzkuy1tx3jjbKWKbRVtuS2zw5pGyNv/fb95e7.json",
+    "isNewMember": true
+  },
+  {
+    "address": "0x1d56AbEFEC79e302808C9e392d846E8666152C1C",
+    "tokenURI": "ipfs://QmUHL3QB4UvmzvBBNzkuy1tx3jjbKWKbRVtuS2zw5pGyNv/fb95e7.json",
+    "isNewMember": true
+  },
+  {
+    "address": "0xD4ed6F78Ee9540aA95A41939Cf346830165bb75B",
+    "tokenURI": "ipfs://QmUHL3QB4UvmzvBBNzkuy1tx3jjbKWKbRVtuS2zw5pGyNv/fb95e7.json",
+    "isNewMember": true
+  },
+  {
+    "address": "0x05A1ff0a32bc24265BCB39499d0c5D9A6cb2011c",
+    "tokenURI": "ipfs://QmUHL3QB4UvmzvBBNzkuy1tx3jjbKWKbRVtuS2zw5pGyNv/fb95e7.json",
+    "isNewMember": true
+  },
+  {
+    "address": "0x007B04A611EE3Fb9B80a8F6c0EB3d251Cd67CEf7",
+    "tokenURI": "ipfs://QmUHL3QB4UvmzvBBNzkuy1tx3jjbKWKbRVtuS2zw5pGyNv/fb95e7.json",
+    "isNewMember": true
   }
 ]
