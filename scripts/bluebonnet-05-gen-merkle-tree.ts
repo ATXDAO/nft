@@ -21,9 +21,22 @@ interface MerkleRecord {
   isNewMember: boolean;
 }
 
+interface AddressData {
+  tokenURI: string;
+  isNewMember: boolean;
+}
+
+interface AddressLeaf extends AddressData {
+  leaf: string;
+}
+
+interface AddressProof extends AddressData {
+  proof: string[];
+}
+
 export interface MerkleOutput {
   root: string;
-  proofs: Record<string, string[]>;
+  addressData: Record<string, AddressProof>;
 }
 
 const concatAndHashAddressAndString = (
@@ -51,17 +64,25 @@ task<MinterMerkleArgs>(
       readFileSync(jsonFile).toString()
     );
     const dataByAddress = parsedRecipients.reduce(
-      (acc: Record<string, string>, { address, tokenURI, isNewMember }) => {
-        acc[address] = concatAndHashAddressAndString(
-          getAddress(address),
+      (
+        acc: Record<string, AddressLeaf>,
+        { address, tokenURI, isNewMember }
+      ) => {
+        acc[address] = {
+          // this is really a leaf of the tree, not the proof
+          leaf: concatAndHashAddressAndString(
+            getAddress(address),
+            tokenURI,
+            isNewMember
+          ),
           tokenURI,
-          isNewMember
-        );
+          isNewMember,
+        };
         return acc;
       },
       {}
     );
-    const leafNodes = Object.values(dataByAddress);
+    const leafNodes = Object.values(dataByAddress).map(({ leaf }) => leaf);
     const tree = new MerkleTree(leafNodes, keccak256, {
       sortPairs: true,
     });
@@ -69,16 +90,21 @@ task<MinterMerkleArgs>(
     console.error(root);
     console.error(tree.toString());
 
-    const output: MerkleOutput = { root, proofs: {} };
+    const output: MerkleOutput = { root, addressData: {} };
 
-    Object.entries(dataByAddress).forEach(([address, data]) => {
-      const leaf = data;
-      const proof = tree.getHexProof(leaf);
-      if (!tree.verify(proof, leaf, root)) {
-        console.error('\ninvalid claimant for merkle proof!');
-        process.exit(1);
+    Object.entries(dataByAddress).forEach(
+      ([address, { leaf, isNewMember, tokenURI }]) => {
+        const proof = tree.getHexProof(leaf);
+        if (!tree.verify(proof, leaf, root)) {
+          console.error('\ninvalid claimant for merkle proof!');
+          process.exit(1);
+        }
+        output.addressData[address.toLowerCase()] = {
+          tokenURI,
+          isNewMember,
+          proof,
+        };
       }
-      output.proofs[address.toLowerCase()] = proof;
-    });
+    );
     console.log(JSON.stringify(output, undefined, 2));
   });

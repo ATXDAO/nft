@@ -37,6 +37,7 @@ const {
   PRIVATE_KEY,
   ETHERSCAN_API_KEY,
   RINKEBY_RPC_URL,
+  SEPOLIA_RPC_URL,
 } = process.env;
 const privateKeys = PRIVATE_KEY ? [`0x${PRIVATE_KEY}`] : undefined;
 
@@ -69,7 +70,8 @@ const config: HardhatUserConfig = {
       accounts: privateKeys,
     },
     sepolia: {
-      url: 'https://ethereum-sepolia.blockpi.network/v1/rpc/public',
+      url: SEPOLIA_RPC_URL,
+      chainId: 11155111,
       accounts: privateKeys,
     },
   },
