@@ -98,6 +98,7 @@ task(
 
   const memberData = [
     ...(await getWorksheetData('New Members', true)),
+    ...(await getWorksheetData('Free NFT', true)),
     ...(await getWorksheetData('Trade in', false)),
   ];
 
@@ -114,27 +115,31 @@ task(
           `duplicate address ${address} (${addressOrEns}) for ${imageUrl}`
         );
       }
-      seenAddresses.add(address);
-      const nftBalance = await nftv2.balanceOf(address);
-      if (isNewMember && !nftBalance.eq(0)) {
-        throw new Error(`${address} (${addressOrEns}) is already a member`);
-      }
-      if (!isNewMember && nftBalance.eq(0)) {
-        throw new Error(
-          `${address} (${addressOrEns}) does not own a membership NFT`
-        );
-      }
-      return {
-        address,
-        imageUrl: imageUrl,
-        isNewMember: isNewMember,
-        imageHash: getImageHash(address, imageUrl),
-      };
+      return { address, imageUrl, isNewMember };
     })
   );
 
-  const newMinters = resolvedMembers.filter(
-    ({ address }) => !minterMap[address]
+  const newMinters = await Promise.all(
+    resolvedMembers
+      .filter(({ address }) => !(address in minterMap))
+      .map(async ({ address, imageUrl, isNewMember }) => {
+        seenAddresses.add(address);
+        const nftBalance = await nftv2.balanceOf(address);
+        if (isNewMember && !nftBalance.eq(0)) {
+          throw new Error(`${address} (${imageUrl}) is already a member`);
+        }
+        if (!isNewMember && nftBalance.eq(0)) {
+          throw new Error(
+            `${address} (${imageUrl}) does not own a membership NFT`
+          );
+        }
+        return {
+          address,
+          imageUrl: imageUrl,
+          isNewMember: isNewMember,
+          imageHash: getImageHash(address, imageUrl),
+        };
+      })
   );
 
   console.log(JSON.stringify(newMinters, null, 2));

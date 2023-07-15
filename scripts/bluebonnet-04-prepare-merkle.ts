@@ -18,6 +18,7 @@ interface Output {
 const metaGroupCidrs: Record<string, string> = {
   '00': 'QmUHL3QB4UvmzvBBNzkuy1tx3jjbKWKbRVtuS2zw5pGyNv',
   '01': 'QmQAAgADtbkbGqb6bUZYW8CvsZdMM7VAgC7816FsqV6seS',
+  '02': 'QmRFHnqUdBgeBHneizp8o6jiPh3wGaBZwVAx8Fu3u7j68x',
 };
 
 task(
