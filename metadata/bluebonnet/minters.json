@@ -588,5 +588,20 @@
     "address": "0x4a071fD98dD1f0B3C14999eCC07926166Dc544B4",
     "isNewMember": false,
     "tokenURI": "ipfs://QmecpysoojrNLpf7J1FJEUf9zFHYBToCR6kgwbUUT1GCTd/777ddc.json"
+  },
+  {
+    "address": "0x16dc7B73763ed730af3bEb88a298E7FaaA35b061",
+    "isNewMember": true,
+    "tokenURI": "ipfs://QmTFuuER61ieScEgAqpxctnvtJizzagruPabg4wictSpYr/9d8f87.json"
+  },
+  {
+    "address": "0x51e5bD4da39B296b42B16d046a82Ecc5DCBaf42F",
+    "isNewMember": true,
+    "tokenURI": "ipfs://QmTFuuER61ieScEgAqpxctnvtJizzagruPabg4wictSpYr/49a23e.json"
+  },
+  {
+    "address": "0x68812F136Ad7f76817fEE39c3fF2848a5d5614aA",
+    "isNewMember": false,
+    "tokenURI": "ipfs://QmTFuuER61ieScEgAqpxctnvtJizzagruPabg4wictSpYr/2bc467.json"
   }
 ]
