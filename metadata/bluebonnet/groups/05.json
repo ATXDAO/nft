@@ -1,0 +1,44 @@
+[
+  {
+    "address": "0x05735e502BA031988582dC69934A87C65c468650",
+    "imageUrl": "https://admin.minero.io/storage/generate/atxdao_64b9f161ed6af.png",
+    "isNewMember": true,
+    "imageHash": "553924"
+  },
+  {
+    "address": "0xd8d417853B2127b8B8EA45Ec406deDb244E2CCF6",
+    "imageUrl": "https://admin.minero.io/storage/generate/atxdao_64bef39264fec.png",
+    "isNewMember": true,
+    "imageHash": "ec367d"
+  },
+  {
+    "address": "0x76c22534B60B5dbbe16e9Fc0325435fd68550Bf3",
+    "imageUrl": "https://admin.minero.io/storage/generate/atxdao_64bf0e4acc5ea.png",
+    "isNewMember": true,
+    "imageHash": "502a49"
+  },
+  {
+    "address": "0x14Aa7CAFb8871cAFA3E02688B66150a8EC338579",
+    "imageUrl": "https://admin.minero.io/storage/generate/atxdao_64c860019fa81.png",
+    "isNewMember": true,
+    "imageHash": "ffa74c"
+  },
+  {
+    "address": "0xAF55D92810F534B43Ac9E640d269B701CFcc9BdC",
+    "imageUrl": "https://admin.minero.io/storage/generate/atxdao_64c886c01ad12.png",
+    "isNewMember": false,
+    "imageHash": "a0ae2a"
+  },
+  {
+    "address": "0xe419d4f6a9Ac8c96F382434D63CF56cf0E4DCd45",
+    "imageUrl": "https://admin.minero.io/storage/generate/atxdao_64c024cf5a069.png",
+    "isNewMember": false,
+    "imageHash": "82ba0a"
+  },
+  {
+    "address": "0x739551b45d9e8d9F1b1d4866812dfceFF75f6848",
+    "imageUrl": "https://admin.minero.io/storage/generate/atxdao_64c88978f2d08.png",
+    "isNewMember": false,
+    "imageHash": "f2711c"
+  }
+]
