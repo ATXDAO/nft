@@ -166,11 +166,12 @@ contract ATXDAONFTV2Test is DSTest {
     }
 
     // mintSpecial only sets
-    function testFailMintSpecial() public {
+    function testRevertMintSpecial() public {
         string memory uri = "baz";
         address[] memory recps = new address[](1);
         recps[0] = addrA;
         nft.mintSpecial(recps, uri, false);
+        vm.expectRevert("ERC721: invalid token ID");
         nft.ownerOf(2);
     }
 
