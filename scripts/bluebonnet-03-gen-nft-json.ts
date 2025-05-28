@@ -18,6 +18,7 @@ const imageGroupCidrs: Record<string, string> = {
   '04': 'QmYGZu3JjuV8qkd6HKePNYo5RkftQw8PePy4rVQXXQgvrT',
   '05': 'QmddJA5BL2LKy4hvBneZ7Ueu5VFbZpJibbNXDJsH9FLcZs',
   '06': 'QmanWkrRs3zWcftRk8kY44hAhriNaKJQ3bozTQ27styUkL',
+  '07': 'bafybeihu35glzd3poxw5jcmg52o6tq24stx3vtfz3fk6kanel6cvegxcbi',
 };
 
 task(

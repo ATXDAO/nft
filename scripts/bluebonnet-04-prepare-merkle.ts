@@ -23,6 +23,7 @@ const metaGroupCidrs: Record<string, string> = {
   '04': 'QmTFuuER61ieScEgAqpxctnvtJizzagruPabg4wictSpYr',
   '05': 'QmYA2zfKyD8Hn8hJLXJqZLEiqjhFjN1VkCqW4CWuLVzAnZ',
   '06': 'QmUouko1KRHrBiQWezJjdNbJDB1wHPmcjWaqXz4xCkmjfT',
+  '07': 'bafybeiadp4gam7lpdj2xt5w3uk5vcibwixqn52zqjgsogetugdbqy25swe'
 };
 
 task(
