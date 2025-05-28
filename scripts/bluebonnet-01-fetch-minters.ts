@@ -97,25 +97,40 @@ task(
   )) as ATXDAONFT_V2;
 
   const memberData = [
-    ...(await getWorksheetData('New Members', true)),
-    ...(await getWorksheetData('Free NFT', true)),
-    ...(await getWorksheetData('Trade in', false)),
+    ...(await getWorksheetData('2025', true)),
+    // ...(await getWorksheetData('New Members', true)),
+    // ...(await getWorksheetData('Free NFT', true)),
+    // ...(await getWorksheetData('Trade in', false)),
   ];
 
   const seenAddresses = new Set<string>();
 
   const resolvedMembers = await Promise.all(
-    memberData.map(async ({ addressOrEns, imageUrl, isNewMember }) => {
-      const address = await ethers.provider.resolveName(addressOrEns);
-      if (!address) {
-        throw new Error(`could not resolve ${addressOrEns} for ${imageUrl}`);
+    memberData.map(async ({ addressOrEns, imageUrl, isNewMember }, index) => {
+      try {
+        // Add validation for address format
+        if (addressOrEns.startsWith('0x') && addressOrEns.includes('-')) {
+          throw new Error(`Invalid address format: ${addressOrEns} (contains dash)`);
+        }
+
+        const address = await ethers.provider.resolveName(addressOrEns);
+        if (!address) {
+          throw new Error(`could not resolve ${addressOrEns} for ${imageUrl}`);
+        }
+        if (seenAddresses.has(address)) {
+          throw new Error(
+            `duplicate address ${address} (${addressOrEns}) for ${imageUrl}`
+          );
+        }
+        return { address, imageUrl, isNewMember };
+      } catch (error) {
+        console.error(`Error processing row ${index + 1}:`);
+        console.error(`  addressOrEns: ${addressOrEns}`);
+        console.error(`  imageUrl: ${imageUrl}`);
+        console.error(`  isNewMember: ${isNewMember}`);
+        console.error(`  Error: ${(error as Error).message}`);
+        throw error;
       }
-      if (seenAddresses.has(address)) {
-        throw new Error(
-          `duplicate address ${address} (${addressOrEns}) for ${imageUrl}`
-        );
-      }
-      return { address, imageUrl, isNewMember };
     })
   );
 
